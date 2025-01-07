@@ -3,10 +3,10 @@ using Api_budger.Models.clients;
 
 namespace Api_budger.Models.budgers
 {
-    public class Budgers
+    public class Budger
     {
         public long BudgerId { get; set; }
-        public long Budger { get; set; }
+        public long BudgerName { get; set; }
         public DateTime Date { get; set; }
         public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
     }

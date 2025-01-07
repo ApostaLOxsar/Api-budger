@@ -2,7 +2,7 @@
 
 namespace Api_budger.Models.clients
 {
-    public class Users
+    public class User
     {
         public long UserId { get; set; }
         public long TelegramId { get; set; }

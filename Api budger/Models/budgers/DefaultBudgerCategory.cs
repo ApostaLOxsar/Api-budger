@@ -3,6 +3,6 @@
     public class DefaultBudgerCategory
     {
         public long DefaultBudgerCategoryId { get; set; } 
-        public string? BudgerCategory { get; set; }
+        public string? BudgerCategoryName { get; set; }
     }
 }
