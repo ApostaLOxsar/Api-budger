@@ -9,6 +9,6 @@ namespace Api_budger.Models.clients
         public string? Name { get; set; }
         public ICollection<Users>? Users { get; set; }
         public ICollection<IncomeCategoryHasFamily>? IncomeCategoryHasFamilies { get; set; }
-        public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamily { get; set; }
+        public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
     }
 }

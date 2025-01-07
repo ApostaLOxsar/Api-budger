@@ -8,6 +8,6 @@ namespace Api_budger.Models.budgers
         public long BudgerId { get; set; }
         public long Budger { get; set; }
         public DateTime Date { get; set; }
-        public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamily { get; set; }
+        public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
     }
 }
