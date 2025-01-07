@@ -1,6 +1,6 @@
 -- DROP SCHEMA budgers;
 
-CREATE SCHEMA budgers AUTHORIZATION postgres;
+CREATE SCHEMA budgers AUTHORIZATION budgeradmin;
 
 -- DROP SEQUENCE budgers.incom_categories_incomcategory_id_seq;
 
@@ -28,8 +28,24 @@ CREATE SEQUENCE budgers.incoms_incom_id_seq
 	MAXVALUE 9223372036854775807
 	START 1
 	CACHE 1
-	NO CYCLE;-- budgers.incom_categories определение
+	NO CYCLE;
+-- budgers.incom_categories определение
 
+CREATE SEQUENCE budgers.default_incom_category_default_incom_category_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE SEQUENCE budgers.budger_budger_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
 -- Drop table
 
 -- DROP TABLE budgers.incom_categories;
@@ -148,33 +164,9 @@ CREATE TABLE budgers.budger_category_has_family (
 	CONSTRAINT budger_category_has_family_pk PRIMARY KEY (budger_category_has_family_id)
 );
 
-
--- budgers.incom_category_has_family внешние включи
-
-ALTER TABLE budgers.incom_category_has_family ADD CONSTRAINT family_id FOREIGN KEY (family_id) REFERENCES clients.families(family_id);
-ALTER TABLE budgers.incom_category_has_family ADD CONSTRAINT incom_id FOREIGN KEY (incom_id) REFERENCES budgers.incoms(incom_id);
-
-
--- budgers.incoms внешние включи
-
-ALTER TABLE budgers.incoms ADD CONSTRAINT incom_category_id FOREIGN KEY (incom_category_id) REFERENCES budgers.incom_categories(incom_category_id);
-ALTER TABLE budgers.incoms ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES clients.users(user_id);
-
-
--- budgers.budgers внешние включи
-
-ALTER TABLE budgers.budgers ADD CONSTRAINT budger_categoriy_id FOREIGN KEY (budger_categoriy_id) REFERENCES budgers.budger_categories(budger_categoriy_id);
-ALTER TABLE budgers.budgers ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES clients.users(user_id);
-
-
--- budgers.budger_category_has_family внешние включи
-
-ALTER TABLE budgers.budger_category_has_family ADD CONSTRAINT budger_id FOREIGN KEY (budger_id) REFERENCES budgers.budgers(budger_id);
-ALTER TABLE budgers.budger_category_has_family ADD CONSTRAINT family_id FOREIGN KEY (family_id) REFERENCES clients.families(family_id);
-
 -- DROP SCHEMA clients;
 
-CREATE SCHEMA clients AUTHORIZATION postgres;
+CREATE SCHEMA clients AUTHORIZATION budgeradmin;
 
 -- DROP SEQUENCE clients.families_id_seq;
 
@@ -246,3 +238,26 @@ CREATE TABLE clients.users (
 	CONSTRAINT family_id FOREIGN KEY (family_id) REFERENCES clients.families(family_id),
 	CONSTRAINT role_id FOREIGN KEY (role_id) REFERENCES clients.roles(role_id)
 );
+
+-- budgers.incom_category_has_family внешние включи
+
+ALTER TABLE budgers.incom_category_has_family ADD CONSTRAINT family_id FOREIGN KEY (family_id) REFERENCES clients.families(family_id);
+ALTER TABLE budgers.incom_category_has_family ADD CONSTRAINT incom_id FOREIGN KEY (incom_id) REFERENCES budgers.incoms(incom_id);
+
+
+-- budgers.incoms внешние включи
+
+ALTER TABLE budgers.incoms ADD CONSTRAINT incom_category_id FOREIGN KEY (incom_category_id) REFERENCES budgers.incom_categories(incom_category_id);
+ALTER TABLE budgers.incoms ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES clients.users(user_id);
+
+
+-- budgers.budgers внешние включи
+
+ALTER TABLE budgers.budgers ADD CONSTRAINT budger_categoriy_id FOREIGN KEY (budger_categoriy_id) REFERENCES budgers.budger_categories(budger_categoriy_id);
+ALTER TABLE budgers.budgers ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES clients.users(user_id);
+
+
+-- budgers.budger_category_has_family внешние включи
+
+ALTER TABLE budgers.budger_category_has_family ADD CONSTRAINT budger_id FOREIGN KEY (budger_id) REFERENCES budgers.budgers(budger_id);
+ALTER TABLE budgers.budger_category_has_family ADD CONSTRAINT family_id FOREIGN KEY (family_id) REFERENCES clients.families(family_id);

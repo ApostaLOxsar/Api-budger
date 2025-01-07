@@ -1,0 +1,1 @@
+docker run --name budger_postgres -p 5432:5432 -e POSTGRES_USER=budgeradmin -e POSTGRES_PASSWORD=pgpwd4habr -e POSTGRES_DB=budger -e PGDATA=/var/lib/postgresql/data/pgdata -d -v C:/Users/ApostaL/Desktop/repos/postgres_data_budger:/var/lib/postgresql/data postgres:latest
