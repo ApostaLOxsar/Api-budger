@@ -8,7 +8,10 @@ namespace Api_budger.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<DefaultBudgerCategory> builder)
         {
-
+            builder.ToTable("default_budger_category", "budgers");
+            builder.HasKey(f => f.DefaultBudgerCategoryId);
+            builder.Property(f => f.DefaultBudgerCategoryId).HasColumnName("default_budger_category_id");
+            builder.Property(f => f.BudgerCategoryName).HasColumnName("budger_category");
         }
     }
 }

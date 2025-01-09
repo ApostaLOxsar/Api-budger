@@ -4,7 +4,6 @@
     {
         public long IncomCategoryId { get; set; }
         public string? IncomCategory { get; set; }
-
         public ICollection<Incom>? Incoms { get; set; }
     }
 }

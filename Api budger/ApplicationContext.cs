@@ -1,6 +1,8 @@
-﻿using Api_budger.Models.budgers;
+﻿using System.Reflection;
+using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.clients;
+using Api_budger.Models.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api_budger
@@ -32,10 +34,26 @@ namespace Api_budger
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ());
+            modelBuilder.ApplyConfiguration(new BudgerCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new BudgerCategoryHasFamilyConfiguration());
+            modelBuilder.ApplyConfiguration(new BudgerConfiguration());
+            modelBuilder.ApplyConfiguration(new DefaultBudgerCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new DefaultIncomeCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new FamilyConfiguration());
+            modelBuilder.ApplyConfiguration(new IncomConfiguration());
+            modelBuilder.ApplyConfiguration(new IncomeCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new IncomeCategoryHasFamilyConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            // Применение других конфигураций
-            // modelBuilder.ApplyConfiguration(new OtherEntityConfiguration());
+            try
+            {
+                modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка конфигурации модели: " + ex.Message);
+            }
         }
     }
 }
