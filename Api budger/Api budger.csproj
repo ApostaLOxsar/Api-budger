@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\input\" />
     <Folder Include="Repositories\" />
     <Folder Include="Abstractions\" />
     <Folder Include="Consts\" />

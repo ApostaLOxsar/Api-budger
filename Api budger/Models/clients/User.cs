@@ -1,13 +1,11 @@
 ﻿using Api_budger.Models.budgers;
+using Api_budger.Models.Abstractions;
 
 namespace Api_budger.Models.clients
 {
-    public class User
+    public class User : UserBase
     {
         public long UserId { get; set; }
-        public long TelegramId { get; set; }
-        public long RoleId { get; set; }
-        public long FamilyId { get; set; }
         public Role? Role { get; set; }
         public Family? Family { get; set; }
         public ICollection<Incom>? Incoms { get; set; }
