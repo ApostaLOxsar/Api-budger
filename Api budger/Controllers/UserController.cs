@@ -34,7 +34,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("AddUsers")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<InputUser>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
@@ -62,7 +62,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("AddUser")]
-        [ProducesResponseType(200, Type = typeof(InputUser))]
+        [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
@@ -102,7 +102,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("AddRoles")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<InputRole>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Role>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
@@ -130,7 +130,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("AddRole")]
-        [ProducesResponseType(200, Type = typeof(InputRole))]
+        [ProducesResponseType(200, Type = typeof(Role))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
@@ -170,7 +170,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("AddFamilies")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<InputFamily>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Family>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
@@ -198,7 +198,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("AddFamily")]
-        [ProducesResponseType(200, Type = typeof(InputFamily))]
+        [ProducesResponseType(200, Type = typeof(Family))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
