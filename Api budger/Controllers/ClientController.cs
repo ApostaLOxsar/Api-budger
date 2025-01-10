@@ -5,14 +5,14 @@ using Api_budger.Models.input;
 
 namespace Api_budger.Controllers
 {
-    [Route("user")]
+    [Route("Client")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ClientController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<ClientController> _logger;
         private readonly ApplicationContext _context;
 
-        public UserController(ILogger<UserController> logger, ApplicationContext context)
+        public ClientController(ILogger<ClientController> logger, ApplicationContext context)
         {
             _logger = logger;
             _context = context;
@@ -29,20 +29,6 @@ namespace Api_budger.Controllers
         {
             return new List<User>
             { 
-            };
-        }
-
-        [HttpPost]
-        [Route("AddUsers")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<IEnumerable<User>> AddUsers(IEnumerable<InputUser> users)
-        {
-            return new List<User>
-            {
             };
         }
 
@@ -67,7 +53,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<User> AddUser(InputUser User)
+        public async Task<User> AddUser(InputUser inputUser)
         {
             return new User
             {
@@ -100,20 +86,6 @@ namespace Api_budger.Controllers
             };
         }
 
-        [HttpPost]
-        [Route("AddRoles")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Role>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<IEnumerable<Role>> AddRoles(IEnumerable<InputRole> roles)
-        {
-            return new List<Role>
-            {
-            };
-        }
-
         [HttpGet]
         [Route("GetRole{id}")]
         [ProducesResponseType(200, Type = typeof(Role))]
@@ -135,7 +107,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<Role> AddRole(InputRole role)
+        public async Task<Role> AddRole(InputRole inputRole)
         {
             return new Role
             {
@@ -168,20 +140,6 @@ namespace Api_budger.Controllers
             };
         }
 
-        [HttpPost]
-        [Route("AddFamilies")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Family>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<IEnumerable<Family>> AddFamilies(IEnumerable<InputFamily> families)
-        {
-            return new List<Family>
-            {
-            };
-        }
-
         [HttpGet]
         [Route("GetFamily{id}")]
         [ProducesResponseType(200, Type = typeof(Family))]
@@ -189,7 +147,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<Family> GetFamily(long id)
+        public async Task<Family> GetFamilyById(long id)
         {
             return new Family
             {
@@ -217,9 +175,51 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<bool> DeleteFamily(long id)
+        public async Task<bool> DeleteFamilyById(long id)
         {
             return true;
+        }
+
+        [HttpPut]
+        [Route("CorrectUser")]
+        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<User> CorrectUser(long Id, InputUser inputUser)
+        {
+            return new User
+            {
+            };
+        }
+
+        [HttpPut]
+        [Route("CorrectRole")]
+        [ProducesResponseType(200, Type = typeof(Role))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<Role> CorrectRole(long Id, InputRole inputRole)
+        {
+            return new Role
+            {
+            };
+        }
+
+        [HttpPut]
+        [Route("CorrectFamily")]
+        [ProducesResponseType(200, Type = typeof(Family))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<Family> CorrectFamily(long Id, InputFamily inputFamily)
+        {
+            return new Family
+            {
+            };
         }
     }
 }
