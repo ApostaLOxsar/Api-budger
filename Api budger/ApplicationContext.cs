@@ -22,8 +22,8 @@ namespace Api_budger
         public DbSet<DefaultBudgerCategory> DefaultBudgerCategories { get; set; }
         public DbSet<DefaultIncomeCategory> DefaultIncomeCategories { get; set;}
         public DbSet<Incom> Incoms { get; set; }
-        public DbSet<IncomeCategory> IncomeCategories { get; set; }
-        public DbSet<IncomeCategoryHasFamily> IncomeCategoriesHasFamilies { get;set; }
+        public DbSet<IncomCategory> IncomeCategories { get; set; }
+        public DbSet<IncomCategoryHasFamily> IncomeCategoriesHasFamilies { get;set; }
         public DbSet<Family> Families { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }

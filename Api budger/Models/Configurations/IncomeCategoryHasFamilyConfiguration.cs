@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api_budger.Models.Configurations
 {
-    public class IncomeCategoryHasFamilyConfiguration : IEntityTypeConfiguration<IncomeCategoryHasFamily>
+    public class IncomeCategoryHasFamilyConfiguration : IEntityTypeConfiguration<IncomCategoryHasFamily>
     {
-        public void Configure(EntityTypeBuilder<IncomeCategoryHasFamily> builder)
+        public void Configure(EntityTypeBuilder<IncomCategoryHasFamily> builder)
         {
             builder.ToTable("incom_category_has_family", "budgers");
             builder.HasKey(f => f.IncomCategoryHasFamilyId);

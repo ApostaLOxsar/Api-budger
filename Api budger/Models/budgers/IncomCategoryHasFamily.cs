@@ -2,7 +2,7 @@
 
 namespace Api_budger.Models.budgers
 {
-    public class IncomeCategoryHasFamily
+    public class IncomCategoryHasFamily
     {
         public long IncomCategoryHasFamilyId { get; set; }
         public long FamilyId { get; set; }
