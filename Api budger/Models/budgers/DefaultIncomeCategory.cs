@@ -1,8 +1,9 @@
-﻿namespace Api_budger.Models.budgers
+﻿using Api_budger.Models.Abstractions;
+
+namespace Api_budger.Models.budgers
 {
-    public class DefaultIncomeCategory
+    public class DefaultIncomeCategory : IncomCategoryBase
     {
         public long DefaultIncomCategoryId { get; set; }
-        public string? IncomCategoryName { get; set; }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Api_budger.Models.input
+﻿using Api_budger.Models.Abstractions;
+
+namespace Api_budger.Models.input
 {
-    public class InputBudgerCategory
+    public class InputBudgerCategory : BudgerCategoryBase
     {
     }
 }

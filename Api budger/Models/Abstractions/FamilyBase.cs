@@ -2,6 +2,9 @@
 {
     public class FamilyBase
     {
+        /// <summary>
+        /// Имя семьи
+        /// </summary>
         public string? Name { get; set; }
     }
 }
