@@ -12,6 +12,5 @@ namespace Api_budger.Models.budgers
         public long BudgerCategoriyId { get; set; }
         public User? User { get; set; }
         public BudgerCategory? BudgerCategory { get; set; }
-        public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
     }
 }

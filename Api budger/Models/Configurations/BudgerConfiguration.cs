@@ -9,14 +9,13 @@ namespace Api_budger.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Budger> builder)
         {
-            builder.ToTable("budger", "budger");
+            builder.ToTable("budger", "budgers");
             builder.HasKey(f => f.BudgerId);
             builder.Property(f => f.BudgerName).HasColumnName("budger");
             builder.Property(f => f.Date).HasColumnName("date");
             builder.Property(f => f.UserId).HasColumnName("user_id");
             builder.Property(f => f.Comment).HasColumnName("comment");
             builder.Property(f => f.BudgerCategoriyId).HasColumnName("budger_category_id");
-            builder.HasMany(p => p.BudgerCategoryHasFamilies).WithOne(u => u.Budger).HasForeignKey(u => u.BudgerCategoryHasFamilyId);
             builder.HasOne(p => p.User).WithMany(u => u.Buders).HasForeignKey(u => u.UserId);
             builder.HasOne(p => p.BudgerCategory).WithMany(u => u.Budgers).HasForeignKey(u => u.BudgerCategoriyId);
         }

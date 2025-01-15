@@ -12,8 +12,8 @@ namespace Api_budger.Models.Configurations
             builder.HasKey(f => f.IncomCategoryHasFamilyId);
             builder.Property(f => f.IncomCategoryHasFamilyId).HasColumnName("incom_category_has_family_id");
             builder.Property(f => f.FamilyId).HasColumnName("family_id");
-            builder.Property(f => f.IncomId).HasColumnName("incom_id");
-            builder.HasOne(f => f.Incom).WithMany(u => u.IncomeCategoryHasFamilies).HasForeignKey(u => u.IncomId);
+            builder.Property(f => f.IncomCategoryHasFamilyId).HasColumnName("incom_category_id");
+            builder.HasOne(f => f.IncomCategory).WithMany(u => u.IncomCategoryHasFamilies).HasForeignKey(u => u.IncomCategoryId);
             builder.HasOne(f => f.Family).WithMany(u => u.IncomeCategoryHasFamilies).HasForeignKey(u => u.FamilyId);
         }
     }

@@ -1,90 +1,137 @@
 ﻿using Api_budger.Models.clients;
 using Api_budger.Repositories.Abstractions;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_budger.Repositories.ClientRepositoty
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ApplicationContext _contex;
+        private readonly ApplicationContext _context;
 
-        public UserRepository(ApplicationContext contex)
+        public UserRepository(ApplicationContext context)
         {
-            _contex = contex;
+            _context = context;
         }
 
-        public Task<Family> AddFamilyAsyns(Family inputFamily)
+        public async Task<ICollection<User>?> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Users.ToListAsync();
         }
 
-        public Task<Role> AddRoleAsyns(Role inputRole)
+        public async Task<User> AddUserAsyns(User inputUser)
         {
-            throw new NotImplementedException();
+            var result = await _context.Users.AddAsync(inputUser);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
-        public Task<User> AddUserAsyns(User inputUser)
+        public async Task<User?> GetUserByIdAsync(long UserId)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FindAsync(UserId);
         }
 
-        public Task<Family> CorrectFamilyByIdAsyns(long FamilyId, User inputFamily)
+        public async Task<bool> DeleteUserByIdAsync(long UserId)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FindAsync(UserId);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<Role> CorrectRoleByIdAsyns(long RoleId, User inputRole)
+        public async Task<ICollection<Role>?> GetAllRoleAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Roles.ToListAsync();
         }
 
-        public Task<User> CorrectUserByIdAsyns(long UserId, User inputUser)
+        public async Task<Role?> GetRoleByIdAsync(long RoleId)
         {
-            throw new NotImplementedException();
+            return await _context.Roles.FindAsync(RoleId);
         }
 
-        public Task<bool> DeleteFamilyByIdAsyns(long familyId)
+        public async Task<Role> AddRoleAsyns(Role inputRole)
         {
-            throw new NotImplementedException();
+            var result = await _context.Roles.AddAsync(inputRole);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
-        public Task<bool> DeleteRoleByIdAsyns(long RoleId)
+        public async Task<bool> DeleteRoleByIdAsyns(long RoleId)
         {
-            throw new NotImplementedException();
+            var role = await _context.Roles.FindAsync(RoleId);
+            if (role == null)
+                throw new KeyNotFoundException("Role not found");
+
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<bool> DeleteUserByIdAsync(long UserId)
+        public async Task<ICollection<Family>?> GetAllFamilyAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Families.ToListAsync();
         }
 
-        public Task<ICollection<Family>?> GetAllFamilyAsync()
+        public async Task<Family?> GetFamilyByIdAsync(long familyId)
         {
-            throw new NotImplementedException();
+            return await _context.Families.FindAsync(familyId);
         }
 
-        public Task<ICollection<Role>?> GetAllRoleAsync()
+        public async Task<Family> AddFamilyAsyns(Family inputFamily)
         {
-            throw new NotImplementedException();
+            var result = await _context.Families.AddAsync(inputFamily);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
-        public Task<ICollection<User>?> GetAllUsersAsync()
+        public async Task<bool> DeleteFamilyByIdAsyns(long familyId)
         {
-            throw new NotImplementedException();
+            var family = await _context.Families.FindAsync(familyId);
+            if (family == null)
+                throw new KeyNotFoundException("Family not found");
+
+            _context.Families.Remove(family);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<Family?> GetFamilyByIdAsync(long familyId)
+        public async Task<User> CorrectUserByIdAsyns(long UserId, User inputUser)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FindAsync(UserId);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            _context.Entry(user).CurrentValues.SetValues(inputUser);
+
+            await _context.SaveChangesAsync();
+            return user;
         }
 
-        public Task<Role?> GetRoleByIdAsync(long RoleId)
+        public async Task<Role> CorrectRoleByIdAsyns(long RoleId, User inputRole)
         {
-            throw new NotImplementedException();
+            var role = await _context.Roles.FindAsync(RoleId);
+            if (role == null)
+                throw new KeyNotFoundException("Role not found");
+
+            _context.Entry(role).CurrentValues.SetValues(inputRole);
+
+            await _context.SaveChangesAsync();
+            return role;
         }
 
-        public Task<User?> GetUserByIdAsync(long UserId)
+        public async Task<Family> CorrectFamilyByIdAsyns(long FamilyId, User inputFamily)
         {
-            throw new NotImplementedException();
+            var family = await _context.Families.FindAsync(FamilyId);
+            if (family == null)
+                throw new KeyNotFoundException("Family not found");
+
+            _context.Entry(family).CurrentValues.SetValues(inputFamily);
+
+            await _context.SaveChangesAsync();
+            return family;
         }
     }
 }

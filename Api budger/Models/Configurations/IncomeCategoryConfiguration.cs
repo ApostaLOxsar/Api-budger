@@ -8,11 +8,12 @@ namespace Api_budger.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<IncomCategory> builder)
         {
-            builder.ToTable("incom_categories", "budger");
+            builder.ToTable("incom_categories", "budgers");
             builder.HasKey(f => f.IncomCategoryId);
             builder.Property(f => f.IncomCategoryName).HasColumnName("incom_category");
             builder.Property(f => f.IncomCategoryId).HasColumnName("incom_category_id");
             builder.HasMany(p => p.Incoms).WithOne(u => u.IncomeCategory).HasForeignKey(u => u.IncomId);
+            builder.HasMany(p => p.IncomCategoryHasFamilies).WithOne(u => u.IncomCategory).HasForeignKey(u => u.IncomCategoryHasFamilyId);
         }
     }
 }

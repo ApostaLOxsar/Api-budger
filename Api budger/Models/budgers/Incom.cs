@@ -10,6 +10,5 @@ namespace Api_budger.Models.budgers
         public long IncomeCategoryId { get; set; }
         public User? User { get; set; }
         public IncomCategory? IncomeCategory { get; set; }
-        public ICollection<IncomCategoryHasFamily>? IncomeCategoryHasFamilies { get; set; }
     }
 }

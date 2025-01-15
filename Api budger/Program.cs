@@ -4,6 +4,7 @@ using Api_budger.Repositories.Abstractions;
 using Api_budger.Repositories.ClientRepositoty;
 using Api_budger.Services;
 using Api_budger.Services.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationContext>();
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();

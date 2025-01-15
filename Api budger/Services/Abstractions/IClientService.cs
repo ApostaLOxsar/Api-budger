@@ -6,28 +6,28 @@ namespace Api_budger.Services.Abstractions
     public interface IClientService
     {
         #region Family
-        Task<ICollection<Family>> GetFamiliesAsync();
-        Task<Family> GetFamilyByIdAsync(long Id);
-        Task<Family> AddFamilyAsyns(InputFamily inputFamily);
-        Task<bool> DeleteFamilyByIdAsyns(long id);
-        Task<Family> CorrectFamilyAsyns(long Id, InputFamily inputFamily);
+        public Task<ICollection<Family>> GetFamiliesAsync();
+        public Task<Family> GetFamilyByIdAsync(long Id);
+        public Task<Family> AddFamilyAsyns(InputFamily inputFamily);
+        public Task<bool> DeleteFamilyByIdAsyns(long id);
+        public Task<Family> CorrectFamilyAsyns(long Id, InputFamily inputFamily);
         #endregion
 
         #region Role
-        Task<ICollection<Role>> GetRolesAsync();
-        Task<Role> GetRoleByIdAsync(long Id);
-        Task<Role> AddRoleAsyns(InputRole inputRole);
-        Task<bool> DeleteRoleByIdAsyns(long id);
-        Task<Role> CorrectRoleAsyns(long Id, InputRole inputRole);
+        public Task<ICollection<Role>> GetRolesAsync();
+        public Task<Role> GetRoleByIdAsync(long Id);
+        public Task<Role> AddRoleAsyns(InputRole inputRole);
+        public Task<bool> DeleteRoleByIdAsyns(long id);
+        public Task<Role> CorrectRoleAsyns(long Id, InputRole inputRole);
         #endregion
 
 
         #region User
-        Task<ICollection<User>> GetUsersAsync();
-        Task<User> GetUserByIdAsync(long Id);
-        Task<User> AddUserAsyns(InputUser inputUser);
-        Task<bool> DeleteUserByIdAsyns(long id);
-        Task<User> CorrectUserAsyns(long Id, InputUser inputUser);
+        public Task<ICollection<User>> GetUsersAsync();
+        public Task<User> GetUserByIdAsync(long Id);
+        public Task<User> AddUserAsyns(InputUser inputUser);
+        public Task<bool> DeleteUserByIdAsyns(long id);
+        public Task<User> CorrectUserAsyns(long Id, InputUser inputUser);
         #endregion
     }
 }
