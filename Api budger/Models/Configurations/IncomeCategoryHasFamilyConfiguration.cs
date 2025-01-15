@@ -10,6 +10,7 @@ namespace Api_budger.Models.Configurations
         {
             builder.ToTable("incom_category_has_family", "budgers");
             builder.HasKey(f => f.IncomCategoryHasFamilyId);
+            builder.Property(f => f.IncomCategoryHasFamilyId).HasColumnName("incom_category_has_family_id");
             builder.Property(f => f.FamilyId).HasColumnName("family_id");
             builder.Property(f => f.IncomId).HasColumnName("incom_id");
             builder.HasOne(f => f.Incom).WithMany(u => u.IncomeCategoryHasFamilies).HasForeignKey(u => u.IncomId);

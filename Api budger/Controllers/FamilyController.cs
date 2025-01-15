@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
+using Api_budger.Services.Abstractions;
 
 namespace Api_budger.Controllers
 {
@@ -11,9 +12,11 @@ namespace Api_budger.Controllers
     public class FamilyController : ControllerBase
     {
         private readonly ILogger<FamilyController> _logger;
-        public FamilyController(ILogger<FamilyController> logger) 
+        private readonly IClientService _clientService;
+        public FamilyController(ILogger<FamilyController> logger, IClientService clientService)
         {
             _logger = logger;
+            _clientService = clientService;
         }
 
         [HttpGet]
@@ -25,9 +28,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<Family>> GetFamilies()
         {
-            return new List<Family>
-            {
-            };
+            var listFamily = await _clientService.GetFamiliesAsync();
+            return listFamily;
         }
 
         [HttpGet]
@@ -39,9 +41,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Family> GetFamilyById(long id)
         {
-            return new Family
-            {
-            };
+            var family = await _clientService.GetFamilyByIdAsync(id);
+            return family;
         }
 
         [HttpPost]
@@ -53,9 +54,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Family> AddFamily(InputFamily family)
         {
-            return new Family
-            {
-            };
+            var newFamily = await _clientService.AddFamilyAsyns(family);
+            return newFamily;
         }
 
         [HttpDelete]
@@ -67,21 +67,20 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteFamilyById(long id)
         {
-            return true;
+            return await _clientService.DeleteFamilyByIdAsyns(id);
         }
 
         [HttpPut]
-        [Route("CorrectFamily")]
+        [Route("CorrectFamily/{id}")]
         [ProducesResponseType(200, Type = typeof(Family))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<Family> CorrectFamily(long Id, InputFamily inputFamily)
+        public async Task<Family> CorrectFamily(long id, InputFamily inputFamily)
         {
-            return new Family
-            {
-            };
+            var correctFamily = await _clientService.CorrectFamilyAsyns(id, inputFamily);
+            return correctFamily;
         }
     }
 }

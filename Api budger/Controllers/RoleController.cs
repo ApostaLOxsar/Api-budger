@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
+using Api_budger.Services.Abstractions;
 
 
 namespace Api_budger.Controllers
@@ -11,10 +12,12 @@ namespace Api_budger.Controllers
     public class RoleController :ControllerBase
     {
         private readonly ILogger<RoleController> _logger;
+        private readonly IClientService _clientService;
 
-        public RoleController(ILogger<RoleController> logger) 
+        public RoleController(ILogger<RoleController> logger, IClientService clientService) 
         {
             _logger = logger;
+            _clientService = clientService;
         }
 
         [HttpGet]
@@ -26,9 +29,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<Role>> GetRoles()
         {
-            return new List<Role>
-            {
-            };
+            var listAllRoles = await _clientService.GetRolesAsync();
+            return listAllRoles;
         }
 
         [HttpGet]
@@ -40,9 +42,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Role> GetRole(long id)
         {
-            return new Role
-            {
-            };
+            var listRole = await _clientService.GetRoleByIdAsync(id);
+            return listRole;
         }
 
         [HttpPost]
@@ -54,9 +55,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Role> AddRole(InputRole inputRole)
         {
-            return new Role
-            {
-            };
+            var newRole = await _clientService.AddRoleAsyns(inputRole);
+            return newRole;
         }
 
         [HttpDelete]
@@ -68,7 +68,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteRole(long id)
         {
-            return true;
+            return await _clientService.DeleteRoleByIdAsyns(id);
         }
 
 
@@ -79,11 +79,10 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<Role> CorrectRole(long Id, InputRole inputRole)
+        public async Task<Role> CorrectRole(long id, InputRole inputRole)
         {
-            return new Role
-            {
-            };
+            var correctRole = await _clientService.CorrectRoleAsyns(id, inputRole);
+            return correctRole;
         }
     }
 }

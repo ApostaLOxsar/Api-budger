@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
+using Api_budger.Services.Abstractions;
 
 namespace Api_budger.Controllers
 {
@@ -10,10 +11,12 @@ namespace Api_budger.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
+        private readonly IClientService _clientService;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, IClientService clientService)
         {
             _logger = logger;
+            _clientService = clientService;
         }
 
         [HttpGet]
@@ -25,9 +28,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return new List<User>
-            {
-            };
+            var listAllUsers = await _clientService.GetUsersAsync();
+            return listAllUsers;
         }
 
         [HttpGet]
@@ -39,9 +41,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<User> GetUser(long id)
         {
-            return new User
-            {
-            };
+            var user = await _clientService.GetUserByIdAsync(id);
+            return user;
         }
 
         [HttpPost]
@@ -53,9 +54,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<User> AddUser(InputUser inputUser)
         {
-            return new User
-            {
-            };
+            var newUser = await _clientService.AddUserAsyns(inputUser);
+            return newUser;
         }
 
         [HttpDelete]
@@ -67,7 +67,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteUser(long id)
         {
-            return true;
+            return await _clientService.DeleteUserByIdAsyns(id);
         }
 
         [HttpPut]
@@ -77,11 +77,10 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<User> CorrectUser(long Id, InputUser inputUser)
+        public async Task<User> CorrectUser(long id, InputUser inputUser)
         {
-            return new User
-            {
-            };
+            var correctUser = await _clientService.CorrectUserAsyns(id, inputUser);
+            return correctUser;
         }
     }
 }

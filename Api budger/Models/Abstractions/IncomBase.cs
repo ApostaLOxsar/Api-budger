@@ -10,5 +10,9 @@
         /// Комментарий к доходу
         /// </summary>
         public string? Comment { get; set; }
+        /// <summary>
+        /// Id пользователя
+        /// </summary>
+        public long UserId { get; set; }
     }
 }

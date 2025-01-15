@@ -2,6 +2,7 @@
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Models.budgers;
+using Api_budger.Services.Abstractions;
 
 namespace Api_budger.Controllers
 {
@@ -10,9 +11,11 @@ namespace Api_budger.Controllers
     public class BudgerController : ControllerBase
     {
         private readonly ILogger<BudgerController> _logger;
-        public BudgerController(ILogger<BudgerController> logger)
+        private readonly IBudgerService _budgerService;
+        public BudgerController(ILogger<BudgerController> logger, IBudgerService budgerService)
         {
             _logger = logger;
+            _budgerService = budgerService;
         }
 
         [HttpGet]
@@ -24,9 +27,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<Budger>> GetBudgerByFamilyId(long familyId)
         {
-            return new List<Budger>
-            {
-            };
+            var listBudger = await _budgerService.GetBudgerByFamilyIdAsyns(familyId);
+            return listBudger;
         }
 
         [HttpGet]
@@ -38,10 +40,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<Budger>> GetBudgerByUserId(long useryId)
         {
-            return new List<Budger>
-            {
-
-            };
+            var budger = await _budgerService.GetBudgerByUserIdAsyns(useryId);
+            return budger;
         }
 
         [HttpPost]
@@ -53,10 +53,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Budger> AddBudger(InputBudger inputBudger)
         {
-            return new Budger
-            {
-
-            };
+            var newBudger = await _budgerService.AddBudgerAsyns(inputBudger);
+            return newBudger;
         }
 
         [HttpDelete]
@@ -68,7 +66,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteBudgerById(long budgerId)
         {
-            return true;
+            return await _budgerService.DeleteBudgerByIdAsyns(budgerId);
         }
 
         [HttpPut]
@@ -80,9 +78,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Budger> CorrectBudger(long Id, InputBudger inputBudger)
         {
-            return new Budger
-            {
-            };
+            var budger = await _budgerService.CorrectBudgerAsyns(Id, inputBudger);
+            return budger;
         }
     }
 }

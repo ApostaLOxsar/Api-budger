@@ -2,17 +2,20 @@
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Models.budgers;
+using Api_budger.Services.Abstractions;
 
 namespace Api_budger.Controllers
 {
     [Route("Incom")]
     [ApiController]
-    public class IncomComtroller : ControllerBase
+    public class IncomController : ControllerBase
     {
-        private readonly ILogger<IncomComtroller> _logger;
-        public IncomComtroller(ILogger<IncomComtroller> logger)
+        private readonly ILogger<IncomController> _logger;
+        private readonly IBudgerService _budgerService;
+        public IncomController(ILogger<IncomController> logger, IBudgerService budgerService)
         {
             _logger = logger;
+            _budgerService = budgerService;
         }
 
         [HttpGet]
@@ -24,9 +27,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<Incom>> GetIncomByFamilyId(long familyId)
         {
-            return new List<Incom>
-            {
-            };
+            var listIncoms = await _budgerService.GetIncomByFamilyIdAsyns(familyId);
+            return listIncoms;
         }
 
         [HttpGet]
@@ -38,10 +40,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<Incom>> GetIncomByUserId(long useryId)
         {
-            return new List<Incom>
-            {
-
-            };
+            var listIncoms = await _budgerService.GetIncomByUserIdAsyns(useryId);
+            return listIncoms;
         }
 
         [HttpPost]
@@ -53,10 +53,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Incom> AddIncom(InputIncom inputIncom)
         {
-            return new Incom
-            {
-
-            };
+            var newIncom = await _budgerService.AddIncomAsyns(inputIncom);
+            return newIncom;
         }
 
         [HttpDelete]
@@ -68,7 +66,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteIncomById(long incomId)
         {
-            return true;
+            return await _budgerService.DeleteIncomByIdAsyns(incomId);
         }
 
         [HttpPut]
@@ -80,9 +78,8 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<Incom> CorrectIncom(long Id, InputIncom inputIncom)
         {
-            return new Incom
-            {
-            };
+            var correctIncom = await _budgerService.CorrectIncomAsyns(Id, inputIncom);
+            return correctIncom;
         }
     }
 }

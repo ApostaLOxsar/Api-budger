@@ -3,6 +3,7 @@ using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
+using Api_budger.Services.Abstractions;
 
 namespace Api_budger.Controllers
 {
@@ -11,9 +12,11 @@ namespace Api_budger.Controllers
     public class BudgerCategoryController : ControllerBase
     {
         private readonly ILogger<BudgerCategoryController> _logger;
-        public BudgerCategoryController(ILogger<BudgerCategoryController> logger)
+        private readonly IBudgerService _budgerService;
+        public BudgerCategoryController(ILogger<BudgerCategoryController> logger, IBudgerService budgerService)
         {
             _logger = logger;
+            _budgerService = budgerService;
         }
 
 
@@ -24,52 +27,48 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<BudgerCategory>> GetBudgerByFamilyId(long familyId)
+        public async Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyId(long familyId)
         {
-            return new List<BudgerCategory>
-            {
-            };
+            var budgerCategories = await _budgerService.GetBudgerCategoryByFamilyIdAsyns(familyId);
+            return budgerCategories;
         }
 
         [HttpPost]
-        [Route("AddBudgerCategory")]
+        [Route("AddBudgerCategoryInFamily")]
         [ProducesResponseType(200, Type = typeof(BudgerCategory))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<BudgerCategory> AddBudger(InputBudgerCategory inputBudger)
+        public async Task<BudgerCategory> AddBudgerCategoryInFamily(InputBudgerCategory inputBudger)
         {
-            return new BudgerCategory
-            {
-
-            };
+            var budgerCategory = await _budgerService.AddBudgerCategoryInFamilyAsyns(inputBudger);
+            return budgerCategory;
         }
 
         [HttpDelete]
-        [Route("DeleteBudgerCategory/{BudgerCategoryId}")]
+        [Route("DeleteBudgerCategoryFromFamily/{budgerCategoryId}")]
         [ProducesResponseType(200, Type = typeof(bool))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<bool> DeleteBudgerById(long BudgerCategoryId)
+        public async Task<bool> DeleteBudgerCategoryFromFamilyById(long budgerCategoryId, long familyId)
         {
-            return true;
+            return await _budgerService.DeleteBudgerCategoryFromFamilyByIdAsyns(budgerCategoryId, familyId);
         }
 
         [HttpPut]
-        [Route("CorrectBudgerCategory")]
+        [Route("CorrectBudgerCategoryFromUser/{id}")]
         [ProducesResponseType(200, Type = typeof(BudgerCategory))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<BudgerCategory> CorrectBudger(long Id, InputBudgerCategory inputBudgerCategory)
+        public async Task<BudgerCategory> CorrectBudgerCategoryFromUserById(long id, long userId, InputBudgerCategory inputBudgerCategory)
         {
-            return new BudgerCategory
-            {
-            };
+            var budgerCategory = await _budgerService.CorrectBudgerCategoryFromUserByIdAsyns(id, userId, inputBudgerCategory);
+            return budgerCategory;
         }
     }
 }
