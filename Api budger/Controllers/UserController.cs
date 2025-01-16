@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Services.Abstractions;
+using AutoMapper;
 
 namespace Api_budger.Controllers
 {
@@ -12,24 +13,27 @@ namespace Api_budger.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IClientService _clientService;
+        private readonly IMapper _mapper;
 
-        public UserController(ILogger<UserController> logger, IClientService clientService)
+        public UserController(ILogger<UserController> logger, IClientService clientService, IMapper mapper)
         {
             _logger = logger;
             _clientService = clientService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("GetUsers")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputUser>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<OutputUser>> GetUsers()
         {
             var listAllUsers = await _clientService.GetUsersAsync();
-            return listAllUsers;
+            var result = _mapper.Map<IEnumerable<OutputUser>>(listAllUsers);
+            return result;
         }
 
         [HttpGet]
@@ -39,10 +43,11 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<User> GetUser(long id)
+        public async Task<OutputUser> GetUser(long id)
         {
             var user = await _clientService.GetUserByIdAsync(id);
-            return user;
+            var result = _mapper.Map<OutputUser>(user);
+            return result;
         }
 
         [HttpPost]
@@ -52,10 +57,11 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<User> AddUser(InputUser inputUser)
+        public async Task<OutputUser> AddUser(InputUser inputUser)
         {
             var newUser = await _clientService.AddUserAsyns(inputUser);
-            return newUser;
+            var result = _mapper.Map<OutputUser>(newUser);
+            return result;
         }
 
         [HttpDelete]
@@ -77,10 +83,11 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<User> CorrectUser(long id, InputUser inputUser)
+        public async Task<OutputUser> CorrectUser(long id, InputUser inputUser)
         {
             var correctUser = await _clientService.CorrectUserAsyns(id, inputUser);
-            return correctUser;
+            var result = _mapper.Map<OutputUser>(correctUser);
+            return result;
         }
     }
 }

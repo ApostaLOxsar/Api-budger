@@ -3,6 +3,8 @@ using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Models.budgers;
 using Api_budger.Services.Abstractions;
+using AutoMapper;
+using Api_budger.Models.output;
 
 namespace Api_budger.Controllers
 {
@@ -12,49 +14,54 @@ namespace Api_budger.Controllers
     {
         private readonly ILogger<IncomController> _logger;
         private readonly IBudgerService _budgerService;
-        public IncomController(ILogger<IncomController> logger, IBudgerService budgerService)
+        private readonly IMapper _mapper;
+        public IncomController(ILogger<IncomController> logger, IBudgerService budgerService, IMapper mapper)
         {
             _logger = logger;
             _budgerService = budgerService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("GetIncomByFamily/{familyId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Incom>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncom>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<Incom>> GetIncomByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputIncom>> GetIncomByFamilyId(long familyId)
         {
             var listIncoms = await _budgerService.GetIncomByFamilyIdAsyns(familyId);
-            return listIncoms;
+            var resalt = _mapper.Map<IEnumerable<OutputIncom>>(listIncoms);
+            return resalt;
         }
 
         [HttpGet]
         [Route("GetIncomByUser/{useryId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Incom>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncom>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<Incom>> GetIncomByUserId(long useryId)
+        public async Task<IEnumerable<OutputIncom>> GetIncomByUserId(long useryId)
         {
             var listIncoms = await _budgerService.GetIncomByUserIdAsyns(useryId);
-            return listIncoms;
+            var resalt = _mapper.Map<IEnumerable<OutputIncom>>(listIncoms);
+            return resalt;
         }
 
         [HttpPost]
         [Route("AddIncom")]
-        [ProducesResponseType(200, Type = typeof(Incom))]
+        [ProducesResponseType(200, Type = typeof(OutputIncom))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<Incom> AddIncom(InputIncom inputIncom)
+        public async Task<OutputIncom> AddIncom(InputIncom inputIncom)
         {
             var newIncom = await _budgerService.AddIncomAsyns(inputIncom);
-            return newIncom;
+            var resalt = _mapper.Map<OutputIncom>(newIncom);
+            return resalt;
         }
 
         [HttpDelete]
@@ -71,15 +78,16 @@ namespace Api_budger.Controllers
 
         [HttpPut]
         [Route("CorrectIncom")]
-        [ProducesResponseType(200, Type = typeof(Incom))]
+        [ProducesResponseType(200, Type = typeof(OutputIncom))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<Incom> CorrectIncom(long Id, InputIncom inputIncom)
+        public async Task<OutputIncom> CorrectIncom(long Id, InputIncom inputIncom)
         {
             var correctIncom = await _budgerService.CorrectIncomAsyns(Id, inputIncom);
-            return correctIncom;
+            var resalt = _mapper.Map<OutputIncom>(correctIncom);
+            return resalt;
         }
     }
 }

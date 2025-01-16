@@ -1,4 +1,5 @@
-﻿using Api_budger.Models.clients;
+﻿using System.Collections.Generic;
+using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Services.Abstractions;
@@ -19,9 +20,10 @@ namespace Api_budger.Services
             _budgerRepository = budgerRepository;
             _mapper = mapper;
         }
-        public Task<Family> AddFamilyAsyns(InputFamily inputFamily)
+        public async Task<Family> AddFamilyAsyns(InputFamily inputFamily)
         {
-            throw new NotImplementedException();
+            var famili = _mapper.Map<Family>(inputFamily);
+            return await _userRepository.AddFamilyAsyns(famili);
         }
 
         public async Task<Role> AddRoleAsyns(InputRole inputRole)
@@ -30,9 +32,10 @@ namespace Api_budger.Services
             return await _userRepository.AddRoleAsyns(role);
         }
 
-        public Task<User> AddUserAsyns(InputUser inputUser)
+        public async Task<User> AddUserAsyns(InputUser inputUser)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<User>(inputUser);
+            return await _userRepository.AddUserAsyns(user);
         }
 
         public Task<Family> CorrectFamilyAsyns(long Id, InputFamily inputFamily)
@@ -65,9 +68,11 @@ namespace Api_budger.Services
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Family>> GetFamiliesAsync()
+        public async Task<ICollection<Family>> GetFamiliesAsync()
         {
-            throw new NotImplementedException();
+            var families = await _userRepository.GetAllFamilyAsync();
+            if (families == null) throw new Exception("Users not found");
+            return families;
         }
 
         public Task<Family> GetFamilyByIdAsync(long Id)
@@ -92,9 +97,11 @@ namespace Api_budger.Services
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<User>> GetUsersAsync()
+        public async Task<ICollection<User>> GetUsersAsync()
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetAllUsersAsync();
+            if (user == null) throw new Exception("Users not found");
+            return user;
         }
     }
 }

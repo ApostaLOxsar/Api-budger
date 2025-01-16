@@ -4,6 +4,8 @@ using Api_budger.Models.input;
 using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Services.Abstractions;
+using AutoMapper;
+using Api_budger.Models.output;
 
 namespace Api_budger.Controllers
 {
@@ -13,37 +15,41 @@ namespace Api_budger.Controllers
     {
         private readonly ILogger<BudgerCategoryController> _logger;
         private readonly IBudgerService _budgerService;
-        public BudgerCategoryController(ILogger<BudgerCategoryController> logger, IBudgerService budgerService)
+        private readonly IMapper _mapper;
+        public BudgerCategoryController(ILogger<BudgerCategoryController> logger, IBudgerService budgerService, IMapper mapper)
         {
             _logger = logger;
             _budgerService = budgerService;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
         [Route("GetBudgerCategoryByFamily/{familyId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<BudgerCategory>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputBudgerCategory>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputBudgerCategory>> GetBudgerCategoryByFamilyId(long familyId)
         {
             var budgerCategories = await _budgerService.GetBudgerCategoryByFamilyIdAsyns(familyId);
-            return budgerCategories;
+            var resalt = _mapper.Map<IEnumerable<OutputBudgerCategory>>(budgerCategories);
+            return resalt;
         }
 
         [HttpPost]
         [Route("AddBudgerCategoryInFamily")]
-        [ProducesResponseType(200, Type = typeof(BudgerCategory))]
+        [ProducesResponseType(200, Type = typeof(OutputBudgerCategory))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<BudgerCategory> AddBudgerCategoryInFamily(InputBudgerCategory inputBudger)
+        public async Task<OutputBudgerCategory> AddBudgerCategoryInFamily(InputBudgerCategory inputBudger)
         {
             var budgerCategory = await _budgerService.AddBudgerCategoryInFamilyAsyns(inputBudger);
-            return budgerCategory;
+            var resalt = _mapper.Map<OutputBudgerCategory>(budgerCategory);
+            return resalt;
         }
 
         [HttpDelete]
@@ -60,15 +66,16 @@ namespace Api_budger.Controllers
 
         [HttpPut]
         [Route("CorrectBudgerCategoryFromUser/{id}")]
-        [ProducesResponseType(200, Type = typeof(BudgerCategory))]
+        [ProducesResponseType(200, Type = typeof(OutputBudgerCategory))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<BudgerCategory> CorrectBudgerCategoryFromUserById(long id, long userId, InputBudgerCategory inputBudgerCategory)
+        public async Task<OutputBudgerCategory> CorrectBudgerCategoryFromUserById(long id, long userId, InputBudgerCategory inputBudgerCategory)
         {
             var budgerCategory = await _budgerService.CorrectBudgerCategoryFromUserByIdAsyns(id, userId, inputBudgerCategory);
-            return budgerCategory;
+            var resalt = _mapper.Map<OutputBudgerCategory>(budgerCategory);
+            return resalt;
         }
     }
 }

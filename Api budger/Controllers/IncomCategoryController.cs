@@ -1,7 +1,9 @@
 ﻿using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.input;
+using Api_budger.Models.output;
 using Api_budger.Services.Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,36 +15,40 @@ namespace Api_budger.Controllers
     {
         private readonly ILogger<IncomCategoryController> _logger;
         private readonly IBudgerService _budgerService;
-        public IncomCategoryController(ILogger<IncomCategoryController> logger, IBudgerService budgerService)
+        private readonly IMapper _mapper;
+        public IncomCategoryController(ILogger<IncomCategoryController> logger, IBudgerService budgerService, IMapper mapper)
         {
             _logger = logger;
             _budgerService = budgerService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("GetIncomCategoryByFamily/{familyId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<IncomCategory>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncomCategory>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<IncomCategory>> GetIncomCategoryByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputIncomCategory>> GetIncomCategoryByFamilyId(long familyId)
         {
             var incomCategories = await _budgerService.GetIncomCategoryByFamilyIdAsyns(familyId);
-            return incomCategories;
+            var resalt = _mapper.Map<IEnumerable<OutputIncomCategory>>(incomCategories);
+            return resalt;
         }
 
         [HttpPost]
         [Route("AddIncomCategoryInFamily")]
-        [ProducesResponseType(200, Type = typeof(IncomCategory))]
+        [ProducesResponseType(200, Type = typeof(OutputIncomCategory))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IncomCategory> AddIncomCategoryInFamily(InputIncomCategory inputIncomCategory)
+        public async Task<OutputIncomCategory> AddIncomCategoryInFamily(InputIncomCategory inputIncomCategory)
         {
             var newIncomCategory = await _budgerService.AddIncomCategoryInFamilyAsyns(inputIncomCategory);
-            return newIncomCategory;
+            var resalt = _mapper.Map<OutputIncomCategory>(newIncomCategory);
+            return resalt;
         }
 
         [HttpDelete]
@@ -59,15 +65,16 @@ namespace Api_budger.Controllers
 
         [HttpPut]
         [Route("CorrectIncomCategoryFromUser/{id}")]
-        [ProducesResponseType(200, Type = typeof(IncomCategory))]
+        [ProducesResponseType(200, Type = typeof(OutputIncomCategory))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IncomCategory> CorrectIncomCategoryFromUserById(long id, long userId, InputIncomCategory inputIncomCategory)
+        public async Task<OutputIncomCategory> CorrectIncomCategoryFromUserById(long id, long userId, InputIncomCategory inputIncomCategory)
         {
             var correctIncomCategory = await _budgerService.CorrectIncomCategoryFromUserByIdAsyns(id, userId, inputIncomCategory);
-            return correctIncomCategory;
+            var resalt = _mapper.Map<OutputIncomCategory>(correctIncomCategory);
+            return resalt;
         }
     }
 }

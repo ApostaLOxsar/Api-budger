@@ -16,7 +16,7 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<List<User>?> GetAllUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(u => u.Role).Include(u => u.Family).ToListAsync();
         }
 
         public async Task<User> AddUserAsyns(User inputUser)

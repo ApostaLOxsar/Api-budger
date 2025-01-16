@@ -2,6 +2,7 @@
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
+using Api_budger.Models.output;
 using AutoMapper;
 
 namespace Api_budger.Mapper
@@ -17,6 +18,14 @@ namespace Api_budger.Mapper
             CreateMap<InputIncomCategory, IncomCategory>();
             CreateMap<InputRole, Role>();
             CreateMap<InputUser, User>();
+            
+            CreateMap<User, OutputUser>();
+            CreateMap<Role, OutputRole>();
+            CreateMap<Family, OutputFamily>();
+            CreateMap<Budger, OutputBudger>();
+            CreateMap<BudgerCategory, OutputBudgerCategory>();
+            CreateMap<Incom, OutputIncom>();
+            CreateMap<IncomCategory, OutputIncomCategory>();
         }
     }
 }
