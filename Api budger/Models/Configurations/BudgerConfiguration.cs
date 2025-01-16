@@ -11,6 +11,7 @@ namespace Api_budger.Models.Configurations
         {
             builder.ToTable("budger", "budgers");
             builder.HasKey(f => f.BudgerId);
+            builder.Property(f => f.BudgerId).HasColumnName("budger_id");
             builder.Property(f => f.BudgerName).HasColumnName("budger");
             builder.Property(f => f.Date).HasColumnName("date");
             builder.Property(f => f.UserId).HasColumnName("user_id");

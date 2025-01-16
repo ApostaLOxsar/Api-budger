@@ -12,7 +12,7 @@ namespace Api_budger.Models.Configurations
             builder.HasKey(f => f.RoleId);
             builder.Property(f => f.RoleName).HasColumnName("role");
             builder.Property(f => f.RoleRus).HasColumnName("role_rus");
-            builder.HasMany(f => f.Users).WithOne(u => u.Role).HasForeignKey(u => u.UserId);
+            builder.HasMany(f => f.Users).WithOne(u => u.Role).HasForeignKey(u => u.RoleId);
         }
     }
 }

@@ -26,7 +26,8 @@ namespace Api_budger.Migrations
                 {
                     b.Property<long>("BudgerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("budger_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("BudgerId"));
 
@@ -98,7 +99,11 @@ namespace Api_budger.Migrations
             modelBuilder.Entity("Api_budger.Models.budgers.Incom", b =>
                 {
                     b.Property<long>("IncomId")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("incom_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IncomId"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("text")
@@ -121,6 +126,10 @@ namespace Api_budger.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("IncomId");
+
+                    b.HasIndex("IncomeCategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("incoms", "budgers");
                 });
@@ -148,7 +157,7 @@ namespace Api_budger.Migrations
                     b.Property<long>("IncomCategoryHasFamilyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("incom_category_id");
+                        .HasColumnName("incom_category_has_family_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IncomCategoryHasFamilyId"));
 
@@ -157,7 +166,8 @@ namespace Api_budger.Migrations
                         .HasColumnName("family_id");
 
                     b.Property<long>("IncomCategoryId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("incom_category_id");
 
                     b.HasKey("IncomCategoryHasFamilyId");
 
@@ -189,8 +199,11 @@ namespace Api_budger.Migrations
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategoryHasFamily", b =>
                 {
                     b.Property<long>("BudgerCategoryHasFamilyId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("budger_category_has_family_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("BudgerCategoryHasFamilyId"));
 
                     b.Property<long>("BudgerCategoryId")
                         .HasColumnType("bigint")
@@ -203,6 +216,8 @@ namespace Api_budger.Migrations
                     b.HasKey("BudgerCategoryHasFamilyId");
 
                     b.HasIndex("BudgerCategoryId");
+
+                    b.HasIndex("FamilyId");
 
                     b.ToTable("budger_category_has_family", "budgers");
                 });
@@ -298,13 +313,13 @@ namespace Api_budger.Migrations
                 {
                     b.HasOne("Api_budger.Models.budgers.IncomCategory", "IncomeCategory")
                         .WithMany("Incoms")
-                        .HasForeignKey("IncomId")
+                        .HasForeignKey("IncomeCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.clients.User", "User")
                         .WithMany("Incoms")
-                        .HasForeignKey("IncomId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -334,15 +349,15 @@ namespace Api_budger.Migrations
 
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategoryHasFamily", b =>
                 {
-                    b.HasOne("Api_budger.Models.clients.Family", "Family")
-                        .WithMany("BudgerCategoryHasFamilies")
-                        .HasForeignKey("BudgerCategoryHasFamilyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Api_budger.Models.budgers.budgers.BudgerCategory", "BudgerCategory")
                         .WithMany("BudgerCategoryHasFamilies")
                         .HasForeignKey("BudgerCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api_budger.Models.clients.Family", "Family")
+                        .WithMany("BudgerCategoryHasFamilies")
+                        .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

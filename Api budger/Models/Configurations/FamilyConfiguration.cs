@@ -12,9 +12,9 @@ namespace Api_budger.Models.Configurations
             builder.HasKey(f => f.FamilyId);
             builder.Property(f => f.FamilyId).HasColumnName("family_id");
             builder.Property(f => f.Name).HasColumnName("famili");
-            builder.HasMany(f => f.Users).WithOne(u => u.Family).HasForeignKey(u => u.UserId);
-            builder.HasMany(f => f.BudgerCategoryHasFamilies).WithOne(u => u.Family).HasForeignKey(u => u.BudgerCategoryHasFamilyId);
-            builder.HasMany(f => f.IncomeCategoryHasFamilies).WithOne(u => u.Family).HasForeignKey(u => u.IncomCategoryHasFamilyId);
+            builder.HasMany(f => f.Users).WithOne(u => u.Family).HasForeignKey(u => u.FamilyId);
+            builder.HasMany(f => f.BudgerCategoryHasFamilies).WithOne(u => u.Family).HasForeignKey(u => u.FamilyId);
+            builder.HasMany(f => f.IncomeCategoryHasFamilies).WithOne(u => u.Family).HasForeignKey(u => u.FamilyId);
         }
     }
 }

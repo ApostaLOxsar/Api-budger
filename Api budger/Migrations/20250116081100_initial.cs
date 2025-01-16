@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api_budger.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -108,7 +108,8 @@ namespace Api_budger.Migrations
                 schema: "budgers",
                 columns: table => new
                 {
-                    budger_category_has_family_id = table.Column<long>(type: "bigint", nullable: false),
+                    budger_category_has_family_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     family_id = table.Column<long>(type: "bigint", nullable: false),
                     budger_category_id = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -123,8 +124,8 @@ namespace Api_budger.Migrations
                         principalColumn: "budger_categoriy_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_budger_category_has_family_families_budger_category_has_fam~",
-                        column: x => x.budger_category_has_family_id,
+                        name: "FK_budger_category_has_family_families_family_id",
+                        column: x => x.family_id,
                         principalSchema: "clients",
                         principalTable: "families",
                         principalColumn: "family_id",
@@ -136,14 +137,14 @@ namespace Api_budger.Migrations
                 schema: "budgers",
                 columns: table => new
                 {
-                    incom_category_id = table.Column<long>(type: "bigint", nullable: false)
+                    incom_category_has_family_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     family_id = table.Column<long>(type: "bigint", nullable: false),
-                    IncomCategoryId = table.Column<long>(type: "bigint", nullable: false)
+                    incom_category_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_incom_category_has_family", x => x.incom_category_id);
+                    table.PrimaryKey("PK_incom_category_has_family", x => x.incom_category_has_family_id);
                     table.ForeignKey(
                         name: "FK_incom_category_has_family_families_family_id",
                         column: x => x.family_id,
@@ -152,8 +153,8 @@ namespace Api_budger.Migrations
                         principalColumn: "family_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_incom_category_has_family_incom_categories_IncomCategoryId",
-                        column: x => x.IncomCategoryId,
+                        name: "FK_incom_category_has_family_incom_categories_incom_category_id",
+                        column: x => x.incom_category_id,
                         principalSchema: "budgers",
                         principalTable: "incom_categories",
                         principalColumn: "incom_category_id",
@@ -195,7 +196,7 @@ namespace Api_budger.Migrations
                 schema: "budgers",
                 columns: table => new
                 {
-                    BudgerId = table.Column<long>(type: "bigint", nullable: false)
+                    budger_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
@@ -205,7 +206,7 @@ namespace Api_budger.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_budger", x => x.BudgerId);
+                    table.PrimaryKey("PK_budger", x => x.budger_id);
                     table.ForeignKey(
                         name: "FK_budger_budger_categories_budger_category_id",
                         column: x => x.budger_category_id,
@@ -227,7 +228,8 @@ namespace Api_budger.Migrations
                 schema: "budgers",
                 columns: table => new
                 {
-                    IncomId = table.Column<long>(type: "bigint", nullable: false),
+                    incom_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     incom_category_id = table.Column<long>(type: "bigint", nullable: false),
                     incom = table.Column<string>(type: "text", nullable: true),
@@ -236,17 +238,17 @@ namespace Api_budger.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_incoms", x => x.IncomId);
+                    table.PrimaryKey("PK_incoms", x => x.incom_id);
                     table.ForeignKey(
-                        name: "FK_incoms_incom_categories_IncomId",
-                        column: x => x.IncomId,
+                        name: "FK_incoms_incom_categories_incom_category_id",
+                        column: x => x.incom_category_id,
                         principalSchema: "budgers",
                         principalTable: "incom_categories",
                         principalColumn: "incom_category_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_incoms_users_IncomId",
-                        column: x => x.IncomId,
+                        name: "FK_incoms_users_user_id",
+                        column: x => x.user_id,
                         principalSchema: "clients",
                         principalTable: "users",
                         principalColumn: "UserId",
@@ -272,16 +274,34 @@ namespace Api_budger.Migrations
                 column: "budger_category_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_budger_category_has_family_family_id",
+                schema: "budgers",
+                table: "budger_category_has_family",
+                column: "family_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_incom_category_has_family_family_id",
                 schema: "budgers",
                 table: "incom_category_has_family",
                 column: "family_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_incom_category_has_family_IncomCategoryId",
+                name: "IX_incom_category_has_family_incom_category_id",
                 schema: "budgers",
                 table: "incom_category_has_family",
-                column: "IncomCategoryId");
+                column: "incom_category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_incoms_incom_category_id",
+                schema: "budgers",
+                table: "incoms",
+                column: "incom_category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_incoms_user_id",
+                schema: "budgers",
+                table: "incoms",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_users_family_id",
