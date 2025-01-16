@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api_budger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250116081100_initial")]
+    [Migration("20250116082604_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -183,18 +183,18 @@ namespace Api_budger.Migrations
 
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategory", b =>
                 {
-                    b.Property<long>("BudgerCategorieId")
+                    b.Property<long>("BudgerCategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("budger_categoriy_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("BudgerCategorieId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("BudgerCategoryId"));
 
                     b.Property<string>("BudgerCategoryName")
                         .HasColumnType("text")
                         .HasColumnName("budger_categoriy");
 
-                    b.HasKey("BudgerCategorieId");
+                    b.HasKey("BudgerCategoryId");
 
                     b.ToTable("budger_categories", "budgers");
                 });

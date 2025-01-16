@@ -26,7 +26,7 @@ namespace Api_budger.Repositories.ClientRepositoty
         public async Task<BudgerCategory> AddBudgerCategoryInFamilyAsyns(BudgerCategory inputBudgerCategory)
         {
             var category = inputBudgerCategory;
-            _context.BudgerCategories.Add(category);
+            _context.BudgerCategorys.Add(category);
             await _context.SaveChangesAsync();
             return category;
         }
@@ -42,7 +42,7 @@ namespace Api_budger.Repositories.ClientRepositoty
         public async Task<IncomCategory> AddIncomCategoryInFamilyAsyns(IncomCategory inputIncomCategory)
         {
             var category = inputIncomCategory;
-            _context.IncomCategories.Add(category);
+            _context.IncomCategorys.Add(category);
             await _context.SaveChangesAsync();
             return category;
         }
@@ -59,7 +59,21 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<BudgerCategory?> CorrectBudgerCategoryFromUserByIdAsyns(long id, long userId, BudgerCategory inputBudgerCategory)
         {
-            var category = await _context.BudgerCategories.FirstOrDefaultAsync(c => c.BudgerCategorieId == id && c.User == userId);
+            //var category = await _context.BudgerCategorys.FirstOrDefaultAsync(c => c.BudgerCategoryId == id && c.User == userId);
+            var category = await _context.BudgerCategorys
+                .Join(_context.BudgerCategoryHasFamilies,
+                      bc => bc.BudgerCategoryId,
+                      bchf => bchf.BudgerCategoryId,
+                      (bc, bchf) => new { bc, bchf })
+                .Join(_context.Famili,
+                      combined => combined.bchf.FamiliId,
+                      famili => famili.FamiliId,
+                      (combined, famili) => new { combined.bc, famili })
+                .Where(x => x.bc.BudgerCategoryId == id && x.famili.UserId == userId)
+                .Select(x => x.bc)
+                .FirstOrDefaultAsync();
+
+
             if (category == null) throw new KeyNotFoundException("BudgerCategory not found");
 
             _context.Entry(category).CurrentValues.SetValues(inputBudgerCategory);
@@ -79,7 +93,7 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<IncomCategory?> CorrectIncomCategoryFromUserByIdAsyns(long Id, long userId, IncomCategory inputIncomCategory)
         {
-            var category = await _context.IncomCategories.FirstOrDefaultAsync(c => c.IncomCategoryId == Id && c.FamilyId == userId);
+            var category = await _context.IncomCategorys.FirstOrDefaultAsync(c => c.IncomCategoryId == Id && c.FamilyId == userId);
             if (category == null) throw new KeyNotFoundException("IncomCategory not found");
 
             _context.Entry(category).CurrentValues.SetValues(inputIncomCategory);
@@ -99,10 +113,10 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId, long familyId)
         {
-            var category = await _context.BudgerCategories.FirstOrDefaultAsync(c => c.BudgerCategorieId == budgerCategoryId && c.FamilyId == familyId);
+            var category = await _context.BudgerCategorys.FirstOrDefaultAsync(c => c.BudgerCategoryId == budgerCategoryId && c.FamilyId == familyId);
             if (category == null) throw new KeyNotFoundException("Budger category not found");
 
-            _context.BudgerCategories.Remove(category);
+            _context.BudgerCategorys.Remove(category);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -119,10 +133,10 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<bool> DeleteIncomCategoryFromFamilyByIdAsyns(long incomCategoryId, long familyId)
         {
-            var category = await _context.IncomCategories.FirstOrDefaultAsync(c => c.IncomCategoryId == incomCategoryId && c.FamilyId == familyId);
+            var category = await _context.IncomCategorys.FirstOrDefaultAsync(c => c.IncomCategoryId == incomCategoryId && c.FamilyId == familyId);
             if (category == null) throw new KeyNotFoundException("Incom category category not found");
 
-            _context.IncomCategories.Remove(category);
+            _context.IncomCategorys.Remove(category);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -139,7 +153,7 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<IEnumerable<BudgerCategory>?> GetBudgerCategoryByFamilyIdAsyns(long familyId)
         {
-            return await _context.BudgerCategories.Where(c => c.FamilyId == familyId).ToListAsync();
+            return await _context.BudgerCategorys.Where(c => c.FamilyId == familyId).ToListAsync();
         }
 
         public async Task<IEnumerable<Incom>?> GetIncomByFamilyIdAsyns(long familyId)
@@ -154,7 +168,7 @@ namespace Api_budger.Repositories.ClientRepositoty
 
         public async Task<IEnumerable<IncomCategory>?> GetIncomCategoryByFamilyIdAsyns(long familyId)
         {
-            return await _context.IncomCategories.Where(c => c.FamilyId == familyId).ToListAsync();
+            return await _context.IncomCategorys.Where(c => c.FamilyId == familyId).ToListAsync();
         }
     }*/
 }
