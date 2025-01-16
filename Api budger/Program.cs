@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBudgerRepository, BudgerRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IBudgerService, BudgerService>();
 

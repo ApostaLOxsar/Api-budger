@@ -24,9 +24,10 @@ namespace Api_budger.Services
             throw new NotImplementedException();
         }
 
-        public Task<Role> AddRoleAsyns(InputRole inputRole)
+        public async Task<Role> AddRoleAsyns(InputRole inputRole)
         {
-            throw new NotImplementedException();
+            var role = _mapper.Map<Role>(inputRole);
+            return await _userRepository.AddRoleAsyns(role);
         }
 
         public Task<User> AddUserAsyns(InputUser inputUser)
@@ -79,9 +80,11 @@ namespace Api_budger.Services
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Role>> GetRolesAsync()
+        public async Task<ICollection<Role>> GetRolesAsync()
         {
-            throw new NotImplementedException();
+            var roles = await _userRepository.GetAllRoleAsync();
+            if (roles == null) throw new Exception("Not founs role");
+            return roles;
         }
 
         public Task<User> GetUserByIdAsync(long Id)
