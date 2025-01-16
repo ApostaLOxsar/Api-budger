@@ -14,7 +14,7 @@ namespace Api_budger.Repositories.ClientRepositoty
             _context = context;
         }
 
-        public async Task<ICollection<User>?> GetAllUsersAsync()
+        public async Task<List<User>?> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();
         }
@@ -42,7 +42,7 @@ namespace Api_budger.Repositories.ClientRepositoty
             return true;
         }
 
-        public async Task<ICollection<Role>?> GetAllRoleAsync()
+        public async Task<List<Role>?> GetAllRoleAsync()
         {
             return await _context.Roles.ToListAsync();
         }
@@ -70,7 +70,7 @@ namespace Api_budger.Repositories.ClientRepositoty
             return true;
         }
 
-        public async Task<ICollection<Family>?> GetAllFamilyAsync()
+        public async Task<List<Family>?> GetAllFamilyAsync()
         {
             return await _context.Families.ToListAsync();
         }

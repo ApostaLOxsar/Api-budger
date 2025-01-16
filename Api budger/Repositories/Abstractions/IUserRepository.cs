@@ -8,7 +8,7 @@ namespace Api_budger.Repositories.Abstractions
         /// Возвращает всех пользователей в БД
         /// </summary>
         /// <returns>Список пользователей</returns>
-        Task<ICollection<User>?> GetAllUsersAsync();
+        Task<List<User>?> GetAllUsersAsync();
         /// <summary>
         /// Добавляет пользователя в БД
         /// </summary>
@@ -31,7 +31,7 @@ namespace Api_budger.Repositories.Abstractions
         /// Возвращает все роли в БД
         /// </summary>
         /// <returns>Список ролей</returns>
-        Task<ICollection<Role>?> GetAllRoleAsync();
+        Task<List<Role>?> GetAllRoleAsync();
         /// <summary>
         /// Возвращает роль по Id
         /// </summary>
@@ -54,7 +54,7 @@ namespace Api_budger.Repositories.Abstractions
         /// Возвращает все семьи в БД
         /// </summary>
         /// <returns>Список семей в БД</returns>
-        Task<ICollection<Family>?> GetAllFamilyAsync();
+        Task<List<Family>?> GetAllFamilyAsync();
         /// <summary>
         /// Семья по Id
         /// </summary>
