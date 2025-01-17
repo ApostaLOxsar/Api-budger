@@ -151,8 +151,6 @@ namespace Api_budger.Repositories.ClientRepositoty
             inputFamily.FamilyId = FamilyId;
             _context.Entry(family).CurrentValues.SetValues(inputFamily);
 
-            //if (inputFamily.Name is not null) family.Name = inputFamily.Name;
-
             await _context.SaveChangesAsync();
             return family;
         }
