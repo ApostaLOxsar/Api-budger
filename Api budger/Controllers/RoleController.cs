@@ -39,7 +39,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("GetRole{id}")]
+        [Route("GetRole/{id}")]
         [ProducesResponseType(200, Type = typeof(OutputRole))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]

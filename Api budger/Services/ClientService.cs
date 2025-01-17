@@ -4,6 +4,7 @@ using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Services.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Api_budger.Services
 {
@@ -38,69 +39,85 @@ namespace Api_budger.Services
             return await _userRepository.AddUserAsyns(user);
         }
 
-        public Task<Family> CorrectFamilyAsyns(long Id, InputFamily inputFamily)
+        public async Task<Family> CorrectFamilyAsyns(long id, InputFamily inputFamily)
         {
-            throw new NotImplementedException();
+            var famili = _mapper.Map<Family>(inputFamily);
+            return await _userRepository.CorrectFamilyByIdAsyns(id, famili);
         }
 
-        public Task<Role> CorrectRoleAsyns(long Id, InputRole inputRole)
+        public async Task<Role> CorrectRoleAsyns(long id, InputRole inputRole)
         {
-            throw new NotImplementedException();
+            var role = _mapper.Map<Role>(inputRole);
+            return await _userRepository.CorrectRoleByIdAsyns(id, role);
         }
 
-        public Task<User> CorrectUserAsyns(long Id, InputUser inputUser)
+        public async Task<User> CorrectUserAsyns(long id, InputUser inputUser)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<User>(inputUser);
+            return await _userRepository.CorrectUserByIdAsyns(id, user);
         }
 
-        public Task<bool> DeleteFamilyByIdAsyns(long id)
+        public async Task<bool> DeleteFamilyByIdAsyns(long id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.DeleteFamilyByIdAsyns(id);
         }
 
-        public Task<bool> DeleteRoleByIdAsyns(long id)
+        public async Task<bool> DeleteRoleByIdAsyns(long id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.DeleteRoleByIdAsyns(id);
         }
 
-        public Task<bool> DeleteUserByIdAsyns(long id)
+        public async Task<bool> DeleteUserByIdAsyns(long id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.DeleteUserByIdAsync(id);
         }
 
         public async Task<ICollection<Family>> GetFamiliesAsync()
         {
             var families = await _userRepository.GetAllFamilyAsync();
-            if (families == null) throw new Exception("Users not found");
+            if (families is null) throw new Exception("Users not found");
             return families;
         }
 
-        public Task<Family> GetFamilyByIdAsync(long Id)
+        public async Task<Family> GetFamilyByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var family = await _userRepository.GetFamilyByIdAsync(id);
+            if (family is null) throw new Exception("Family not found");
+            return family;
         }
 
-        public Task<Role> GetRoleByIdAsync(long Id)
+        public async Task<Family> GetFamilyByUserIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var family = await _userRepository.GetFamilyByUserIdAsync(id);
+            if (family is null) throw new Exception("Family not found");
+            return family;
+        }
+
+        public async Task<Role> GetRoleByIdAsync(long id)
+        {
+            var role = await _userRepository.GetRoleByIdAsync(id);
+            if (role is null) throw new Exception("Role not found");
+            return role;
         }
 
         public async Task<ICollection<Role>> GetRolesAsync()
         {
             var roles = await _userRepository.GetAllRoleAsync();
-            if (roles == null) throw new Exception("Not founs role");
+            if (roles is null) throw new Exception("Not founs role");
             return roles;
         }
 
-        public Task<User> GetUserByIdAsync(long Id)
+        public async Task<User> GetUserByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if (user is null) throw new Exception("Not founs role");
+            return user;
         }
 
         public async Task<ICollection<User>> GetUsersAsync()
         {
             var user = await _userRepository.GetAllUsersAsync();
-            if (user == null) throw new Exception("Users not found");
+            if (user is null) throw new Exception("Users not found");
             return user;
         }
     }

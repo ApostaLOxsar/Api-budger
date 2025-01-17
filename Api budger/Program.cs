@@ -1,6 +1,7 @@
 using Api_budger;
 using Api_budger.Mapper;
 using Api_budger.Repositories.Abstractions;
+using Api_budger.Repositories.BudgerRepository;
 using Api_budger.Repositories.ClientRepositoty;
 using Api_budger.Services;
 using Api_budger.Services.Abstractions;

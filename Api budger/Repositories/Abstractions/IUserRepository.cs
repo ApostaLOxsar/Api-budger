@@ -62,6 +62,12 @@ namespace Api_budger.Repositories.Abstractions
         /// <returns>Данные семьи</returns>
         Task<Family?> GetFamilyByIdAsync(long familyId);
         /// <summary>
+        /// Семья по Id пользователя
+        /// </summary>
+        /// <param name="userId">Id семьи</param>
+        /// <returns>Данные семьи</returns>
+        Task<Family?> GetFamilyByUserIdAsync(long userId);
+        /// <summary>
         /// Добавляет семью
         /// </summary>
         /// <param name="inputFamily">Данные семьи</param>
@@ -86,14 +92,14 @@ namespace Api_budger.Repositories.Abstractions
         /// <param name="RoleId">Id роли</param>
         /// <param name="inputRole">Новые данные</param>
         /// <returns>Измененная роль</returns>
-        Task<Role> CorrectRoleByIdAsyns(long RoleId, User inputRole);
+        Task<Role> CorrectRoleByIdAsyns(long RoleId, Role inputRole);
         /// <summary>
         /// Изменяет семью по Id
         /// </summary>
         /// <param name="FamilyId">Id семьи</param>
         /// <param name="inputFamily">Новые данные</param>
         /// <returns>Измененная семья</returns>
-        Task<Family> CorrectFamilyByIdAsyns(long FamilyId, User inputFamily);
+        Task<Family> CorrectFamilyByIdAsyns(long FamilyId, Family inputFamily);
 
     }
 }

@@ -38,7 +38,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("GetFamily{id}")]
+        [Route("GetFamily/{id}")]
         [ProducesResponseType(200, Type = typeof(OutputFamily))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
@@ -47,6 +47,20 @@ namespace Api_budger.Controllers
         public async Task<OutputFamily> GetFamilyById(long id)
         {
             var family = await _clientService.GetFamilyByIdAsync(id);
+            var result = _mapper.Map<OutputFamily>(family);
+            return result;
+        }
+
+        [HttpGet]
+        [Route("GetFamilyByUser/{id}")]
+        [ProducesResponseType(200, Type = typeof(OutputFamily))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<OutputFamily> GetFamilyByUserId(long id)
+        {
+            var family = await _clientService.GetFamilyByUserIdAsync(id);
             var result = _mapper.Map<OutputFamily>(family);
             return result;
         }

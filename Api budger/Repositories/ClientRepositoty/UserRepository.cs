@@ -1,4 +1,6 @@
-﻿using Api_budger.Models.clients;
+﻿using System.Text.Json;
+using Api_budger.Models.clients;
+using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +25,10 @@ namespace Api_budger.Repositories.ClientRepositoty
         {
             var result = await _context.Users.AddAsync(inputUser);
             await _context.SaveChangesAsync();
-            return result.Entity;
+
+            var user = await _context.Users.Include(u => u.Role).Include(f => f.Family).FirstOrDefaultAsync();
+            if (user is null) throw new Exception("User incorrect save");
+            return user;
         }
 
         public async Task<User?> GetUserByIdAsync(long UserId)
@@ -80,6 +85,19 @@ namespace Api_budger.Repositories.ClientRepositoty
             return await _context.Families.FindAsync(familyId);
         }
 
+        public async Task<Family?> GetFamilyByUserIdAsync(long userId)
+        {
+            var famili = await _context.Families
+                 .Join(_context.Users,
+                       f => f.FamilyId,
+                       u => u.FamilyId,
+                       (f, u) => new { f, u })
+                 .Where(x => x.u.UserId == userId)
+                 .Select(x => x.f)
+                 .FirstOrDefaultAsync();
+            return famili;
+        }
+
         public async Task<Family> AddFamilyAsyns(Family inputFamily)
         {
             var result = await _context.Families.AddAsync(inputFamily);
@@ -104,31 +122,36 @@ namespace Api_budger.Repositories.ClientRepositoty
             if (user == null)
                 throw new KeyNotFoundException("User not found");
 
+            inputUser.UserId = user.UserId;
             _context.Entry(user).CurrentValues.SetValues(inputUser);
 
             await _context.SaveChangesAsync();
             return user;
         }
 
-        public async Task<Role> CorrectRoleByIdAsyns(long RoleId, User inputRole)
+        public async Task<Role> CorrectRoleByIdAsyns(long RoleId, Role inputRole)
         {
             var role = await _context.Roles.FindAsync(RoleId);
             if (role == null)
                 throw new KeyNotFoundException("Role not found");
 
+            inputRole.RoleId = role.RoleId;
             _context.Entry(role).CurrentValues.SetValues(inputRole);
 
             await _context.SaveChangesAsync();
             return role;
         }
 
-        public async Task<Family> CorrectFamilyByIdAsyns(long FamilyId, User inputFamily)
+        public async Task<Family> CorrectFamilyByIdAsyns(long FamilyId, Family inputFamily)
         {
             var family = await _context.Families.FindAsync(FamilyId);
             if (family == null)
                 throw new KeyNotFoundException("Family not found");
 
+            inputFamily.FamilyId = FamilyId;
             _context.Entry(family).CurrentValues.SetValues(inputFamily);
+
+            //if (inputFamily.Name is not null) family.Name = inputFamily.Name;
 
             await _context.SaveChangesAsync();
             return family;

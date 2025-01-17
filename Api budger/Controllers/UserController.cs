@@ -37,7 +37,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("GetUser{id}")]
+        [Route("GetUser/{id}")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]

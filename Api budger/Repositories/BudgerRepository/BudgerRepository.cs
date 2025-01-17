@@ -5,7 +5,7 @@ using Api_budger.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Api_budger.Models.clients;
 
-namespace Api_budger.Repositories.ClientRepositoty
+namespace Api_budger.Repositories.BudgerRepository
 {
     public class BudgerRepository : IBudgerRepository
     {
@@ -207,7 +207,7 @@ namespace Api_budger.Repositories.ClientRepositoty
                     combined => combined.bchf.FamilyId,
                     famili => famili.FamilyId,
                     (combined, famili) => new { combined.bc, famili })
-                .Where(x =>x.famili.FamilyId == familyId)
+                .Where(x => x.famili.FamilyId == familyId)
                 .Select(x => x.bc)
                 .ToListAsync();
 
