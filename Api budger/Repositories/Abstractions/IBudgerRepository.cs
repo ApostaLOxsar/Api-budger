@@ -6,10 +6,10 @@ namespace Api_budger.Repositories.Abstractions
 {
     public interface IBudgerRepository
     {
-        public Task<Budger> AddBudgerAsyns(Budger inputBudger);
-        public Task<BudgerCategory> AddBudgerCategoryInFamilyAsyns(BudgerCategory inputBudger);
-        public Task<Incom> AddIncomAsyns(Incom inputIncom);
-        public Task<IncomCategory> AddIncomCategoryInFamilyAsyns(IncomCategory inputIncomCategory);
+        public Task<ICollection<Budger>> AddBudgersAsyns(ICollection<Budger> inputBudger);
+        public Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<BudgerCategory> inputBudger);
+        public Task<ICollection<Incom>> AddIncomsAsyns(ICollection<Incom> inputIncom);
+        public Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<IncomCategory> inputIncomCategory);
         public Task<Budger?> CorrectBudgerAsyns(long Id, Budger inputBudger);
         public Task<BudgerCategory?> CorrectBudgerCategoryFromUserByIdAsyns(long id, long userId, BudgerCategory inputBudgerCategory);
         public Task<Incom?> CorrectIncomAsyns(long Id, Incom inputIncom);

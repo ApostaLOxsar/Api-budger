@@ -16,34 +16,34 @@ namespace Api_budger.Repositories.BudgerRepository
             _context = context;
         }
 
-        public async Task<Budger> AddBudgerAsyns(Budger inputBudger)
+        public async Task<ICollection<Budger>> AddBudgersAsyns(ICollection<Budger> inputBudger)
         {
             var budger = inputBudger;
-            _context.Budgers.Add(budger);
+            _context.Budgers.AddRange(budger);
             await _context.SaveChangesAsync();
             return budger;
         }
 
-        public async Task<BudgerCategory> AddBudgerCategoryInFamilyAsyns(BudgerCategory inputBudgerCategory)
+        public async Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<BudgerCategory> inputBudgerCategory)
         {
             var category = inputBudgerCategory;
-            _context.BudgerCategories.Add(category);
+            _context.BudgerCategories.AddRange(category);
             await _context.SaveChangesAsync();
             return category;
         }
 
-        public async Task<Incom> AddIncomAsyns(Incom inputIncom)
+        public async Task<ICollection<Incom>> AddIncomsAsyns(ICollection<Incom> inputIncom)
         {
             var incom = inputIncom;
-            _context.Incoms.Add(incom);
+            _context.Incoms.AddRange(incom);
             await _context.SaveChangesAsync();
             return incom;
         }
 
-        public async Task<IncomCategory> AddIncomCategoryInFamilyAsyns(IncomCategory inputIncomCategory)
+        public async Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<IncomCategory> inputIncomCategory)
         {
             var category = inputIncomCategory;
-            _context.IncomCategories.Add(category);
+            _context.IncomCategories.AddRange(category);
             await _context.SaveChangesAsync();
             return category;
         }

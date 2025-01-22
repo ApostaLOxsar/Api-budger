@@ -61,7 +61,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<OutputBudger> AddBudger(InputBudger inputBudger)
         {
-            var newBudger = await _budgerService.AddBudgerAsyns(inputBudger);
+            var newBudger = await _budgerService.AddBudgersAsyns(inputBudger);
             var resalt = _mapper.Map<OutputBudger>(newBudger);
             return resalt;
         }

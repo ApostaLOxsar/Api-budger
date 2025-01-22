@@ -24,7 +24,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputIncom">входные даннык</param>
         /// <returns>Новый доход</returns>
-        public Task<Incom> AddIncomAsyns(InputIncom inputIncom);
+        public Task<ICollection<Incom>> AddIncomsAsyns(ICollection<InputIncom> inputIncom);
         /// <summary>
         /// Удаляет доход по Id
         /// </summary>
@@ -53,7 +53,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputIncomCategory">Данные категории доходов</param>
         /// <returns>Новая категория доходов</returns>
-        public Task<IncomCategory> AddIncomCategoryInFamilyAsyns(InputIncomCategory inputIncomCategory);
+        public Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<InputIncomCategory> inputIncomCategory);
         /// <summary>
         /// Удаляет категорию из семьи по Id
         /// </summary>
@@ -89,7 +89,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputBudger">входные данные</param>
         /// <returns>Новый расход</returns>
-        public Task<Budger> AddBudgerAsyns(InputBudger inputBudger);
+        public Task<ICollection<Budger>> AddBudgersAsyns(ICollection<InputBudger> inputBudger);
         /// <summary>
         /// Удаляет расход по Id
         /// </summary>
@@ -117,7 +117,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputBudger">Входные данные</param>
         /// <returns>Новая категория расходов</returns>
-        public Task<BudgerCategory> AddBudgerCategoryInFamilyAsyns(InputBudgerCategory inputBudger);
+        public Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<InputBudgerCategory> inputBudger);
         /// <summary>
         /// Удаляет категорию расходов из семьи
         /// </summary>

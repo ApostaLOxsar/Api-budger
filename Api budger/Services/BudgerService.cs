@@ -13,102 +13,134 @@ namespace Api_budger.Services
         private readonly IUserRepository _userRepository;
         private readonly IBudgerRepository _budgerRepository;
         private readonly IMapper _mapper;
-        public BudgerService(ILogger<BudgerService> logger, IUserRepository userRepository, IBudgerRepository budgerRepository, IMapper mapper) 
-        { 
+        public BudgerService(ILogger<BudgerService> logger, IUserRepository userRepository, IBudgerRepository budgerRepository, IMapper mapper)
+        {
             _logger = logger;
             _userRepository = userRepository;
             _budgerRepository = budgerRepository;
             _mapper = mapper;
         }
 
-        public Task<Budger> AddBudgerAsyns(InputBudger inputBudger)
+        public async Task<ICollection<Budger>> AddBudgersAsyns(ICollection<InputBudger> inputBudger)
         {
-            throw new NotImplementedException();
+            var budger = _mapper.Map<ICollection<Budger>>(inputBudger);
+            var result = await _budgerRepository.AddBudgersAsyns(budger);
+            return result;
         }
 
-        public Task<BudgerCategory> AddBudgerCategoryInFamilyAsyns(InputBudgerCategory inputBudger)
+        public async Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<InputBudgerCategory> inputBudger)
         {
-            throw new NotImplementedException();
+            var budgerCategoryList = _mapper.Map<ICollection<BudgerCategory>>(inputBudger);
+            var result = await _budgerRepository.AddBudgerCategoryInFamilyAsyns(budgerCategoryList);
+            return result;
         }
 
-        public Task<Incom> AddIncomAsyns(InputIncom inputIncom)
+        public Task<ICollection<Incom>> AddIncomAsyns(ICollection<InputIncom> inputIncom)
         {
-            throw new NotImplementedException();
+            var incom = _mapper.Map<ICollection<Incom>>(inputIncom);
+            var result = _budgerRepository.AddIncomsAsyns(incom);
+            return result;
         }
 
-        public Task<IncomCategory> AddIncomCategoryInFamilyAsyns(InputIncomCategory inputIncomCategory)
+        public async Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<InputIncomCategory> inputIncomCategory)
         {
-            throw new NotImplementedException();
+            var incomCategoryList = _mapper.Map<ICollection<IncomCategory>>(inputIncomCategory);
+            var result = await _budgerRepository.AddIncomCategoryInFamilyAsyns(incomCategoryList);
+            return result;
         }
 
-        public Task<Budger> CorrectBudgerAsyns(long Id, InputBudger inputBudger)
+        public async Task<Budger> CorrectBudgerAsyns(long id, InputBudger inputBudger)
         {
-            throw new NotImplementedException();
+            var newBudger = _mapper.Map<Budger>(inputBudger);
+            var result = await _budgerRepository.CorrectBudgerAsyns(id, newBudger);
+            if (result is null) throw new Exception("New budger incorrect");
+            return result;
         }
 
-        public Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, long userId, InputBudgerCategory inputBudgerCategory)
+        public async Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, long userId, InputBudgerCategory inputBudgerCategory)
         {
-            throw new NotImplementedException();
+            var budgerCategory = _mapper.Map<BudgerCategory>(inputBudgerCategory);
+            var result = await _budgerRepository.CorrectBudgerCategoryFromUserByIdAsyns(id, userId, budgerCategory);
+            if (result is null) throw new Exception("New budger category incorrect");
+            return result;
         }
 
-        public Task<Incom> CorrectIncomAsyns(long Id, InputIncom inputIncom)
+        public async Task<Incom> CorrectIncomAsyns(long id, InputIncom inputIncom)
         {
-            throw new NotImplementedException();
+            var incom = _mapper.Map<Incom>(inputIncom);
+            var result = await _budgerRepository.CorrectIncomAsyns(id, incom);
+            if (result is null) throw new Exception("New incom incorrect");
+            return result;
         }
 
-        public Task<IncomCategory> CorrectIncomCategoryFromUserByIdAsyns(long Id, long userId, InputIncomCategory inputIncomCategory)
+        public async Task<IncomCategory> CorrectIncomCategoryFromUserByIdAsyns(long id, long userId, InputIncomCategory inputIncomCategory)
         {
-            throw new NotImplementedException();
+            var newIncomCategory = _mapper.Map<IncomCategory>(inputIncomCategory);
+            var result = await _budgerRepository.CorrectIncomCategoryFromUserByIdAsyns(id, userId, newIncomCategory);
+            if (result is null) throw new Exception("New incom category incorrect");
+            return result;
         }
 
-        public Task<bool> DeleteBudgerByIdAsyns(long budgerId)
+        public async Task<bool> DeleteBudgerByIdAsyns(long budgerId)
         {
-            throw new NotImplementedException();
+            return await _budgerRepository.DeleteBudgerByIdAsyns(budgerId);
         }
 
-        public Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId, long familyId)
+        public async Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId, long familyId)
         {
-            throw new NotImplementedException();
+            return await _budgerRepository.DeleteBudgerCategoryFromFamilyByIdAsyns(budgerCategoryId, familyId);
         }
 
-        public Task<bool> DeleteIncomByIdAsyns(long incomId)
+        public async Task<bool> DeleteIncomByIdAsyns(long incomId)
         {
-            throw new NotImplementedException();
+            return await _budgerRepository.DeleteIncomByIdAsyns(incomId);
         }
 
-        public Task<bool> DeleteIncomCategoryFromFamilyByIdAsyns(long incomCategoryId, long familyId)
+        public async Task<bool> DeleteIncomCategoryFromFamilyByIdAsyns(long incomCategoryId, long familyId)
         {
-            throw new NotImplementedException();
+            return await _budgerRepository.DeleteIncomCategoryFromFamilyByIdAsyns(incomCategoryId, familyId);
         }
 
-        public Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns(long familyId)
         {
-            throw new NotImplementedException();
+            var result = await _budgerRepository.GetBudgerByFamilyIdAsyns(familyId);
+            if (result is null) throw new Exception("budger empty");
+            return result;
         }
 
-        public Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns(long useryId)
+        public async Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns(long useryId)
         {
-            throw new NotImplementedException();
+            var result = await _budgerRepository.GetBudgerByUserIdAsyns(useryId);
+            if (result is null) throw new Exception("budger empty");
+            return result;
         }
 
-        public Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyIdAsyns(long familyId)
         {
-            throw new NotImplementedException();
+            var result = await _budgerRepository.GetBudgerCategoryByFamilyIdAsyns(familyId);
+            if (result is null) throw new Exception("budger category empty");
+            return result;
         }
 
-        public Task<IEnumerable<Incom>> GetIncomByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<Incom>> GetIncomByFamilyIdAsyns(long familyId)
         {
-            throw new NotImplementedException();
+            var result = await _budgerRepository.GetIncomByFamilyIdAsyns(familyId);
+            if (result is null) throw new Exception("incom empty");
+            return result;
         }
 
-        public Task<IEnumerable<Incom>> GetIncomByUserIdAsyns(long useryId)
+        public async Task<IEnumerable<Incom>> GetIncomByUserIdAsyns(long useryId)
         {
-            throw new NotImplementedException();
+            var result = await _budgerRepository.GetIncomByUserIdAsyns(useryId);
+            if (result is null) throw new Exception("incom empty");
+            return result;
         }
 
-        public Task<IEnumerable<IncomCategory>> GetIncomCategoryByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<IncomCategory>> GetIncomCategoryByFamilyIdAsyns(long familyId)
         {
-            throw new NotImplementedException();
+            var result = await _budgerRepository.GetIncomCategoryByFamilyIdAsyns(familyId);
+            if (result is null) throw new Exception("incom category empty");
+            return result;
         }
     }
 }
