@@ -21,7 +21,6 @@ namespace Api_budger.Services
             _mapper = mapper;
         }
 
-
         public Task<Budger> AddBudgerAsyns(InputBudger inputBudger)
         {
             throw new NotImplementedException();

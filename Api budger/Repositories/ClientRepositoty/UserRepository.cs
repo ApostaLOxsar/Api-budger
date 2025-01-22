@@ -1,8 +1,5 @@
-﻿using System.Text.Json;
-using Api_budger.Models.clients;
-using Api_budger.Models.input;
+﻿using Api_budger.Models.clients;
 using Api_budger.Repositories.Abstractions;
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api_budger.Repositories.ClientRepositoty
@@ -26,14 +23,15 @@ namespace Api_budger.Repositories.ClientRepositoty
             var result = await _context.Users.AddAsync(inputUser);
             await _context.SaveChangesAsync();
 
-            var user = await _context.Users.Include(u => u.Role).Include(f => f.Family).FirstOrDefaultAsync();
+            var user = await _context.Users.Include(u => u.Role).Include(f => f.Family).FirstOrDefaultAsync(u => u.UserId == result.Entity.UserId);
             if (user is null) throw new Exception("User incorrect save");
             return user;
         }
 
         public async Task<User?> GetUserByIdAsync(long UserId)
         {
-            return await _context.Users.FindAsync(UserId);
+            return await _context.Users.Include(u => u.Role).Include(u => u.Family)
+                .FirstOrDefaultAsync(u => u.UserId == UserId);
         }
 
         public async Task<bool> DeleteUserByIdAsync(long UserId)

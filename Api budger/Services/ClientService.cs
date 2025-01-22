@@ -36,6 +36,13 @@ namespace Api_budger.Services
         public async Task<User> AddUserAsyns(InputUser inputUser)
         {
             var user = _mapper.Map<User>(inputUser);
+            
+            string familiName = user.Name + (string.IsNullOrEmpty(user.Soname) ? (" " + user.Soname) : "") + " famili";
+            if (user.FamilyId <= 0)
+            {
+                var famili = await _userRepository.AddFamilyAsyns(new Family { Name = familiName });
+                user.FamilyId = famili.FamilyId;
+            }
             return await _userRepository.AddUserAsyns(user);
         }
 

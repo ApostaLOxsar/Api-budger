@@ -7,6 +7,14 @@
         /// </summary>
         public long TelegramId { get; set; }
         /// <summary>
+        /// Имя пользователя
+        /// </summary>
+        public string? Name { get; set; }
+        /// <summary>
+        /// Фамилия пользователя
+        /// </summary>
+        public string? Soname { get; set; }
+        /// <summary>
         /// Ид семьи пользователя
         /// </summary>
         public long FamilyId { get; set; }
