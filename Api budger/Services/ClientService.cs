@@ -21,6 +21,8 @@ namespace Api_budger.Services
             _budgerRepository = budgerRepository;
             _mapper = mapper;
         }
+
+        #region public region
         public async Task<Family> AddFamilyAsyns(InputFamily inputFamily)
         {
             var famili = _mapper.Map<Family>(inputFamily);
@@ -38,11 +40,13 @@ namespace Api_budger.Services
             var user = _mapper.Map<User>(inputUser);
             
             string familiName = user.Name + (string.IsNullOrEmpty(user.Soname) ? (" " + user.Soname) : "") + " famili";
+            
             if (user.FamilyId <= 0)
             {
                 var famili = await _userRepository.AddFamilyAsyns(new Family { Name = familiName });
                 user.FamilyId = famili.FamilyId;
             }
+
             return await _userRepository.AddUserAsyns(user);
         }
 
@@ -127,5 +131,10 @@ namespace Api_budger.Services
             if (user is null) throw new Exception("Users not found");
             return user;
         }
+        #endregion
+
+        #region private
+
+        #endregion
     }
 }
