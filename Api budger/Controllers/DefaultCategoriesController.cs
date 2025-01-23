@@ -14,9 +14,9 @@ namespace Api_budger.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IBudgerService _budgerService;
-        private readonly ILogger _logger;
+        private readonly ILogger<DefaultCategoriesController> _logger;
 
-        public DefaultCategoriesController(IMapper mapper, IBudgerService budgerService, ILogger logger)
+        public DefaultCategoriesController(IMapper mapper, IBudgerService budgerService, ILogger<DefaultCategoriesController> logger)
         {
             _mapper = mapper;
             _budgerService = budgerService;
@@ -36,19 +36,6 @@ namespace Api_budger.Controllers
             return result;
         }
 
-        [HttpGet]
-        [Route("GetDefaultBudgerCategory")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<DefaultBudgerCategory>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<IEnumerable<DefaultBudgerCategory>> GetDefaultBudgerCategory()
-        {
-            var result = await _budgerService.GetDefaultBudgerCategory();
-            return result;
-        }
-
         [HttpPost]
         [Route("AddDefaultIncomCategory")]
         [ProducesResponseType(200, Type = typeof(bool))]
@@ -63,6 +50,31 @@ namespace Api_budger.Controllers
             return true;
         }
 
+        [HttpDelete]
+        [Route("DeleteDefaultIncomCategory")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<bool> DeleteDefaultIncomCategory(long id)
+        {
+            return await _budgerService.DeleteDefaultIncomCategoryAsyns(id);
+        }
+
+        [HttpGet]
+        [Route("GetDefaultBudgerCategory")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<DefaultBudgerCategory>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<IEnumerable<DefaultBudgerCategory>> GetDefaultBudgerCategory()
+        {
+            var result = await _budgerService.GetDefaultBudgerCategory();
+            return result;
+        }
+
         [HttpPost]
         [Route("AddDefaultBudgerCategory")]
         [ProducesResponseType(200, Type = typeof(bool))]
@@ -75,18 +87,6 @@ namespace Api_budger.Controllers
             var budgerCategories = _mapper.Map<IEnumerable<DefaultBudgerCategory>>(inputBudgerCategories);
             await _budgerService.AddDefaultBudgerCategory(budgerCategories);
             return true;
-        }
-
-        [HttpDelete]
-        [Route("DeleteDefaultIncomCategory")]
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<bool> DeleteDefaultIncomCategory(long id)
-        {
-            return await _budgerService.DeleteDefaultIncomCategoryAsyns(id);
         }
 
         [HttpDelete]
