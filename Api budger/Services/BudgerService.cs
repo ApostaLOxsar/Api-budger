@@ -35,7 +35,7 @@ namespace Api_budger.Services
             return result;
         }
 
-        public Task<ICollection<Incom>> AddIncomAsyns(ICollection<InputIncom> inputIncom)
+        public Task<ICollection<Incom>> AddIncomsAsyns(ICollection<InputIncom> inputIncom)
         {
             var incom = _mapper.Map<ICollection<Incom>>(inputIncom);
             var result = _budgerRepository.AddIncomsAsyns(incom);
@@ -141,6 +141,38 @@ namespace Api_budger.Services
             var result = await _budgerRepository.GetIncomCategoryByFamilyIdAsyns(familyId);
             if (result is null) throw new Exception("incom category empty");
             return result;
+        }
+
+        public async Task<IEnumerable<DefaultIncomeCategory>> GetDefaultIncomCategory()
+        {
+            var defaultIncomeCategories = await _budgerRepository.GetDefaultIncomCategoryAsyns();
+            return defaultIncomeCategories;
+        }
+
+        public async Task<IEnumerable<DefaultBudgerCategory>> GetDefaultBudgerCategory()
+        {
+            var defaultBudgerCategories = await _budgerRepository.GetDefaultBudgerCategoryAsyns();
+            return defaultBudgerCategories;
+        }
+
+        public Task AddDefaultIncomCategory(IEnumerable<DefaultIncomeCategory> incomCategory)
+        {
+            return _budgerRepository.AddDefaultIncomCategoryAsyns(incomCategory);
+        }
+
+        public Task AddDefaultBudgerCategory(IEnumerable<DefaultBudgerCategory> budgerCategory)
+        {
+            return _budgerRepository.AddDefaultBudgerCategoryAsyns(budgerCategory);
+        }
+
+        public async Task<bool> DeleteDefaultIncomCategory(long id)
+        {
+            return await _budgerRepository.DeleteDefaultIncomCategoryAsyns(id);
+        }
+
+        public async Task<bool> DeleteDefaultBudgerCategory(long id)
+        {
+            return await _budgerRepository.DeleteDefaultBudgerCategoryAsyns(id);
         }
     }
 }

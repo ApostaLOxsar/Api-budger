@@ -183,7 +183,7 @@ namespace Api_budger.Repositories.BudgerRepository
             return true;
         }
 
-        public async Task<List<Budger>?> GetBudgerByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<Budger>?> GetBudgerByFamilyIdAsyns(long familyId)
         {
             var budgers = await _context.Budgers
                  .Where(b => _context.Users.Any(u => u.UserId == b.UserId && u.FamilyId == familyId))
@@ -191,12 +191,12 @@ namespace Api_budger.Repositories.BudgerRepository
             return budgers;
         }
 
-        public async Task<List<Budger>?> GetBudgerByUserIdAsyns(long useryId)
+        public async Task<IEnumerable<Budger>?> GetBudgerByUserIdAsyns(long useryId)
         {
             return await _context.Budgers.Where(b => b.UserId == useryId).ToListAsync();
         }
 
-        public async Task<List<BudgerCategory>?> GetBudgerCategoryByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<BudgerCategory>?> GetBudgerCategoryByFamilyIdAsyns(long familyId)
         {
             var category = await _context.BudgerCategories
                 .Join(_context.BudgerCategoryHasFamilies,
@@ -214,7 +214,7 @@ namespace Api_budger.Repositories.BudgerRepository
             return category;
         }
 
-        public async Task<List<Incom>?> GetIncomByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<Incom>?> GetIncomByFamilyIdAsyns(long familyId)
         {
             var incoms = await _context.Incoms
                  .Where(b => _context.Users.Any(u => u.UserId == b.UserId && u.FamilyId == familyId))
@@ -222,12 +222,12 @@ namespace Api_budger.Repositories.BudgerRepository
             return incoms;
         }
 
-        public async Task<List<Incom>?> GetIncomByUserIdAsyns(long useryId)
+        public async Task<IEnumerable<Incom>?> GetIncomByUserIdAsyns(long useryId)
         {
             return await _context.Incoms.Where(i => i.UserId == useryId).ToListAsync();
         }
 
-        public async Task<List<IncomCategory>?> GetIncomCategoryByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<IncomCategory>?> GetIncomCategoryByFamilyIdAsyns(long familyId)
         {
             var category = await _context.IncomCategories
                 .Join(_context.IncomCategoriesHasFamilies,
@@ -243,6 +243,52 @@ namespace Api_budger.Repositories.BudgerRepository
                 .ToListAsync();
 
             return category;
+        }
+
+        public async Task<IEnumerable<DefaultIncomeCategory>> GetDefaultIncomCategoryAsyns()
+        {
+            var defaultCategory = await _context.DefaultIncomeCategories.ToListAsync();
+            if (defaultCategory.Count <= 0)  throw new Exception("No default category");
+            return defaultCategory;
+        }
+
+        public async Task<IEnumerable<DefaultBudgerCategory>> GetDefaultBudgerCategoryAsyns()
+        { 
+            var defaultCategory = await _context.DefaultBudgerCategories.ToListAsync();
+            if (defaultCategory.Count <= 0)  throw new Exception("No default category");
+            return defaultCategory;
+        }
+
+        public async Task AddDefaultIncomCategoryAsyns(IEnumerable<DefaultIncomeCategory> incomCategories)
+        {
+            await _context.DefaultIncomeCategories.AddRangeAsync(incomCategories);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddDefaultBudgerCategoryAsyns(IEnumerable<DefaultBudgerCategory> budgerCategories)
+        {
+            await _context.DefaultBudgerCategories.AddRangeAsync(budgerCategories);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteDefaultIncomCategoryAsyns(long id)
+        {
+            var defaultIncomCategory = await _context.DefaultIncomeCategories.FindAsync(id);
+            if (defaultIncomCategory == null) throw new KeyNotFoundException("default incom category not found");
+
+            _context.DefaultIncomeCategories.Remove(defaultIncomCategory);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteDefaultBudgerCategoryAsyns(long id)
+        {
+            var defaultBudgerCategories = await _context.DefaultBudgerCategories.FindAsync(id);
+            if (defaultBudgerCategories == null) throw new KeyNotFoundException("default budger category not found");
+
+            _context.DefaultBudgerCategories.Remove(defaultBudgerCategories);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

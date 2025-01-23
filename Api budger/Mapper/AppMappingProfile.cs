@@ -18,6 +18,8 @@ namespace Api_budger.Mapper
             CreateMap<InputIncomCategory, IncomCategory>();
             CreateMap<InputRole, Role>();
             CreateMap<InputUser, User>();
+            CreateMap<InputBudgerCategory, DefaultBudgerCategory>();
+            CreateMap<InputIncomCategory, DefaultIncomeCategory>();
             
             CreateMap<User, OutputUser>();
             CreateMap<Role, OutputRole>();
@@ -26,6 +28,9 @@ namespace Api_budger.Mapper
             CreateMap<BudgerCategory, OutputBudgerCategory>();
             CreateMap<Incom, OutputIncom>();
             CreateMap<IncomCategory, OutputIncomCategory>();
+
+            CreateMap<DefaultBudgerCategory, BudgerCategory>().ReverseMap();
+            CreateMap<DefaultIncomeCategory, IncomCategory>().ReverseMap();
         }
     }
 }

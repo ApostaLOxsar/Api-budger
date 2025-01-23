@@ -134,5 +134,40 @@ namespace Api_budger.Services.Abstractions
         /// <returns>Измененная категория доходов</returns>
         public Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, long userId, InputBudgerCategory inputBudgerCategory);
         #endregion
+
+        #region defaultCategory
+        /// <summary>
+        /// получает все дефолтные категории доходов
+        /// </summary>
+        /// <returns>лист категорий доходов</returns>
+        public Task<IEnumerable<DefaultIncomeCategory>> GetDefaultIncomCategory();
+        /// <summary>
+        /// получает все дефолтные категории расходов
+        /// </summary>
+        /// <returns>лист категорий расходов</returns>
+        public Task<IEnumerable<DefaultBudgerCategory>> GetDefaultBudgerCategory();
+        /// <summary>
+        /// добавляет список дефолтных категорий доходов
+        /// </summary>
+        /// <param name="incomCategory">список категорий</param>
+        public Task AddDefaultIncomCategory(IEnumerable<DefaultIncomeCategory> incomCategory);
+        /// <summary>
+        /// добавляет список дефолтных категорий расходов
+        /// </summary>
+        /// <param name="budgerCategory">список категорий</param>
+        public Task AddDefaultBudgerCategory(IEnumerable<DefaultBudgerCategory> budgerCategory);
+        /// <summary>
+        /// удаляет категорию доходов из дефолтных
+        /// </summary>
+        /// <param name="id">id категории</param>
+        /// <returns>флаг успешности</returns>
+        public Task<bool> DeleteDefaultIncomCategory(long id);
+        /// <summary>
+        /// удаляет категорию расходов из дефолтных
+        /// </summary>
+        /// <param name="id">id категории</param>
+        /// <returns>флаг успешности</returns>
+        public Task<bool> DeleteDefaultBudgerCategory(long id);
+        #endregion
     }
 }
