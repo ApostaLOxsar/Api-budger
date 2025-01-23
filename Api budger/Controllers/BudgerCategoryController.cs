@@ -42,10 +42,10 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<ICollection<OutputBudgerCategory>> AddBudgerCategoryInFamily(ICollection<InputBudgerCategory> inputBudger)
+        public async Task<IEnumerable<OutputBudgerCategory>> AddBudgerCategoryInFamily(IEnumerable<InputBudgerCategory> inputBudger)
         {
             var budgerCategory = await _budgerService.AddBudgerCategoryInFamilyAsyns(inputBudger);
-            var resalt = _mapper.Map<ICollection<OutputBudgerCategory>>(budgerCategory);
+            var resalt = _mapper.Map<IEnumerable<OutputBudgerCategory>>(budgerCategory);
             return resalt;
         }
 

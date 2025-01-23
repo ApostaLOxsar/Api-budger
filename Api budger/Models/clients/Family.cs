@@ -9,10 +9,10 @@ namespace Api_budger.Models.clients
     {
         public long FamilyId { get; set; }
         [JsonIgnore]
-        public ICollection<User>? Users { get; set; }
+        public IEnumerable<User>? Users { get; set; }
         [JsonIgnore]
-        public ICollection<IncomCategoryHasFamily>? IncomeCategoryHasFamilies { get; set; }
+        public IEnumerable<IncomCategoryHasFamily>? IncomeCategoryHasFamilies { get; set; }
         [JsonIgnore]
-        public ICollection<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
+        public IEnumerable<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
     }
 }

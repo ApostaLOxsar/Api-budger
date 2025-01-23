@@ -7,6 +7,6 @@ namespace Api_budger.Models.clients
     {
         public long RoleId { get; set; }
         [JsonIgnore]
-        public ICollection<User>? Users { get; set; }
+        public IEnumerable<User>? Users { get; set; }
     }
 }

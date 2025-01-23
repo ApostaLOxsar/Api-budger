@@ -21,30 +21,30 @@ namespace Api_budger.Services
             _mapper = mapper;
         }
 
-        public async Task<ICollection<Budger>> AddBudgersAsyns(ICollection<InputBudger> inputBudger)
+        public async Task<IEnumerable<Budger>> AddBudgersAsyns(IEnumerable<InputBudger> inputBudger)
         {
-            var budger = _mapper.Map<ICollection<Budger>>(inputBudger);
+            var budger = _mapper.Map<IEnumerable<Budger>>(inputBudger);
             var result = await _budgerRepository.AddBudgersAsyns(budger);
             return result;
         }
 
-        public async Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<InputBudgerCategory> inputBudger)
+        public async Task<IEnumerable<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(IEnumerable<InputBudgerCategory> inputBudger)
         {
-            var budgerCategoryList = _mapper.Map<ICollection<BudgerCategory>>(inputBudger);
+            var budgerCategoryList = _mapper.Map<IEnumerable<BudgerCategory>>(inputBudger);
             var result = await _budgerRepository.AddBudgerCategoryInFamilyAsyns(budgerCategoryList);
             return result;
         }
 
-        public Task<ICollection<Incom>> AddIncomsAsyns(ICollection<InputIncom> inputIncom)
+        public Task<IEnumerable<Incom>> AddIncomsAsyns(IEnumerable<InputIncom> inputIncom)
         {
-            var incom = _mapper.Map<ICollection<Incom>>(inputIncom);
+            var incom = _mapper.Map<IEnumerable<Incom>>(inputIncom);
             var result = _budgerRepository.AddIncomsAsyns(incom);
             return result;
         }
 
-        public async Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<InputIncomCategory> inputIncomCategory)
+        public async Task<IEnumerable<IncomCategory>> AddIncomCategoryInFamilyAsyns(IEnumerable<InputIncomCategory> inputIncomCategory)
         {
-            var incomCategoryList = _mapper.Map<ICollection<IncomCategory>>(inputIncomCategory);
+            var incomCategoryList = _mapper.Map<IEnumerable<IncomCategory>>(inputIncomCategory);
             var result = await _budgerRepository.AddIncomCategoryInFamilyAsyns(incomCategoryList);
             return result;
         }
@@ -165,7 +165,7 @@ namespace Api_budger.Services
             return _budgerRepository.AddDefaultBudgerCategoryAsyns(budgerCategory);
         }
 
-        public async Task<bool> DeleteDefaultIncomCategory(long id)
+        public async Task<bool> DeleteDefaultIncomCategoryAsyns(long id)
         {
             return await _budgerRepository.DeleteDefaultIncomCategoryAsyns(id);
         }

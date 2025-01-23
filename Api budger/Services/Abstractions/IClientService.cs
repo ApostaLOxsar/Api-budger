@@ -6,7 +6,7 @@ namespace Api_budger.Services.Abstractions
     public interface IClientService
     {
         #region Family
-        public Task<ICollection<Family>> GetFamiliesAsync();
+        public Task<IEnumerable<Family>> GetFamiliesAsync();
         public Task<Family> GetFamilyByIdAsync(long Id);
         public Task<Family> GetFamilyByUserIdAsync(long Id);
         public Task<Family> AddFamilyAsyns(InputFamily inputFamily);
@@ -15,7 +15,7 @@ namespace Api_budger.Services.Abstractions
         #endregion
 
         #region Role
-        public Task<ICollection<Role>> GetRolesAsync();
+        public Task<IEnumerable<Role>> GetRolesAsync();
         public Task<Role> GetRoleByIdAsync(long Id);
         public Task<Role> AddRoleAsyns(InputRole inputRole);
         public Task<bool> DeleteRoleByIdAsyns(long id);
@@ -24,7 +24,7 @@ namespace Api_budger.Services.Abstractions
 
 
         #region User
-        public Task<ICollection<User>> GetUsersAsync();
+        public Task<IEnumerable<User>> GetUsersAsync();
         public Task<User> GetUserByIdAsync(long Id);
         public Task<User> AddUserAsyns(InputUser inputUser);
         public Task<bool> DeleteUserByIdAsyns(long id);

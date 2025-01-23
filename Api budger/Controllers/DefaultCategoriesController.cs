@@ -49,9 +49,9 @@ namespace Api_budger.Controllers
             return result;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("AddDefaultIncomCategory")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<DefaultBudgerCategory>))]
+        [ProducesResponseType(200, Type = typeof(bool))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
@@ -63,10 +63,42 @@ namespace Api_budger.Controllers
             return true;
         }
 
-        // not realise
-        public void AddDefaultIncomCategoryAsyns(List<DefaultIncomeCategory> incomCategory);
-        public void AddDefaultBudgerCategoryAsyns(List<DefaultBudgerCategory> budgerCategory);
-        public Task<bool> DeleteDefaultIncomCategoryAsyns(long id);
-        public Task<bool> DeleteDefaultBudgerCategoryAsyns(long id);
+        [HttpPost]
+        [Route("AddDefaultBudgerCategory")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<bool> AddDefaultBudgerCategory(IEnumerable<InputBudgerCategory> inputBudgerCategories)
+        {
+            var budgerCategories = _mapper.Map<IEnumerable<DefaultBudgerCategory>>(inputBudgerCategories);
+            await _budgerService.AddDefaultBudgerCategory(budgerCategories);
+            return true;
+        }
+
+        [HttpDelete]
+        [Route("DeleteDefaultIncomCategory")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<bool> DeleteDefaultIncomCategory(long id)
+        {
+            return await _budgerService.DeleteDefaultIncomCategoryAsyns(id);
+        }
+
+        [HttpDelete]
+        [Route("DeleteDefaultBudgerCategory")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<bool> DeleteDefaultBudgerCategory(long id)
+        {
+            return await _budgerService.DeleteDefaultIncomCategoryAsyns(id);
+        }
     }
 }

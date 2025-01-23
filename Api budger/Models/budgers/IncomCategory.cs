@@ -5,7 +5,7 @@ namespace Api_budger.Models.budgers
     public class IncomCategory : IncomCategoryBase
     {
         public long IncomCategoryId { get; set; }
-        public ICollection<IncomCategoryHasFamily>? IncomCategoryHasFamilies { get; set; }
-        public ICollection<Incom>? Incoms { get; set; }
+        public IEnumerable<IncomCategoryHasFamily>? IncomCategoryHasFamilies { get; set; }
+        public IEnumerable<Incom>? Incoms { get; set; }
     }
 }

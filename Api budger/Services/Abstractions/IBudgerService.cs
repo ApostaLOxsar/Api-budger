@@ -24,7 +24,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputIncom">входные даннык</param>
         /// <returns>Новый доход</returns>
-        public Task<ICollection<Incom>> AddIncomsAsyns(ICollection<InputIncom> inputIncom);
+        public Task<IEnumerable<Incom>> AddIncomsAsyns(IEnumerable<InputIncom> inputIncom);
         /// <summary>
         /// Удаляет доход по Id
         /// </summary>
@@ -53,7 +53,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputIncomCategory">Данные категории доходов</param>
         /// <returns>Новая категория доходов</returns>
-        public Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<InputIncomCategory> inputIncomCategory);
+        public Task<IEnumerable<IncomCategory>> AddIncomCategoryInFamilyAsyns(IEnumerable<InputIncomCategory> inputIncomCategory);
         /// <summary>
         /// Удаляет категорию из семьи по Id
         /// </summary>
@@ -89,7 +89,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputBudger">входные данные</param>
         /// <returns>Новый расход</returns>
-        public Task<ICollection<Budger>> AddBudgersAsyns(ICollection<InputBudger> inputBudger);
+        public Task<IEnumerable<Budger>> AddBudgersAsyns(IEnumerable<InputBudger> inputBudger);
         /// <summary>
         /// Удаляет расход по Id
         /// </summary>
@@ -117,7 +117,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="inputBudger">Входные данные</param>
         /// <returns>Новая категория расходов</returns>
-        public Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<InputBudgerCategory> inputBudger);
+        public Task<IEnumerable<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(IEnumerable<InputBudgerCategory> inputBudger);
         /// <summary>
         /// Удаляет категорию расходов из семьи
         /// </summary>
@@ -161,7 +161,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="id">id категории</param>
         /// <returns>флаг успешности</returns>
-        public Task<bool> DeleteDefaultIncomCategory(long id);
+        public Task<bool> DeleteDefaultIncomCategoryAsyns(long id);
         /// <summary>
         /// удаляет категорию расходов из дефолтных
         /// </summary>

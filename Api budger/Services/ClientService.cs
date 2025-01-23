@@ -83,7 +83,7 @@ namespace Api_budger.Services
             return await _userRepository.DeleteUserByIdAsync(id);
         }
 
-        public async Task<ICollection<Family>> GetFamiliesAsync()
+        public async Task<IEnumerable<Family>> GetFamiliesAsync()
         {
             var families = await _userRepository.GetAllFamilyAsync();
             if (families is null) throw new Exception("Users not found");
@@ -111,7 +111,7 @@ namespace Api_budger.Services
             return role;
         }
 
-        public async Task<ICollection<Role>> GetRolesAsync()
+        public async Task<IEnumerable<Role>> GetRolesAsync()
         {
             var roles = await _userRepository.GetAllRoleAsync();
             if (roles is null) throw new Exception("Not founs role");
@@ -125,7 +125,7 @@ namespace Api_budger.Services
             return user;
         }
 
-        public async Task<ICollection<User>> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             var user = await _userRepository.GetAllUsersAsync();
             if (user is null) throw new Exception("Users not found");

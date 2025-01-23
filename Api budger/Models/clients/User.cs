@@ -10,8 +10,8 @@ namespace Api_budger.Models.clients
         public Role? Role { get; set; }
         public Family? Family { get; set; }
         [JsonIgnore]
-        public ICollection<Incom>? Incoms { get; set; }
+        public IEnumerable<Incom>? Incoms { get; set; }
         [JsonIgnore]
-        public ICollection<Budger>? Buders { get; set; }
+        public IEnumerable<Budger>? Buders { get; set; }
     }
 }

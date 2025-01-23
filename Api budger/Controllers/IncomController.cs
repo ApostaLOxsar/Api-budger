@@ -51,16 +51,16 @@ namespace Api_budger.Controllers
         }
 
         [HttpPost]
-        [Route("AddIncom")]
-        [ProducesResponseType(200, Type = typeof(OutputIncom))]
+        [Route("AddIncoms")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncom>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<OutputIncom> AddIncom(InputIncom inputIncom)
+        public async Task<IEnumerable<OutputIncom>> AddIncoms(IEnumerable<InputIncom> inputIncom)
         {
-            var newIncom = await _budgerService.AddIncomAsyns(inputIncom);
-            var resalt = _mapper.Map<OutputIncom>(newIncom);
+            var newIncom = await _budgerService.AddIncomsAsyns(inputIncom);
+            var resalt = _mapper.Map<IEnumerable<OutputIncom>>(newIncom);
             return resalt;
         }
 

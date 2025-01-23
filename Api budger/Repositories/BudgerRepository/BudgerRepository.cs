@@ -16,7 +16,7 @@ namespace Api_budger.Repositories.BudgerRepository
             _context = context;
         }
 
-        public async Task<ICollection<Budger>> AddBudgersAsyns(ICollection<Budger> inputBudger)
+        public async Task<IEnumerable<Budger>> AddBudgersAsyns(IEnumerable<Budger> inputBudger)
         {
             var budger = inputBudger;
             _context.Budgers.AddRange(budger);
@@ -24,7 +24,7 @@ namespace Api_budger.Repositories.BudgerRepository
             return budger;
         }
 
-        public async Task<ICollection<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(ICollection<BudgerCategory> inputBudgerCategory)
+        public async Task<IEnumerable<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(IEnumerable<BudgerCategory> inputBudgerCategory)
         {
             var category = inputBudgerCategory;
             _context.BudgerCategories.AddRange(category);
@@ -32,7 +32,7 @@ namespace Api_budger.Repositories.BudgerRepository
             return category;
         }
 
-        public async Task<ICollection<Incom>> AddIncomsAsyns(ICollection<Incom> inputIncom)
+        public async Task<IEnumerable<Incom>> AddIncomsAsyns(IEnumerable<Incom> inputIncom)
         {
             var incom = inputIncom;
             _context.Incoms.AddRange(incom);
@@ -40,7 +40,7 @@ namespace Api_budger.Repositories.BudgerRepository
             return incom;
         }
 
-        public async Task<ICollection<IncomCategory>> AddIncomCategoryInFamilyAsyns(ICollection<IncomCategory> inputIncomCategory)
+        public async Task<IEnumerable<IncomCategory>> AddIncomCategoryInFamilyAsyns(IEnumerable<IncomCategory> inputIncomCategory)
         {
             var category = inputIncomCategory;
             _context.IncomCategories.AddRange(category);
