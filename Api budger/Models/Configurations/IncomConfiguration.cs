@@ -12,6 +12,7 @@ namespace Api_budger.Models.Configurations
             builder.HasKey(f => f.IncomId);
             builder.Property(f => f.IncomId).HasColumnName("incom_id");
             builder.Property(f => f.IncomName).HasColumnName("incom");
+            builder.Property(f => f.IncomeAmount).HasColumnName("income_amount");
             builder.Property(f => f.Date).HasColumnName("date");
             builder.Property(f => f.UserId).HasColumnName("user_id");
             builder.Property(f => f.Comment).HasColumnName("comment");

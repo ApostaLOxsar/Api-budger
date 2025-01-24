@@ -24,11 +24,23 @@ namespace Api_budger.Repositories.BudgerRepository
             return budger;
         }
 
-        public async Task<IEnumerable<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(IEnumerable<BudgerCategory> inputBudgerCategory)
+        public async Task<IEnumerable<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(long familiId, IEnumerable<BudgerCategory> inputBudgerCategory)
         {
             var category = inputBudgerCategory;
-            _context.BudgerCategories.AddRange(category);
+            await _context.BudgerCategories.AddRangeAsync(category);
+
+            List<BudgerCategoryHasFamily> budgersCategoryHasFamily = new List<BudgerCategoryHasFamily>();
+            foreach (var budgerCategory in inputBudgerCategory)
+            {
+                budgersCategoryHasFamily.Add(new BudgerCategoryHasFamily
+                {
+                    FamilyId = familiId,
+                    BudgerCategory = budgerCategory
+                });
+            }
+            await _context.AddRangeAsync (budgersCategoryHasFamily);
             await _context.SaveChangesAsync();
+
             return category;
         }
 
@@ -40,11 +52,23 @@ namespace Api_budger.Repositories.BudgerRepository
             return incom;
         }
 
-        public async Task<IEnumerable<IncomCategory>> AddIncomCategoryInFamilyAsyns(IEnumerable<IncomCategory> inputIncomCategory)
+        public async Task<IEnumerable<IncomCategory>> AddIncomCategoryInFamilyAsyns(long familiId, IEnumerable<IncomCategory> inputIncomCategory)
         {
             var category = inputIncomCategory;
-            _context.IncomCategories.AddRange(category);
+            await _context.IncomCategories.AddRangeAsync(category);
+
+            List<IncomCategoryHasFamily> incomsCategoryHasFamily = new List<IncomCategoryHasFamily>();
+            foreach (var incomCategory in inputIncomCategory)
+            {
+                incomsCategoryHasFamily.Add(new IncomCategoryHasFamily
+                {
+                    FamilyId = familiId,
+                    IncomCategory = incomCategory
+                });
+            }
+            await _context.AddRangeAsync(incomsCategoryHasFamily);
             await _context.SaveChangesAsync();
+
             return category;
         }
 

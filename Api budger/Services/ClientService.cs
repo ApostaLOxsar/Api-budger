@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Api_budger.Models.budgers;
+using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
@@ -46,6 +48,13 @@ namespace Api_budger.Services
                 var famili = await _userRepository.AddFamilyAsyns(new Family { Name = familiName });
                 user.FamilyId = famili.FamilyId;
             }
+
+            if (user.RoleId <= 0)
+            {
+                user.RoleId = 3;
+            }
+
+            await AddDefaultCategoryInFamily(user.FamilyId);
 
             return await _userRepository.AddUserAsyns(user);
         }
@@ -132,7 +141,17 @@ namespace Api_budger.Services
             return user;
         }
         #endregion
+        private async Task AddDefaultCategoryInFamily(long familiId)
+        {
+            var listDefBudgerCategory = await _budgerRepository.GetDefaultBudgerCategoryAsyns();
+            var listBudgerCategory = _mapper.Map<IEnumerable<BudgerCategory>>(listDefBudgerCategory);
+            
+            var listDefIncomCategory = await _budgerRepository.GetDefaultIncomCategoryAsyns();
+            var listIncomCategory = _mapper.Map<IEnumerable<IncomCategory>>(listDefIncomCategory);
 
+            await _budgerRepository.AddBudgerCategoryInFamilyAsyns(familiId, listBudgerCategory);
+            await _budgerRepository.AddIncomCategoryInFamilyAsyns(familiId, listIncomCategory);
+        }
         #region private
 
         #endregion

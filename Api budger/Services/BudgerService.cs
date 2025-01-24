@@ -1,4 +1,5 @@
-﻿using Api_budger.Models.budgers;
+﻿using System;
+using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
@@ -24,28 +25,36 @@ namespace Api_budger.Services
         public async Task<IEnumerable<Budger>> AddBudgersAsyns(IEnumerable<InputBudger> inputBudger)
         {
             var budger = _mapper.Map<IEnumerable<Budger>>(inputBudger);
+            var date = DateTime.UtcNow;
+            budger.ToList().ForEach(b => b.Date = date);
             var result = await _budgerRepository.AddBudgersAsyns(budger);
             return result;
         }
 
         public async Task<IEnumerable<BudgerCategory>> AddBudgerCategoryInFamilyAsyns(IEnumerable<InputBudgerCategory> inputBudger)
         {
+            long familiId = -1;
+            if (familiId <= 0) throw new Exception("famili Id <= 0");
             var budgerCategoryList = _mapper.Map<IEnumerable<BudgerCategory>>(inputBudger);
-            var result = await _budgerRepository.AddBudgerCategoryInFamilyAsyns(budgerCategoryList);
+            var result = await _budgerRepository.AddBudgerCategoryInFamilyAsyns(familiId, budgerCategoryList);
             return result;
         }
 
         public Task<IEnumerable<Incom>> AddIncomsAsyns(IEnumerable<InputIncom> inputIncom)
         {
             var incom = _mapper.Map<IEnumerable<Incom>>(inputIncom);
+            var date = DateTime.UtcNow;
+            incom.ToList().ForEach(b => b.Date = date);
             var result = _budgerRepository.AddIncomsAsyns(incom);
             return result;
         }
 
         public async Task<IEnumerable<IncomCategory>> AddIncomCategoryInFamilyAsyns(IEnumerable<InputIncomCategory> inputIncomCategory)
         {
+            long familiId = -1;
+            if (familiId <= 0) throw new Exception("famili Id <= 0");
             var incomCategoryList = _mapper.Map<IEnumerable<IncomCategory>>(inputIncomCategory);
-            var result = await _budgerRepository.AddIncomCategoryInFamilyAsyns(incomCategoryList);
+            var result = await _budgerRepository.AddIncomCategoryInFamilyAsyns(familiId, incomCategoryList);
             return result;
         }
 

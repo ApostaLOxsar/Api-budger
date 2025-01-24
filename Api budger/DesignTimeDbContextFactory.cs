@@ -13,8 +13,10 @@ namespace Api_budger
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            // Получаем строку подключения
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            // for job
+            //var connectionString = configuration.GetConnectionString("DefaultConnection");
+            //for update
+            var connectionString = configuration.GetConnectionString("UpdateConnection");
 
             // Настраиваем DbContextOptions
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();

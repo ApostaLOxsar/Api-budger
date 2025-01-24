@@ -3,6 +3,14 @@
     public class IncomBase
     {
         /// <summary>
+        /// Id пользователя
+        /// </summary>
+        public long UserId { get; set; }
+        /// <summary>
+        /// Сумма
+        /// </summary>
+        public double IncomeAmount { get; set; }
+        /// <summary>
         /// Название доходов
         /// </summary>
         public string? IncomName { get; set; }
@@ -11,8 +19,8 @@
         /// </summary>
         public string? Comment { get; set; }
         /// <summary>
-        /// Id пользователя
+        /// Id категории доходов
         /// </summary>
-        public long UserId { get; set; }
+        public long IncomeCategoryId { get; set; }
     }
 }
