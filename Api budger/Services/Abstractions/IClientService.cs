@@ -31,8 +31,9 @@ namespace Api_budger.Services.Abstractions
         #endregion
 
         #region Verify
-        public Task<bool> Verify(long userId, string pasword);
         public Task<string> GenerateHash(string password);
+        public Task<string> Login(LoginInput loginInput);
+        public Task<bool> Logout();
         #endregion
     }
 }

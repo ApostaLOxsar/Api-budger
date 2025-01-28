@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using Api_budger.Models.budgers;
+﻿using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Services.Abstractions;
 using AutoMapper;
-using Microsoft.AspNetCore.Components.Forms;
 
 namespace Api_budger.Services
 {
@@ -42,9 +40,9 @@ namespace Api_budger.Services
         public async Task<User> AddUserAsyns(InputUser inputUser)
         {
             var user = _mapper.Map<User>(inputUser);
-            
+
             string familiName = user.Name + (string.IsNullOrEmpty(user.Soname) ? (" " + user.Soname) : "") + " famili";
-            
+
             if (user.FamilyId <= 0)
             {
                 var famili = await _userRepository.AddFamilyAsyns(new Family { Name = familiName });
@@ -136,14 +134,14 @@ namespace Api_budger.Services
         public async Task<IEnumerable<Role>> GetRolesAsync()
         {
             var roles = await _userRepository.GetAllRoleAsync();
-            if (roles is null) throw new Exception("Not founs role");
+            if (roles is null) throw new Exception("Roles not found");
             return roles;
         }
 
         public async Task<User> GetUserByIdAsync(long id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
-            if (user is null) throw new Exception("Not founs role");
+            if (user is null) throw new Exception("User not found");
             return user;
         }
 
@@ -154,25 +152,51 @@ namespace Api_budger.Services
             return user;
         }
 
-        public async Task<bool> Verify(long userId, string pasword)
+        #region Virify
+        public async Task<string> Login(LoginInput loginInput)
         {
-            var passwordHash = await _userRepository.GetHashByUserId(userId);
-            return _passwordHashService.Verify(passwordHash, pasword);
+            User? user;
+            if (!(loginInput.telegramId <= 0 || loginInput.telegramId is null))
+            {
+                long telegramId = (long)loginInput.telegramId;
+                user = await _userRepository.GetUserByTelegramId(telegramId);
+            }
+            else if (!(string.IsNullOrEmpty(loginInput.email)))
+            {
+                user = await _userRepository.GetUserByEmail(loginInput.email);
+            }
+            else throw new Exception("User not found");
+
+            var passwordHash = await _userRepository.GetHashByUserId(user.UserId);
+            var checkVerify = _passwordHashService.Verify(passwordHash, loginInput.password);
+
+            if (checkVerify)
+            {
+                return checkVerify.ToString();
+            }
+            throw new Exception("Password incorect");
         }
+
+        public Task<bool> Logout()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Virify
         #endregion
+
+        #region private
         private async Task AddDefaultCategoryInFamily(long familiId)
         {
             var listDefBudgerCategory = await _budgerRepository.GetDefaultBudgerCategoryAsyns();
             var listBudgerCategory = _mapper.Map<IEnumerable<BudgerCategory>>(listDefBudgerCategory);
-            
+
             var listDefIncomCategory = await _budgerRepository.GetDefaultIncomCategoryAsyns();
             var listIncomCategory = _mapper.Map<IEnumerable<IncomCategory>>(listDefIncomCategory);
 
             await _budgerRepository.AddBudgerCategoryInFamilyAsyns(familiId, listBudgerCategory);
             await _budgerRepository.AddIncomCategoryInFamilyAsyns(familiId, listIncomCategory);
         }
-        #region private
-
         #endregion
     }
 }

@@ -106,8 +106,19 @@ namespace Api_budger.Repositories.Abstractions
         /// <param name="userId">Id пользователя</param>
         /// <returns>хэш пароля</returns>
         Task<string> GetHashByUserId(long userId);
-
+        /// <summary>
+        /// Получает юзера по емайл
+        /// </summary>
+        /// <param name="email">емайл</param>
+        /// <returns>юзер</returns>
         Task<User> GetUserByEmail(string email);
+
+        /// <summary>
+        /// Получает юзера по телеграм Ид
+        /// </summary>
+        /// <param name="telegramId">telegram id</param>
+        /// <returns>юзер</returns>
+        Task<User> GetUserByTelegramId(long telegramId);
 
     }
 }

@@ -164,5 +164,11 @@ namespace Api_budger.Repositories.ClientRepositoty
             var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync() ?? throw new Exception("User not found");
             return user;
         }
+
+        public async Task<User> GetUserByTelegramId(long telegramId)
+        {
+            var user = await _context.Users.Where(u => u.TelegramId == telegramId).FirstOrDefaultAsync() ?? throw new Exception("User not found");
+            return user;
+        }
     }
 }
