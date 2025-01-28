@@ -50,33 +50,6 @@ namespace Api_budger.Controllers
             return result;
         }
 
-        [HttpPost]
-        [Route("AddUser")]
-        [ProducesResponseType(200, Type = typeof(User))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<OutputUser> AddUser(InputUser inputUser)
-        {
-            var newUser = await _clientService.AddUserAsyns(inputUser);
-            var result = _mapper.Map<OutputUser>(newUser);
-            return result;
-        }
-
-        [HttpGet]
-        [Route("CheckPass")]
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public async Task<bool> CheckPass(long userId, string pass)
-        {
-            var result = await _clientService.Verify(userId, pass);
-            return result;
-        }
-
         [HttpDelete]
         [Route("DeleteUser/{id}")]
         [ProducesResponseType(200, Type = typeof(bool))]

@@ -5,7 +5,7 @@
         /// <summary>
         /// Ид пользователя в телеграмме
         /// </summary>
-        public long TelegramId { get; set; }
+        public long? TelegramId { get; set; }
         /// <summary>
         /// Имя пользователя
         /// </summary>
@@ -22,5 +22,9 @@
         /// Ид роли пользователя
         /// </summary>
         public long RoleId { get; set; }
+        /// <summary>
+        /// Email
+        /// </summary>
+        public string? Email { get; set; }
     }
 }

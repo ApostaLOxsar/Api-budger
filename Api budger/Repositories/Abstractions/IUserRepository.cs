@@ -107,5 +107,7 @@ namespace Api_budger.Repositories.Abstractions
         /// <returns>хэш пароля</returns>
         Task<string> GetHashByUserId(long userId);
 
+        Task<User> GetUserByEmail(string email);
+
     }
 }

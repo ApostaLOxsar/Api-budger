@@ -57,7 +57,7 @@ namespace Api_budger.Services
             }
 
             await AddDefaultCategoryInFamily(user.FamilyId);
-
+            //TODO: добавить соль
             user.PasswordHash = _passwordHashService.GenerateHash(inputUser.password);
 
             return await _userRepository.AddUserAsyns(user);

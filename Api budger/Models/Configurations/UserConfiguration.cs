@@ -16,6 +16,7 @@ namespace Api_budger.Models.Configurations
             builder.Property(f => f.Name).HasColumnName("name");
             builder.Property(f => f.Soname).HasColumnName("soname");
             builder.Property(f => f.PasswordHash).HasColumnName("password_hash");
+            builder.Property(f => f.Email).HasColumnName("email");
             builder.HasMany(f => f.Incoms).WithOne(u => u.User).HasForeignKey(u => u.UserId);
             builder.HasOne(f => f.Family).WithMany(u => u.Users).HasForeignKey(u => u.FamilyId);
             builder.HasOne(f => f.Role).WithMany(u => u.Users).HasForeignKey(u => u.RoleId);

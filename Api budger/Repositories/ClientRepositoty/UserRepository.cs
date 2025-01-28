@@ -158,5 +158,11 @@ namespace Api_budger.Repositories.ClientRepositoty
             var userPassHash = await _context.Users.Where(user => user.UserId == userId).Select(u => u.PasswordHash).FirstOrDefaultAsync() ?? throw new Exception("Pass not found");
             return userPassHash;
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync() ?? throw new Exception("User not found");
+            return user;
+        }
     }
 }

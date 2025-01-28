@@ -1,5 +1,4 @@
 ﻿using Api_budger.Services.Abstractions;
-using BCrypt;
 
 namespace Api_budger.Infrastructure
 {
