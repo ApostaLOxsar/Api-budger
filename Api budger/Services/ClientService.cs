@@ -1,4 +1,6 @@
-﻿using Api_budger.Models.budgers;
+﻿using Api_budger.Infrastructure;
+using Api_budger.Infrastructure.Interface;
+using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
 using Api_budger.Models.clients;
 using Api_budger.Models.input;
@@ -15,8 +17,15 @@ namespace Api_budger.Services
         private readonly IBudgerRepository _budgerRepository;
         private readonly IMapper _mapper;
         private readonly IPasswordHashService _passwordHashService;
-        public ClientService(ILogger<ClientService> logger, IUserRepository userRepository, IBudgerRepository budgerRepository, IMapper mapper, IPasswordHashService passwordHashService)
+        private readonly IJwtProvider _jwtProvider;
+        public ClientService(ILogger<ClientService> logger,
+                             IUserRepository userRepository,
+                             IBudgerRepository budgerRepository,
+                             IMapper mapper,
+                             IPasswordHashService passwordHashService,
+                             IJwtProvider jwtProvider)
         {
+            _jwtProvider = jwtProvider;
             _logger = logger;
             _userRepository = userRepository;
             _budgerRepository = budgerRepository;
@@ -172,7 +181,8 @@ namespace Api_budger.Services
 
             if (checkVerify)
             {
-                return checkVerify.ToString();
+                var token = _jwtProvider.GenerateToken(user);
+                return token;
             }
             throw new Exception("Password incorect");
         }

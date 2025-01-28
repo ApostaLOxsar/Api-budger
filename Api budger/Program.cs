@@ -1,5 +1,7 @@
 using Api_budger;
 using Api_budger.Infrastructure;
+using Api_budger.Infrastructure.Interface;
+using Api_budger.Infrastructure.models;
 using Api_budger.Mapper;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Repositories.BudgerRepository;
@@ -20,6 +22,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -27,6 +31,7 @@ builder.Services.AddScoped<IBudgerRepository, BudgerRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IBudgerService, BudgerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHasher>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
 
 var app = builder.Build();
@@ -39,6 +44,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 app.UseAuthorization();
 
