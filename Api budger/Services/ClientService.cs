@@ -16,12 +16,14 @@ namespace Api_budger.Services
         private readonly IUserRepository _userRepository;
         private readonly IBudgerRepository _budgerRepository;
         private readonly IMapper _mapper;
-        public ClientService(ILogger<ClientService> logger, IUserRepository userRepository, IBudgerRepository budgerRepository, IMapper mapper)
+        private readonly IPasswordHashService _passwordHashService;
+        public ClientService(ILogger<ClientService> logger, IUserRepository userRepository, IBudgerRepository budgerRepository, IMapper mapper, IPasswordHashService passwordHashService)
         {
             _logger = logger;
             _userRepository = userRepository;
             _budgerRepository = budgerRepository;
             _mapper = mapper;
+            _passwordHashService = passwordHashService;
         }
 
         #region public region
@@ -56,6 +58,8 @@ namespace Api_budger.Services
 
             await AddDefaultCategoryInFamily(user.FamilyId);
 
+            user.PasswordHash = _passwordHashService.GenerateHash(inputUser.password);
+
             return await _userRepository.AddUserAsyns(user);
         }
 
@@ -74,6 +78,10 @@ namespace Api_budger.Services
         public async Task<User> CorrectUserAsyns(long id, InputUser inputUser)
         {
             var user = _mapper.Map<User>(inputUser);
+            if (!string.IsNullOrEmpty(inputUser.password))
+            {
+                user.PasswordHash = _passwordHashService.GenerateHash(inputUser.password);
+            }
             return await _userRepository.CorrectUserByIdAsyns(id, user);
         }
 
@@ -90,6 +98,11 @@ namespace Api_budger.Services
         public async Task<bool> DeleteUserByIdAsyns(long id)
         {
             return await _userRepository.DeleteUserByIdAsync(id);
+        }
+
+        public async Task<string> GenerateHash(string password)
+        {
+            return _passwordHashService.GenerateHash(password);
         }
 
         public async Task<IEnumerable<Family>> GetFamiliesAsync()
@@ -139,6 +152,12 @@ namespace Api_budger.Services
             var user = await _userRepository.GetAllUsersAsync();
             if (user is null) throw new Exception("Users not found");
             return user;
+        }
+
+        public async Task<bool> Verify(long userId, string pasword)
+        {
+            var passwordHash = await _userRepository.GetHashByUserId(userId);
+            return _passwordHashService.Verify(passwordHash, pasword);
         }
         #endregion
         private async Task AddDefaultCategoryInFamily(long familiId)

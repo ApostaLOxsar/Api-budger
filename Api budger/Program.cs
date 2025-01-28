@@ -1,4 +1,5 @@
 using Api_budger;
+using Api_budger.Infrastructure;
 using Api_budger.Mapper;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Repositories.BudgerRepository;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBudgerRepository, BudgerRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IBudgerService, BudgerService>();
+builder.Services.AddScoped<IPasswordHashService, PasswordHasher>();
 
 
 var app = builder.Build();

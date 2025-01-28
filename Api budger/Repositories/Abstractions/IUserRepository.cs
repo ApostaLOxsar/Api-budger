@@ -100,6 +100,12 @@ namespace Api_budger.Repositories.Abstractions
         /// <param name="inputFamily">Новые данные</param>
         /// <returns>Измененная семья</returns>
         Task<Family> CorrectFamilyByIdAsyns(long FamilyId, Family inputFamily);
+        /// <summary>
+        /// получает хэш пароля по ид пользователя
+        /// </summary>
+        /// <param name="userId">Id пользователя</param>
+        /// <returns>хэш пароля</returns>
+        Task<string> GetHashByUserId(long userId);
 
     }
 }

@@ -22,13 +22,17 @@ namespace Api_budger.Services.Abstractions
         public Task<Role> CorrectRoleAsyns(long Id, InputRole inputRole);
         #endregion
 
-
         #region User
         public Task<IEnumerable<User>> GetUsersAsync();
         public Task<User> GetUserByIdAsync(long Id);
         public Task<User> AddUserAsyns(InputUser inputUser);
         public Task<bool> DeleteUserByIdAsyns(long id);
         public Task<User> CorrectUserAsyns(long Id, InputUser inputUser);
+        #endregion
+
+        #region Verify
+        public Task<bool> Verify(long userId, string pasword);
+        public Task<string> GenerateHash(string password);
         #endregion
     }
 }

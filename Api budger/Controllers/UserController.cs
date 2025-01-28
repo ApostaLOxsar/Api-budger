@@ -64,6 +64,19 @@ namespace Api_budger.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("CheckPass")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<bool> CheckPass(long userId, string pass)
+        {
+            var result = await _clientService.Verify(userId, pass);
+            return result;
+        }
+
         [HttpDelete]
         [Route("DeleteUser/{id}")]
         [ProducesResponseType(200, Type = typeof(bool))]

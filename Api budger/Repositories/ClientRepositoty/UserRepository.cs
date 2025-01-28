@@ -152,5 +152,11 @@ namespace Api_budger.Repositories.ClientRepositoty
             await _context.SaveChangesAsync();
             return family;
         }
+
+        public async Task<string> GetHashByUserId(long userId)
+        {
+            var userPassHash = await _context.Users.Where(user => user.UserId == userId).Select(u => u.PasswordHash).FirstOrDefaultAsync() ?? throw new Exception("Pass not found");
+            return userPassHash;
+        }
     }
 }

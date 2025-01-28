@@ -7,16 +7,16 @@ namespace Api_budger
     {
         public ApplicationContext CreateDbContext(string[] args)
         {
-            // Загружаем конфигурацию из appsettings.json
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             // for job
-            //var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            
             //for update
-            var connectionString = configuration.GetConnectionString("UpdateConnection");
+            //var connectionString = configuration.GetConnectionString("UpdateConnection");
 
             // Настраиваем DbContextOptions
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();

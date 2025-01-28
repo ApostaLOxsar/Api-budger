@@ -7,6 +7,7 @@ namespace Api_budger.Models.clients
     public class User : UserBase
     {
         public long UserId { get; set; }
+        public string PasswordHash { get; set; } = string.Empty;
         public Role? Role { get; set; }
         public Family? Family { get; set; }
         [JsonIgnore]
