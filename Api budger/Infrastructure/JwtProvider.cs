@@ -20,7 +20,9 @@ namespace Api_budger.Infrastructure
 
         public string GenerateToken(User user)
         {
-            Claim[] claims = [new("userId", user.UserId.ToString())];
+            Claim[] claims = [
+                new("userId", user.UserId.ToString())
+                , new("roleId", user.RoleId.ToString())];
 
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),

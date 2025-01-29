@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Api_budger;
 using Api_budger.Infrastructure;
@@ -24,7 +25,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -66,6 +66,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("adminPolicy", policy =>
+    {
+        policy.RequireClaim("roleId");
+        policy.RequireAuthenticatedUser();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -78,11 +87,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCookiePolicy(new CookiePolicyOptions
-    {
-        MinimumSameSitePolicy = SameSiteMode.Strict,
-        HttpOnly = HttpOnlyPolicy.Always,
-        Secure = CookieSecurePolicy.Always
-    });
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
+});
 
 app.UseAuthentication();
 

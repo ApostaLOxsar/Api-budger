@@ -67,7 +67,6 @@ namespace Api_budger.Services
             }
 
             await AddDefaultCategoryInFamily(user.FamilyId);
-            //TODO: добавить соль
             user.PasswordHash = _passwordHashService.GenerateHash(inputUser.password);
 
             return await _userRepository.AddUserAsyns(user);
@@ -191,9 +190,11 @@ namespace Api_budger.Services
             throw new Exception("Password incorect");
         }
 
-        public Task<bool> Logout()
+        public Task Logout()
         {
-            throw new NotImplementedException();
+            //TODO: отзывать токен
+            _context.HttpContext.Response.Cookies.Delete("litle_baby");
+            return Task.CompletedTask;
         }
 
         #endregion Virify

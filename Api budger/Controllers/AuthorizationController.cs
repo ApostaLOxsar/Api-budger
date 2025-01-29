@@ -39,9 +39,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<bool> Logout()
+        public async Task Logout()
         {
-            return true;
+           await _clientService.Logout();
         }
 
         [HttpPost]
