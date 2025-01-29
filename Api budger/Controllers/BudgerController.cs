@@ -7,9 +7,11 @@ using AutoMapper;
 using Api_budger.Models.output;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api_budger.Controllers
 {
+    [Authorize]
     [Route("Budger")]
     [ApiController]
     public class BudgerController : ControllerBase

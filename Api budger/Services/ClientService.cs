@@ -18,12 +18,14 @@ namespace Api_budger.Services
         private readonly IMapper _mapper;
         private readonly IPasswordHashService _passwordHashService;
         private readonly IJwtProvider _jwtProvider;
+        private readonly IHttpContextAccessor _context;
         public ClientService(ILogger<ClientService> logger,
                              IUserRepository userRepository,
                              IBudgerRepository budgerRepository,
                              IMapper mapper,
                              IPasswordHashService passwordHashService,
-                             IJwtProvider jwtProvider)
+                             IJwtProvider jwtProvider,
+                             IHttpContextAccessor httpContext)
         {
             _jwtProvider = jwtProvider;
             _logger = logger;
@@ -31,6 +33,7 @@ namespace Api_budger.Services
             _budgerRepository = budgerRepository;
             _mapper = mapper;
             _passwordHashService = passwordHashService;
+            _context = httpContext;
         }
 
         #region public region
@@ -162,7 +165,7 @@ namespace Api_budger.Services
         }
 
         #region Virify
-        public async Task<string> Login(LoginInput loginInput)
+        public async Task Login(LoginInput loginInput)
         {
             User? user;
             if (!(loginInput.telegramId <= 0 || loginInput.telegramId is null))
@@ -182,7 +185,8 @@ namespace Api_budger.Services
             if (checkVerify)
             {
                 var token = _jwtProvider.GenerateToken(user);
-                return token;
+                _context.HttpContext.Response.Cookies.Append("litle_baby" ,token);
+                return;
             }
             throw new Exception("Password incorect");
         }

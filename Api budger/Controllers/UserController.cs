@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Api_budger.Controllers
 {
+    [Authorize]
     [Route("User")]
     [ApiController]
     public class UserController : ControllerBase

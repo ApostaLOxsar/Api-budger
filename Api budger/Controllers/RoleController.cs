@@ -5,10 +5,12 @@ using Api_budger.Models.input;
 using Api_budger.Services.Abstractions;
 using Api_budger.Models.output;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Api_budger.Controllers
 {
+    [Authorize]
     [Route("Role")]
     [ApiController]
     public class RoleController :ControllerBase

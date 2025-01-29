@@ -32,7 +32,7 @@ namespace Api_budger.Services.Abstractions
 
         #region Verify
         public Task<string> GenerateHash(string password);
-        public Task<string> Login(LoginInput loginInput);
+        public Task Login(LoginInput loginInput);
         public Task<bool> Logout();
         #endregion
     }

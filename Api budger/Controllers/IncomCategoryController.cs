@@ -4,11 +4,13 @@ using Api_budger.Models.input;
 using Api_budger.Models.output;
 using Api_budger.Services.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_budger.Controllers
 {
+    [Authorize]
     [Route("IncomCategory")]
     [ApiController]
     public class IncomCategoryController : ControllerBase

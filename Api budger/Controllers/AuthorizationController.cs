@@ -26,10 +26,10 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<string> Login([FromQuery] LoginInput loginInput)
+        public async Task Login([FromQuery] LoginInput loginInput)
         {
-            var result = await _clientService.Login(loginInput);
-            return result;
+            await _clientService.Login(loginInput);
+            return;
         }
 
         [HttpGet]

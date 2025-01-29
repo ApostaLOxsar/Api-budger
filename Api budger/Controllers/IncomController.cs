@@ -5,9 +5,11 @@ using Api_budger.Models.budgers;
 using Api_budger.Services.Abstractions;
 using AutoMapper;
 using Api_budger.Models.output;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api_budger.Controllers
 {
+    [Authorize]
     [Route("Incom")]
     [ApiController]
     public class IncomController : ControllerBase
