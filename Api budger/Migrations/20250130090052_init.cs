@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api_budger.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -95,8 +95,7 @@ namespace Api_budger.Migrations
                 {
                     RoleId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    role = table.Column<string>(type: "text", nullable: true),
-                    role_rus = table.Column<string>(type: "text", nullable: true)
+                    role = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -168,9 +167,13 @@ namespace Api_budger.Migrations
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    telegram_id = table.Column<long>(type: "bigint", nullable: false),
+                    password_hash = table.Column<string>(type: "text", nullable: false),
+                    telegram_id = table.Column<long>(type: "bigint", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    soname = table.Column<string>(type: "text", nullable: true),
                     family_id = table.Column<long>(type: "bigint", nullable: false),
-                    role_id = table.Column<long>(type: "bigint", nullable: false)
+                    role_id = table.Column<long>(type: "bigint", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,9 +203,10 @@ namespace Api_budger.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
-                    budger_category_id = table.Column<long>(type: "bigint", nullable: false),
+                    budger_amount = table.Column<double>(type: "double precision", nullable: false),
                     budger = table.Column<string>(type: "text", nullable: true),
-                    comment = table.Column<string>(type: "text", nullable: true)
+                    comment = table.Column<string>(type: "text", nullable: true),
+                    budger_category_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -231,10 +235,11 @@ namespace Api_budger.Migrations
                     incom_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    incom_category_id = table.Column<long>(type: "bigint", nullable: false),
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    income_amount = table.Column<double>(type: "double precision", nullable: false),
                     incom = table.Column<string>(type: "text", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                    incom_category_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -16,7 +16,7 @@ namespace Api_budger
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             
             //for update
-            //connectionString = configuration.GetConnectionString("UpdateConnection");
+            connectionString = configuration.GetConnectionString("UpdateConnection");
 
             // Настраиваем DbContextOptions
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();

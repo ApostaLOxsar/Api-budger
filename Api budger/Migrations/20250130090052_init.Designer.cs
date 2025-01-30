@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api_budger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250124074907_addAmount")]
-    partial class addAmount
+    [Migration("20250130090052_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,10 +263,6 @@ namespace Api_budger.Migrations
                         .HasColumnType("text")
                         .HasColumnName("role");
 
-                    b.Property<string>("RoleRus")
-                        .HasColumnType("text")
-                        .HasColumnName("role_rus");
-
                     b.HasKey("RoleId");
 
                     b.ToTable("roles", "clients");
@@ -280,6 +276,10 @@ namespace Api_budger.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserId"));
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
                     b.Property<long>("FamilyId")
                         .HasColumnType("bigint")
                         .HasColumnName("family_id");
@@ -287,6 +287,11 @@ namespace Api_budger.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
 
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint")
@@ -296,7 +301,7 @@ namespace Api_budger.Migrations
                         .HasColumnType("text")
                         .HasColumnName("soname");
 
-                    b.Property<long>("TelegramId")
+                    b.Property<long?>("TelegramId")
                         .HasColumnType("bigint")
                         .HasColumnName("telegram_id");
 
@@ -350,13 +355,13 @@ namespace Api_budger.Migrations
             modelBuilder.Entity("Api_budger.Models.budgers.IncomCategoryHasFamily", b =>
                 {
                     b.HasOne("Api_budger.Models.clients.Family", "Family")
-                        .WithMany("IncomeCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.budgers.IncomCategory", "IncomCategory")
-                        .WithMany("IncomCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("IncomCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -369,13 +374,13 @@ namespace Api_budger.Migrations
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategoryHasFamily", b =>
                 {
                     b.HasOne("Api_budger.Models.budgers.budgers.BudgerCategory", "BudgerCategory")
-                        .WithMany("BudgerCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("BudgerCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.clients.Family", "Family")
-                        .WithMany("BudgerCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -406,24 +411,16 @@ namespace Api_budger.Migrations
 
             modelBuilder.Entity("Api_budger.Models.budgers.IncomCategory", b =>
                 {
-                    b.Navigation("IncomCategoryHasFamilies");
-
                     b.Navigation("Incoms");
                 });
 
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategory", b =>
                 {
-                    b.Navigation("BudgerCategoryHasFamilies");
-
                     b.Navigation("Budgers");
                 });
 
             modelBuilder.Entity("Api_budger.Models.clients.Family", b =>
                 {
-                    b.Navigation("BudgerCategoryHasFamilies");
-
-                    b.Navigation("IncomeCategoryHasFamilies");
-
                     b.Navigation("Users");
                 });
 

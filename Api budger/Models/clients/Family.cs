@@ -11,8 +11,8 @@ namespace Api_budger.Models.clients
         [JsonIgnore]
         public IEnumerable<User>? Users { get; set; }
         [JsonIgnore]
-        public IEnumerable<IncomCategoryHasFamily>? IncomeCategoryHasFamilies { get; set; }
+        public IEnumerable<IncomCategory>? IncomeCategories { get; set; }
         [JsonIgnore]
-        public IEnumerable<BudgerCategoryHasFamily>? BudgerCategoryHasFamilies { get; set; }
+        public IEnumerable<BudgerCategory>? BudgerCategories { get; set; }
     }
 }

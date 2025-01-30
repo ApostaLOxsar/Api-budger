@@ -73,6 +73,12 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("roleId");
         policy.RequireAuthenticatedUser();
     });
+
+    options.AddPolicy("userPolicy", policy =>
+    {
+        policy.RequireClaim("roleId");
+        policy.RequireAuthenticatedUser();
+    });
 });
 
 var app = builder.Build();

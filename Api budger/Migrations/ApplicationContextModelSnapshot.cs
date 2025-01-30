@@ -260,10 +260,6 @@ namespace Api_budger.Migrations
                         .HasColumnType("text")
                         .HasColumnName("role");
 
-                    b.Property<string>("RoleRus")
-                        .HasColumnType("text")
-                        .HasColumnName("role_rus");
-
                     b.HasKey("RoleId");
 
                     b.ToTable("roles", "clients");
@@ -356,13 +352,13 @@ namespace Api_budger.Migrations
             modelBuilder.Entity("Api_budger.Models.budgers.IncomCategoryHasFamily", b =>
                 {
                     b.HasOne("Api_budger.Models.clients.Family", "Family")
-                        .WithMany("IncomeCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.budgers.IncomCategory", "IncomCategory")
-                        .WithMany("IncomCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("IncomCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -375,13 +371,13 @@ namespace Api_budger.Migrations
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategoryHasFamily", b =>
                 {
                     b.HasOne("Api_budger.Models.budgers.budgers.BudgerCategory", "BudgerCategory")
-                        .WithMany("BudgerCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("BudgerCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.clients.Family", "Family")
-                        .WithMany("BudgerCategoryHasFamilies")
+                        .WithMany()
                         .HasForeignKey("FamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -412,24 +408,16 @@ namespace Api_budger.Migrations
 
             modelBuilder.Entity("Api_budger.Models.budgers.IncomCategory", b =>
                 {
-                    b.Navigation("IncomCategoryHasFamilies");
-
                     b.Navigation("Incoms");
                 });
 
             modelBuilder.Entity("Api_budger.Models.budgers.budgers.BudgerCategory", b =>
                 {
-                    b.Navigation("BudgerCategoryHasFamilies");
-
                     b.Navigation("Budgers");
                 });
 
             modelBuilder.Entity("Api_budger.Models.clients.Family", b =>
                 {
-                    b.Navigation("BudgerCategoryHasFamilies");
-
-                    b.Navigation("IncomeCategoryHasFamilies");
-
                     b.Navigation("Users");
                 });
 
