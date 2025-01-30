@@ -62,7 +62,8 @@ namespace Api_budger.Controllers
         {
             var uId = _currentUserService.GetUserId();
             var role = _currentUserService.GetUserRole();
-            return [uId.ToString(), role.ToString()];
+            var temp = _context.HttpContext.Request.Cookies["litle_baby"];
+            return [temp ,uId.ToString(), role.ToString()];
         }
 
         [HttpGet]
