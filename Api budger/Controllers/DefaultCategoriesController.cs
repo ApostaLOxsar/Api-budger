@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api_budger.Controllers
 {
-    [Authorize]
+    //[Authorize(Policy = "adminPolicy")]
     [Route("DefaultCategory")]
     [ApiController]
     public class DefaultCategoriesController : ControllerBase

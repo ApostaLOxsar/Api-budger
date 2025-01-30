@@ -39,6 +39,7 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IBudgerService, BudgerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHasher>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<ICurentUserService, CurentUserService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, option =>
@@ -70,13 +71,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("adminPolicy", policy =>
     {
-        policy.RequireClaim("roleId");
+        policy.RequireClaim("roleId", ["1"]);
+        policy.RequireAuthenticatedUser();
+    });
+
+    options.AddPolicy("moderationPolicy", policy =>
+    {
+        policy.RequireClaim("roleId", ["1", "2"]);
         policy.RequireAuthenticatedUser();
     });
 
     options.AddPolicy("userPolicy", policy =>
     {
-        policy.RequireClaim("roleId");
+        policy.RequireClaim("roleId", ["1", "2", "3"]);
         policy.RequireAuthenticatedUser();
     });
 });

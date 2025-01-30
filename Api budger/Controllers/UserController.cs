@@ -13,30 +13,30 @@ namespace Api_budger.Controllers
 {
     [Route("User")]
     [ApiController]
-    [Authorize(Policy = "adminPolicy")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
         private readonly IClientService _clientService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _context;
-        private readonly IJwtProvider _jwtProvider;
+        private readonly ICurentUserService _currentUserService;
 
         public UserController(ILogger<UserController> logger,
                               IClientService clientService,
                               IMapper mapper,
                               IHttpContextAccessor context,
-                              IJwtProvider jwtProvider)
+                              ICurentUserService currentUserService)
         {
             _logger = logger;
             _clientService = clientService;
             _mapper = mapper;
             _context = context;
-            _jwtProvider = jwtProvider;
+            _currentUserService = currentUserService;
         }
 
         [HttpGet]
         [Route("GetUsers")]
+        [Authorize(Policy = "adminPolicy")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputUser>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -52,16 +52,17 @@ namespace Api_budger.Controllers
 
         [HttpGet]
         [Route("Test")]
+        [Authorize(Policy = "userPolicy")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public string Test()
+        public string[] Test()
         {
-            var test = _context.HttpContext.Request.Cookies["litle_baby"];
-           // _jwtProvider.
-            return test;
+            var uId = _currentUserService.GetUserId();
+            var role = _currentUserService.GetUserRole();
+            return [uId.ToString(), role.ToString()];
         }
 
         [HttpGet]
