@@ -1,10 +1,10 @@
-using System.Security.Claims;
 using System.Text;
 using Api_budger;
 using Api_budger.Infrastructure;
 using Api_budger.Infrastructure.Interface;
 using Api_budger.Infrastructure.models;
 using Api_budger.Mapper;
+using Api_budger.Middleware;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Repositories.BudgerRepository;
 using Api_budger.Repositories.ClientRepositoty;
@@ -13,7 +13,6 @@ using Api_budger.Services.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -109,6 +108,8 @@ app.UseCookiePolicy(new CookiePolicyOptions
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.ExceptionMiddleware();
 
 app.MapControllers();
 

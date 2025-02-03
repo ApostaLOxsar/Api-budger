@@ -1,4 +1,5 @@
-﻿using Api_budger.Infrastructure;
+﻿using System.Net;
+using Api_budger.Infrastructure;
 using Api_budger.Infrastructure.Interface;
 using Api_budger.Models.budgers;
 using Api_budger.Models.budgers.budgers;
@@ -19,13 +20,15 @@ namespace Api_budger.Services
         private readonly IPasswordHashService _passwordHashService;
         private readonly IJwtProvider _jwtProvider;
         private readonly IHttpContextAccessor _context;
+        private readonly ICurentUserService _curentUserService;
         public ClientService(ILogger<ClientService> logger,
                              IUserRepository userRepository,
                              IBudgerRepository budgerRepository,
                              IMapper mapper,
                              IPasswordHashService passwordHashService,
                              IJwtProvider jwtProvider,
-                             IHttpContextAccessor httpContext)
+                             IHttpContextAccessor httpContext,
+                             ICurentUserService curentUserService)
         {
             _jwtProvider = jwtProvider;
             _logger = logger;
@@ -34,6 +37,7 @@ namespace Api_budger.Services
             _mapper = mapper;
             _passwordHashService = passwordHashService;
             _context = httpContext;
+            _curentUserService = curentUserService;
         }
 
         #region public region
@@ -106,7 +110,11 @@ namespace Api_budger.Services
 
         public async Task<bool> DeleteUserByIdAsyns(long id)
         {
-            return await _userRepository.DeleteUserByIdAsync(id);
+            var currentUserId = _curentUserService.GetUserId();
+            var currentRole = _curentUserService.GetUserRole();
+            if (currentRole == Consts.RoleConst.admin) { return await _userRepository.DeleteUserByIdAsync(id); }
+            else if (currentUserId == id) { return await _userRepository.DeleteUserByIdAsync(id); }
+            throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");
         }
 
         public async Task<string> GenerateHash(string password)

@@ -17,23 +17,34 @@ namespace Api_budger.Services
 
         public long GetUserId()
         {
-            var identities = _context.HttpContext.User.Identity as ClaimsIdentity;
-
-            var userId = long.Parse(identities.FindFirst("userId").Value);
-            return userId;
+            try
+            {
+                var identities = _context.HttpContext.User.Identity as ClaimsIdentity;
+                var userId = long.Parse(identities.FindFirst("userId").Value);
+                return userId;
+            }
+            catch
+            {
+                _context.HttpContext.Response.Cookies.Delete("litle_baby");
+                throw new Exception("autentification incorrect");
+            }
         }
 
         public RoleConst GetUserRole()
         {
-            var identities = _context.HttpContext.User.Identity as ClaimsIdentity;
-            var claimValue = identities.FindFirst("roleId").Value;
-            if (claimValue is not null) 
+            try
             {
+                var identities = _context.HttpContext.User.Identity as ClaimsIdentity;
+                var claimValue = identities.FindFirst("roleId").Value;
                 int roleId = int.Parse(claimValue);
                 var role = (RoleConst)Enum.ToObject(typeof(RoleConst), roleId);
                 return role;
             }
-            throw new Exception("role id null(");
+            catch
+            {
+                _context.HttpContext.Response.Cookies.Delete("litle_baby");
+                throw new Exception("autentification incorrect");
+            }
         }
     }
 }

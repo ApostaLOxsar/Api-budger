@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Api_budger.Infrastructure.Interface;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace Api_budger.Controllers
 {
+    [Authorize]
     [Route("User")]
     [ApiController]
     public class UserController : ControllerBase
@@ -68,6 +70,7 @@ namespace Api_budger.Controllers
 
         [HttpGet]
         [Route("GetUser/{id}")]
+        [Authorize(Policy = "moderationPolicy")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
@@ -82,6 +85,7 @@ namespace Api_budger.Controllers
 
         [HttpDelete]
         [Route("DeleteUser/{id}")]
+        [Authorize(Policy = "userPolicy")]
         [ProducesResponseType(200, Type = typeof(bool))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
