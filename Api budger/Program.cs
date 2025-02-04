@@ -109,6 +109,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+//midleware для перевода исключений в соответствующие статус коды
 app.ExceptionMiddleware();
 
 app.MapControllers();

@@ -19,8 +19,8 @@ namespace Api_budger.Models.Configurations
             builder.Property(f => f.Email).HasColumnName("email");
             builder.HasMany(f => f.Incoms).WithOne(u => u.User).HasForeignKey(u => u.UserId);
             builder.HasOne(f => f.Family).WithMany(u => u.Users).HasForeignKey(u => u.FamilyId);
-            builder.HasOne(f => f.Role).WithMany(u => u.Users).HasForeignKey(u => u.RoleId);
-            builder.HasMany(f => f.Buders).WithOne(u => u.User).HasForeignKey(u => u.UserId);
+            builder.HasOne(f => f.Role).WithMany(u => u.Users).HasForeignKey(u => u.RoleId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(f => f.Buders).WithOne(u => u.User).HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

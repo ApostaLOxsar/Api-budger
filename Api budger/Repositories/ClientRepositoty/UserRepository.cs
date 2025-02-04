@@ -153,22 +153,38 @@ namespace Api_budger.Repositories.ClientRepositoty
             return family;
         }
 
-        public async Task<string> GetHashByUserId(long userId)
+        public async Task<string> GetHashByUserIdAsync(long userId)
         {
-            var userPassHash = await _context.Users.Where(user => user.UserId == userId).Select(u => u.PasswordHash).FirstOrDefaultAsync() ?? throw new Exception("Pass not found");
+            var userPassHash = await _context.Users.Where(user => user.UserId == userId).Select(u => u.PasswordHash).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Pass not found");
             return userPassHash;
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync() ?? throw new Exception("User not found");
+            var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("User not found");
             return user;
         }
 
-        public async Task<User> GetUserByTelegramId(long telegramId)
+        public async Task<User> GetUserByTelegramIdAsync(long telegramId)
         {
-            var user = await _context.Users.Where(u => u.TelegramId == telegramId).FirstOrDefaultAsync() ?? throw new Exception("User not found");
+            var user = await _context.Users.Where(u => u.TelegramId == telegramId).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("User not found");
             return user;
+        }
+
+        public async Task<long> GetUserIdByFamilyAsync(long familyId)
+        {
+            var userId = await _context.Users.Where(u => u.FamilyId == familyId)
+                .Select(u => u.UserId)
+                .FirstOrDefaultAsync();
+            return userId;
+        }
+
+        public async Task<long> GetFamilyIdByUserIdAsync(long userId)
+        {
+            var familyId = await _context.Users.Where(u => u.UserId == userId)
+                .Select(u => u.FamilyId)
+                .FirstOrDefaultAsync();
+            return userId;
         }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Api_budger.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "userPolicy")]
     [Route("BudgerCategory")]
     [ApiController]
     public class BudgerCategoryController : ControllerBase
@@ -58,9 +58,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<bool> DeleteBudgerCategoryFromFamilyById(long budgerCategoryId, long familyId)
+        public async Task<bool> DeleteBudgerCategoryFromFamilyById(long budgerCategoryId)
         {
-            return await _budgerService.DeleteBudgerCategoryFromFamilyByIdAsyns(budgerCategoryId, familyId);
+            return await _budgerService.DeleteBudgerCategoryFromFamilyByIdAsyns(budgerCategoryId);
         }
 
         [HttpPut]
@@ -70,9 +70,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<OutputBudgerCategory> CorrectBudgerCategoryFromUserById(long id, long userId, InputBudgerCategory inputBudgerCategory)
+        public async Task<OutputBudgerCategory> CorrectBudgerCategoryFromUserById(long id, InputBudgerCategory inputBudgerCategory)
         {
-            var budgerCategory = await _budgerService.CorrectBudgerCategoryFromUserByIdAsyns(id, userId, inputBudgerCategory);
+            var budgerCategory = await _budgerService.CorrectBudgerCategoryFromUserByIdAsyns(id, inputBudgerCategory);
             var resalt = _mapper.Map<OutputBudgerCategory>(budgerCategory);
             return resalt;
         }

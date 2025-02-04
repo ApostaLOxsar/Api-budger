@@ -27,6 +27,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "userPolicy")]
         [Route("GetBudgerByFamily/{familyId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputBudger>))]
         [ProducesResponseType(400)]
@@ -41,6 +42,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "userPolicy")]
         [Route("GetBudgerByUser/{useryId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputBudger>))]
         [ProducesResponseType(400)]

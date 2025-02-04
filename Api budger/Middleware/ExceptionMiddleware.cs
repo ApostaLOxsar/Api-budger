@@ -19,6 +19,10 @@
             {
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
             }
+            catch(KeyNotFoundException) 
+            {
+                context.Response.StatusCode = StatusCodes.Status406NotAcceptable;
+            }
         }
     }
 }

@@ -124,15 +124,14 @@ namespace Api_budger.Services.Abstractions
         /// <param name="BudgerCategoryId">Id категории расходов</param>
         /// <param name="familyId">Id семьи</param>
         /// <returns>Флаг успешности</returns>
-        public Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId, long familyId);
+        public Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId);
         /// <summary>
         /// Изменяет категорию доходов в семье по id пользователя
         /// </summary>
         /// <param name="id">Id категории доходов</param>
-        /// <param name="userId">Id пользователя</param>
         /// <param name="inputBudgerCategory">Новые данные</param>
         /// <returns>Измененная категория доходов</returns>
-        public Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, long userId, InputBudgerCategory inputBudgerCategory);
+        public Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, InputBudgerCategory inputBudgerCategory);
         #endregion
 
         #region defaultCategory

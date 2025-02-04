@@ -46,7 +46,7 @@ namespace Api_budger.Controllers
 
         [HttpPost]
         [Route("Registration")]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(201, Type = typeof(User))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]

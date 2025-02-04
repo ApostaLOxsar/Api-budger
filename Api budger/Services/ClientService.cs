@@ -178,15 +178,15 @@ namespace Api_budger.Services
             if (!(loginInput.telegramId <= 0 || loginInput.telegramId is null))
             {
                 long telegramId = (long)loginInput.telegramId;
-                user = await _userRepository.GetUserByTelegramId(telegramId);
+                user = await _userRepository.GetUserByTelegramIdAsync(telegramId);
             }
             else if (!(string.IsNullOrEmpty(loginInput.email)))
             {
-                user = await _userRepository.GetUserByEmail(loginInput.email);
+                user = await _userRepository.GetUserByEmailAsync(loginInput.email);
             }
             else throw new Exception("User not found");
 
-            var passwordHash = await _userRepository.GetHashByUserId(user.UserId);
+            var passwordHash = await _userRepository.GetHashByUserIdAsync(user.UserId);
             var checkVerify = _passwordHashService.Verify(passwordHash, loginInput.password);
 
             if (checkVerify)

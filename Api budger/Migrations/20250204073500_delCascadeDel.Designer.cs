@@ -3,6 +3,7 @@ using System;
 using Api_budger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api_budger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250204073500_delCascadeDel")]
+    partial class delCascadeDel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -316,13 +319,13 @@ namespace Api_budger.Migrations
                     b.HasOne("Api_budger.Models.budgers.budgers.BudgerCategory", "BudgerCategory")
                         .WithMany("Budgers")
                         .HasForeignKey("BudgerCategoriyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.clients.User", "User")
                         .WithMany("Buders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BudgerCategory");
@@ -335,13 +338,13 @@ namespace Api_budger.Migrations
                     b.HasOne("Api_budger.Models.budgers.IncomCategory", "IncomeCategory")
                         .WithMany("Incoms")
                         .HasForeignKey("IncomeCategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.clients.User", "User")
                         .WithMany("Incoms")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("IncomeCategory");
@@ -354,13 +357,13 @@ namespace Api_budger.Migrations
                     b.HasOne("Api_budger.Models.clients.Family", "Family")
                         .WithMany()
                         .HasForeignKey("FamilyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.budgers.IncomCategory", "IncomCategory")
                         .WithMany()
                         .HasForeignKey("IncomCategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Family");
@@ -373,13 +376,13 @@ namespace Api_budger.Migrations
                     b.HasOne("Api_budger.Models.budgers.budgers.BudgerCategory", "BudgerCategory")
                         .WithMany()
                         .HasForeignKey("BudgerCategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api_budger.Models.clients.Family", "Family")
                         .WithMany()
                         .HasForeignKey("FamilyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BudgerCategory");

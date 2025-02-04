@@ -13,8 +13,8 @@ namespace Api_budger.Models.Configurations
             builder.Property(f => f.IncomCategoryHasFamilyId).HasColumnName("incom_category_has_family_id");
             builder.Property(f => f.FamilyId).HasColumnName("family_id");
             builder.Property(f => f.IncomCategoryId).HasColumnName("incom_category_id");
-            builder.HasOne(f => f.IncomCategory).WithMany().HasForeignKey(f => f.IncomCategoryId);
-            builder.HasOne(f => f.Family).WithMany().HasForeignKey(f => f.FamilyId);
+            builder.HasOne(f => f.IncomCategory).WithMany().HasForeignKey(f => f.IncomCategoryId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(f => f.Family).WithMany().HasForeignKey(f => f.FamilyId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

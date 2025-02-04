@@ -18,8 +18,8 @@ namespace Api_budger.Models.Configurations
             builder.Property(f => f.UserId).HasColumnName("user_id");
             builder.Property(f => f.Comment).HasColumnName("comment");
             builder.Property(f => f.BudgerCategoriyId).HasColumnName("budger_category_id");
-            builder.HasOne(p => p.User).WithMany(u => u.Buders).HasForeignKey(u => u.UserId);
-            builder.HasOne(p => p.BudgerCategory).WithMany(u => u.Budgers).HasForeignKey(u => u.BudgerCategoriyId);
+            builder.HasOne(p => p.User).WithMany(u => u.Buders).HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(p => p.BudgerCategory).WithMany(u => u.Budgers).HasForeignKey(u => u.BudgerCategoriyId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

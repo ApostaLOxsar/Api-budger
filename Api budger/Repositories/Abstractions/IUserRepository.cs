@@ -61,6 +61,13 @@ namespace Api_budger.Repositories.Abstractions
         /// <param name="familyId">Id семьи</param>
         /// <returns>Данные семьи</returns>
         Task<Family?> GetFamilyByIdAsync(long familyId);
+
+        /// <summary>
+        /// Id семьи по user Id
+        /// </summary>
+        /// <param name="familyId">Id семьи</param>
+        /// <returns>Id семьи</returns>
+        Task<long> GetFamilyIdByUserIdAsync(long userId);
         /// <summary>
         /// Семья по Id пользователя
         /// </summary>
@@ -105,20 +112,26 @@ namespace Api_budger.Repositories.Abstractions
         /// </summary>
         /// <param name="userId">Id пользователя</param>
         /// <returns>хэш пароля</returns>
-        Task<string> GetHashByUserId(long userId);
+        Task<string> GetHashByUserIdAsync(long userId);
         /// <summary>
         /// Получает юзера по емайл
         /// </summary>
         /// <param name="email">емайл</param>
         /// <returns>юзер</returns>
-        Task<User> GetUserByEmail(string email);
+        Task<User> GetUserByEmailAsync(string email);
 
         /// <summary>
         /// Получает юзера по телеграм Ид
         /// </summary>
         /// <param name="telegramId">telegram id</param>
         /// <returns>юзер</returns>
-        Task<User> GetUserByTelegramId(long telegramId);
+        Task<User> GetUserByTelegramIdAsync(long telegramId);
+        /// <summary>
+        /// Получает юзера по Ид семьи
+        /// </summary>
+        /// <param name="familyId">familyId id</param>
+        /// <returns>юзер Id</returns>
+        Task<long> GetUserIdByFamilyAsync(long familyId);
 
     }
 }
