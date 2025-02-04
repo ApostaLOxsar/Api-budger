@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Api_budger.Models.clients;
 using Api_budger.Models.input;
 using Api_budger.Models.budgers;
 using Api_budger.Services.Abstractions;
 using AutoMapper;
 using Api_budger.Models.output;
-using System.Collections.Generic;
-using System;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Api_budger.Controllers
