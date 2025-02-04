@@ -81,7 +81,7 @@ namespace Api_budger.Services
         public async Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, InputBudgerCategory inputBudgerCategory)
         {
             var budgerCategory = _mapper.Map<BudgerCategory>(inputBudgerCategory);
-            
+
             var userId = _currentUserService.GetUserId();
             if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
 
@@ -114,10 +114,18 @@ namespace Api_budger.Services
         public async Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId)
         {
             var userId = _currentUserService.GetUserId();
+            var userRole = _currentUserService.GetUserRole();
             if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
 
             var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
             if (familyId <= 0) throw new KeyNotFoundException("Семья не найдена");
+
+            var userIdByBudgerCategoryId = await _budgerRepository.GetUserIdByBudgerCategoryId(budgerCategoryId);
+
+            if (!(userIdByBudgerCategoryId.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для удаления категорий доходов этой семьи.");
+            }
 
             return await _budgerRepository.DeleteBudgerCategoryFromFamilyByIdAsyns(budgerCategoryId, familyId);
         }
@@ -245,7 +253,6 @@ namespace Api_budger.Services
         {
             return await _budgerRepository.DeleteDefaultBudgerCategoryAsyns(id);
         }
-
         #endregion
 
         #region private

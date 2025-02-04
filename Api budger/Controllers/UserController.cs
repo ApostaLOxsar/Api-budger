@@ -53,22 +53,6 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("Test")]
-        [Authorize(Policy = "userPolicy")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public string[] Test()
-        {
-            var uId = _currentUserService.GetUserId();
-            var role = _currentUserService.GetUserRole();
-            var temp = _context.HttpContext.Request.Cookies["litle_baby"];
-            return [temp ,uId.ToString(), role.ToString()];
-        }
-
-        [HttpGet]
         [Route("GetUser/{id}")]
         [Authorize(Policy = "moderationPolicy")]
         [ProducesResponseType(200, Type = typeof(User))]

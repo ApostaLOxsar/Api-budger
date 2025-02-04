@@ -38,7 +38,7 @@ namespace Api_budger.Repositories.BudgerRepository
                     BudgerCategory = budgerCategory
                 });
             }
-            await _context.AddRangeAsync (budgersCategoryHasFamily);
+            await _context.AddRangeAsync(budgersCategoryHasFamily);
             await _context.SaveChangesAsync();
 
             return category;
@@ -272,14 +272,14 @@ namespace Api_budger.Repositories.BudgerRepository
         public async Task<IEnumerable<DefaultIncomeCategory>> GetDefaultIncomCategoryAsyns()
         {
             var defaultCategory = await _context.DefaultIncomeCategories.ToListAsync();
-            if (defaultCategory.Count <= 0)  throw new Exception("No default category");
+            if (defaultCategory.Count <= 0) throw new Exception("No default category");
             return defaultCategory;
         }
 
         public async Task<IEnumerable<DefaultBudgerCategory>> GetDefaultBudgerCategoryAsyns()
-        { 
+        {
             var defaultCategory = await _context.DefaultBudgerCategories.ToListAsync();
-            if (defaultCategory.Count <= 0)  throw new Exception("No default category");
+            if (defaultCategory.Count <= 0) throw new Exception("No default category");
             return defaultCategory;
         }
 
@@ -295,9 +295,9 @@ namespace Api_budger.Repositories.BudgerRepository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteDefaultIncomCategoryAsyns(long id)
+        public async Task<bool> DeleteDefaultIncomCategoryAsyns(long defaultIncomCategoryId)
         {
-            var defaultIncomCategory = await _context.DefaultIncomeCategories.FindAsync(id);
+            var defaultIncomCategory = await _context.DefaultIncomeCategories.FindAsync(defaultIncomCategoryId);
             if (defaultIncomCategory == null) throw new KeyNotFoundException("default incom category not found");
 
             _context.DefaultIncomeCategories.Remove(defaultIncomCategory);
@@ -305,14 +305,35 @@ namespace Api_budger.Repositories.BudgerRepository
             return true;
         }
 
-        public async Task<bool> DeleteDefaultBudgerCategoryAsyns(long id)
+        public async Task<bool> DeleteDefaultBudgerCategoryAsyns(long defaultBudgerCategoryId)
         {
-            var defaultBudgerCategories = await _context.DefaultBudgerCategories.FindAsync(id);
+            var defaultBudgerCategories = await _context.DefaultBudgerCategories.FindAsync(defaultBudgerCategoryId);
             if (defaultBudgerCategories == null) throw new KeyNotFoundException("default budger category not found");
 
             _context.DefaultBudgerCategories.Remove(defaultBudgerCategories);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<long>> GetUserIdByBudgerCategoryId(long budgerCategoryId)
+        {
+            var category = await _context.BudgerCategories
+                .Where(c => c.BudgerCategoryId == budgerCategoryId)
+                .Join(_context.BudgerCategoryHasFamilies,
+                      bc => bc.BudgerCategoryId,
+                      bchf => bchf.BudgerCategoryId,
+                      (bc, bchf) => new { bc, bchf })
+                .Join(_context.Families,
+                      bchfbc => bchfbc.bchf.FamilyId,
+                      f => f.FamilyId,
+                      (bchfbc, f) => new { bchfbc, f })
+                .Join(_context.Users,
+                      bchfbcf => bchfbcf.f.FamilyId,
+                      u => u.FamilyId,
+                      (bchfbc, u) => new { bchfbc , u})
+                .Select(u => u.u.UserId)
+                .ToListAsync();
+            return category;
         }
     }
 }
