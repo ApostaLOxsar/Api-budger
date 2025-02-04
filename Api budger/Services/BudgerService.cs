@@ -6,6 +6,7 @@ using Api_budger.Models.input;
 using Api_budger.Repositories.Abstractions;
 using Api_budger.Services.Abstractions;
 using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api_budger.Services
 {
@@ -80,13 +81,13 @@ namespace Api_budger.Services
 
         public async Task<BudgerCategory> CorrectBudgerCategoryFromUserByIdAsyns(long id, InputBudgerCategory inputBudgerCategory)
         {
-            var budgerCategory = _mapper.Map<BudgerCategory>(inputBudgerCategory);
-
             var userId = _currentUserService.GetUserId();
             if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
 
+            var budgerCategory = _mapper.Map<BudgerCategory>(inputBudgerCategory);
+            
             var result = await _budgerRepository.CorrectBudgerCategoryFromUserByIdAsyns(id, userId, budgerCategory);
-            if (result is null) throw new Exception("New budger category incorrect");
+            if (result is null) throw new Exception("Новая категория расходов не корректна или не верна");
             return result;
         }
 
@@ -142,14 +143,35 @@ namespace Api_budger.Services
 
         public async Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns(long familyId)
         {
+            var userId = _currentUserService.GetUserId();
+            if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            var userIdByFamily = await _userRepository.GetUserIdByFamilyAsync(familyId);
+            if (userIdByFamily.IsNullOrEmpty()) throw new KeyNotFoundException("Пользователь не найден");
+            var userRole = _currentUserService.GetUserRole();
+
+            if (!(userIdByFamily.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для просмотра категорий расходов этой семьи.");
+            }
+
             var result = await _budgerRepository.GetBudgerByFamilyIdAsyns(familyId);
             if (result is null) throw new Exception("Расходы пусты");
             return result;
         }
 
-        public async Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns(long useryId)
+        public async Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns(long userId)
         {
-            var result = await _budgerRepository.GetBudgerByUserIdAsyns(useryId);
+            var cyrrentUserId = _currentUserService.GetUserId();
+            if (cyrrentUserId == 0) throw new KeyNotFoundException("Пользователь не найден");
+            var userRole = _currentUserService.GetUserRole();
+
+            if (!(userId == cyrrentUserId || userRole == Consts.RoleConst.admin))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для просмотра доходов этого пользователя");
+            }
+
+            var result = await _budgerRepository.GetBudgerByUserIdAsyns(userId);
             if (result is null) throw new Exception("Расходы пусты");
             return result;
         }
@@ -159,10 +181,10 @@ namespace Api_budger.Services
 
             var userIdByFamily = await _userRepository.GetUserIdByFamilyAsync(familyId);
             var userId = _currentUserService.GetUserId();
-            if (userIdByFamily == 0) throw new KeyNotFoundException("User not found");
+            if (userIdByFamily.IsNullOrEmpty()) throw new KeyNotFoundException("User not found");
             var userRole = _currentUserService.GetUserRole();
 
-            if (!(userId == userIdByFamily || userRole == Consts.RoleConst.admin))
+            if (!(userIdByFamily.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
             {
                 throw new UnauthorizedAccessException("У вас нет прав для просмотра категорий расходов этой семьи.");
             }
@@ -176,10 +198,10 @@ namespace Api_budger.Services
         {
             var userIdByFamily = await _userRepository.GetUserIdByFamilyAsync(familyId);
             var userId = _currentUserService.GetUserId();
-            if (userIdByFamily == 0) throw new KeyNotFoundException("User not found");
+            if (userIdByFamily.IsNullOrEmpty()) throw new KeyNotFoundException("User not found");
             var userRole = _currentUserService.GetUserRole();
 
-            if (!(userId == userIdByFamily || userRole == Consts.RoleConst.admin))
+            if (!(userIdByFamily.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
             {
                 throw new UnauthorizedAccessException("У вас нет прав для просмотра доходов этой семьи.");
             }
@@ -209,10 +231,10 @@ namespace Api_budger.Services
         {
             var userIdByFamily = await _userRepository.GetUserIdByFamilyAsync(familyId);
             var userId = _currentUserService.GetUserId();
-            if (userIdByFamily == 0) throw new KeyNotFoundException("User not found");
+            if (userIdByFamily.IsNullOrEmpty()) throw new KeyNotFoundException("User not found");
             var userRole = _currentUserService.GetUserRole();
 
-            if (!(userId == userIdByFamily || userRole == Consts.RoleConst.admin))
+            if (!(userIdByFamily.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
             {
                 throw new UnauthorizedAccessException("У вас нет прав для просмотра категории доходов этой семьи.");
             }

@@ -131,7 +131,7 @@ namespace Api_budger.Repositories.Abstractions
         /// </summary>
         /// <param name="familyId">familyId id</param>
         /// <returns>юзер Id</returns>
-        Task<long> GetUserIdByFamilyAsync(long familyId);
+        Task<IEnumerable<long>> GetUserIdByFamilyAsync(long familyId);
 
     }
 }

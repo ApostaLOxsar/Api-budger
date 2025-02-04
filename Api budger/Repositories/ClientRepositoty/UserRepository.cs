@@ -171,11 +171,11 @@ namespace Api_budger.Repositories.ClientRepositoty
             return user;
         }
 
-        public async Task<long> GetUserIdByFamilyAsync(long familyId)
+        public async Task<IEnumerable<long>> GetUserIdByFamilyAsync(long familyId)
         {
             var userId = await _context.Users.Where(u => u.FamilyId == familyId)
                 .Select(u => u.UserId)
-                .FirstOrDefaultAsync();
+                .ToListAsync();
             return userId;
         }
 

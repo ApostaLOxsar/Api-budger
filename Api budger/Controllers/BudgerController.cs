@@ -27,20 +27,6 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("Test")]
-        [Authorize(Policy = "userPolicy")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<long>))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public Task<IEnumerable<long>> Test(long id)
-        {
-            var userId = _budgerService.Test(id);
-            return userId;
-        }
-
-        [HttpGet]
         [Authorize(Policy = "userPolicy")]
         [Route("GetBudgerByFamily/{familyId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputBudger>))]
