@@ -335,5 +335,23 @@ namespace Api_budger.Repositories.BudgerRepository
                 .ToListAsync();
             return category;
         }
+
+        public async Task<IEnumerable<long>> GetUserIdsByBydgerIdAsyns(long budgerId)
+        {
+            var userId = await _context.Budgers
+                .Where(b => b.BudgerId == budgerId)
+                .Join(_context.Users,
+                b => b.UserId,
+                u => u.UserId,
+                (b, u) => new { b, u })
+                .Join(_context.Families,
+                bu => bu.u.FamilyId,
+                f => f.FamilyId,
+                (bu, f) => new { bu, f })
+                .Select(buf => buf.bu.u.UserId)
+                .ToListAsync();
+
+            return userId;
+        }
     }
 }

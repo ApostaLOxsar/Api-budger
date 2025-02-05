@@ -77,13 +77,12 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="familyId">Id семьи</param>
         /// <returns>Список раходов</returns>
-        public Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns(long familyId);
+        public Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns();
         /// <summary>
         /// Получает расходы по Id пользователя
         /// </summary>
-        /// <param name="useryId">Id пользователя</param>
         /// <returns>Список расходов</returns>
-        public Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns(long useryId);
+        public Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns();
         /// <summary>
         /// Добавляет расходы
         /// </summary>
@@ -111,7 +110,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="familyId">Id семьи</param>
         /// <returns>Список категорий</returns>
-        public Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyIdAsyns(long familyId);
+        public Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyIdAsyns();
         /// <summary>
         /// Добавляет категорию в семью
         /// </summary>

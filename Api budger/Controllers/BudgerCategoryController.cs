@@ -30,9 +30,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<OutputBudgerCategory>> GetBudgerCategoryByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputBudgerCategory>> GetBudgerCategoryByFamilyId()
         {
-            var budgerCategories = await _budgerService.GetBudgerCategoryByFamilyIdAsyns(familyId);
+            var budgerCategories = await _budgerService.GetBudgerCategoryByFamilyIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputBudgerCategory>>(budgerCategories);
             return resalt;
         }

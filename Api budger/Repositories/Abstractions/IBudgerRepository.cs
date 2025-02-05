@@ -31,5 +31,6 @@ namespace Api_budger.Repositories.Abstractions
         public Task<bool> DeleteDefaultIncomCategoryAsyns(long id);
         public Task<bool> DeleteDefaultBudgerCategoryAsyns(long id);
         public Task<IEnumerable<long>> GetUserIdByBudgerCategoryId(long id);
+        public Task<IEnumerable<long>> GetUserIdsByBydgerIdAsyns(long budgerId);
     }
 }

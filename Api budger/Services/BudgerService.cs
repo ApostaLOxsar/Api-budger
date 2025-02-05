@@ -33,9 +33,31 @@ namespace Api_budger.Services
         #region public
         public async Task<IEnumerable<Budger>> AddBudgersAsyns(IEnumerable<InputBudger> inputBudger)
         {
+            var userId = _currentUserService.GetUserId();
+            if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            List<long> listUser = new List<long>();
+
+            //TODO: рефактор логики (возможно когда 1 из списка подходит то if пропустит все остальные)
+            foreach (var budgerCategory in inputBudger)
+            {
+                listUser.AddRange(await _budgerRepository.GetUserIdByBudgerCategoryId(budgerCategory.BudgerCategoriyId));
+            }
+            listUser = (List<long>)listUser.Distinct();
+
+
+            if (!listUser.Any(u => u == userId))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для удаления категорий доходов этой семьи.");
+            }
+
+
             var budger = _mapper.Map<IEnumerable<Budger>>(inputBudger);
             var date = DateTime.UtcNow;
+
             budger.ToList().ForEach(b => b.Date = date);
+            budger.ToList().ForEach(u => u.UserId = userId);
+
             var result = await _budgerRepository.AddBudgersAsyns(budger);
             return result;
         }
@@ -73,6 +95,16 @@ namespace Api_budger.Services
 
         public async Task<Budger> CorrectBudgerAsyns(long id, InputBudger inputBudger)
         {
+            var userId = _currentUserService.GetUserId();
+            if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            var userIdByBC = await _budgerRepository.GetUserIdByBudgerCategoryId(id);
+
+            if (!userIdByBC.Contains(userId))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для удаления категорий доходов этой семьи.");
+            }
+
             var newBudger = _mapper.Map<Budger>(inputBudger);
             var result = await _budgerRepository.CorrectBudgerAsyns(id, newBudger);
             if (result is null) throw new Exception("New budger incorrect");
@@ -84,8 +116,15 @@ namespace Api_budger.Services
             var userId = _currentUserService.GetUserId();
             if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
 
+            var userIdByBudgerCategoryId = await _budgerRepository.GetUserIdByBudgerCategoryId(id);
+
+            if (!userIdByBudgerCategoryId.Any(u => u == userId))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для удаления категорий доходов этой семьи.");
+            }
+
             var budgerCategory = _mapper.Map<BudgerCategory>(inputBudgerCategory);
-            
+
             var result = await _budgerRepository.CorrectBudgerCategoryFromUserByIdAsyns(id, userId, budgerCategory);
             if (result is null) throw new Exception("Новая категория расходов не корректна или не верна");
             return result;
@@ -109,13 +148,26 @@ namespace Api_budger.Services
 
         public async Task<bool> DeleteBudgerByIdAsyns(long budgerId)
         {
+            var currentUserId = _currentUserService.GetUserId();
+            if (currentUserId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            var familyId = await _userRepository.GetFamilyIdByUserIdAsync(currentUserId);
+            if (familyId <= 0) throw new KeyNotFoundException("Семья не найдена");
+
+            var userIdByBudgerCategoryId = await _budgerRepository.GetUserIdsByBydgerIdAsyns(budgerId);
+            if (userIdByBudgerCategoryId.IsNullOrEmpty()) throw new KeyNotFoundException("Пользователь не найден");
+
+            if (!(userIdByBudgerCategoryId.Contains(currentUserId)))
+            {
+                throw new UnauthorizedAccessException("У вас нет прав для удаления расходов этой семьи.");
+            }
+
             return await _budgerRepository.DeleteBudgerByIdAsyns(budgerId);
         }
 
         public async Task<bool> DeleteBudgerCategoryFromFamilyByIdAsyns(long budgerCategoryId)
         {
             var userId = _currentUserService.GetUserId();
-            var userRole = _currentUserService.GetUserRole();
             if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
 
             var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
@@ -123,7 +175,7 @@ namespace Api_budger.Services
 
             var userIdByBudgerCategoryId = await _budgerRepository.GetUserIdByBudgerCategoryId(budgerCategoryId);
 
-            if (!(userIdByBudgerCategoryId.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
+            if (!userIdByBudgerCategoryId.Any(u => u == userId))
             {
                 throw new UnauthorizedAccessException("У вас нет прав для удаления категорий доходов этой семьи.");
             }
@@ -141,53 +193,35 @@ namespace Api_budger.Services
             return await _budgerRepository.DeleteIncomCategoryFromFamilyByIdAsyns(incomCategoryId, familyId);
         }
 
-        public async Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<Budger>> GetBudgerByFamilyIdAsyns()
         {
             var userId = _currentUserService.GetUserId();
             if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
 
-            var userIdByFamily = await _userRepository.GetUserIdByFamilyAsync(familyId);
-            if (userIdByFamily.IsNullOrEmpty()) throw new KeyNotFoundException("Пользователь не найден");
-            var userRole = _currentUserService.GetUserRole();
-
-            if (!(userIdByFamily.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
-            {
-                throw new UnauthorizedAccessException("У вас нет прав для просмотра категорий расходов этой семьи.");
-            }
+            var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
+            if (familyId <= 0) throw new KeyNotFoundException("Семья не найден");
 
             var result = await _budgerRepository.GetBudgerByFamilyIdAsyns(familyId);
             if (result is null) throw new Exception("Расходы пусты");
             return result;
         }
 
-        public async Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns(long userId)
+        public async Task<IEnumerable<Budger>> GetBudgerByUserIdAsyns()
         {
             var cyrrentUserId = _currentUserService.GetUserId();
-            if (cyrrentUserId == 0) throw new KeyNotFoundException("Пользователь не найден");
-            var userRole = _currentUserService.GetUserRole();
+            if (cyrrentUserId <= 0) throw new KeyNotFoundException("Пользователь не найден");
 
-            if (!(userId == cyrrentUserId || userRole == Consts.RoleConst.admin))
-            {
-                throw new UnauthorizedAccessException("У вас нет прав для просмотра доходов этого пользователя");
-            }
-
-            var result = await _budgerRepository.GetBudgerByUserIdAsyns(userId);
+            var result = await _budgerRepository.GetBudgerByUserIdAsyns(cyrrentUserId);
             if (result is null) throw new Exception("Расходы пусты");
             return result;
         }
 
-        public async Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyIdAsyns(long familyId)
+        public async Task<IEnumerable<BudgerCategory>> GetBudgerCategoryByFamilyIdAsyns()
         {
-
-            var userIdByFamily = await _userRepository.GetUserIdByFamilyAsync(familyId);
             var userId = _currentUserService.GetUserId();
-            if (userIdByFamily.IsNullOrEmpty()) throw new KeyNotFoundException("User not found");
-            var userRole = _currentUserService.GetUserRole();
+            if (userId <= 0) throw new KeyNotFoundException("Пользователь не найден");
 
-            if (!(userIdByFamily.Any(u => u == userId) || userRole == Consts.RoleConst.admin))
-            {
-                throw new UnauthorizedAccessException("У вас нет прав для просмотра категорий расходов этой семьи.");
-            }
+            var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
 
             var result = await _budgerRepository.GetBudgerCategoryByFamilyIdAsyns(familyId);
             if (result is null) throw new KeyNotFoundException("Категории расходов пуста");

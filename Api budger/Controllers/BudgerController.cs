@@ -34,9 +34,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<OutputBudger>> GetBudgerByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputBudger>> GetBudgerByFamilyId()
         {
-            var listBudger = await _budgerService.GetBudgerByFamilyIdAsyns(familyId);
+            var listBudger = await _budgerService.GetBudgerByFamilyIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputBudger>>(listBudger);
             return resalt;
         }
@@ -49,9 +49,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<OutputBudger>> GetBudgerByUserId(long useryId)
+        public async Task<IEnumerable<OutputBudger>> GetBudgerByUserId()
         {
-            var budger = await _budgerService.GetBudgerByUserIdAsyns(useryId);
+            var budger = await _budgerService.GetBudgerByUserIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputBudger>>(budger);
             return resalt;
         }
@@ -79,6 +79,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteBudgerById(long budgerId)
         {
+            //проверить работособность выборки из бд
             return await _budgerService.DeleteBudgerByIdAsyns(budgerId);
         }
 
