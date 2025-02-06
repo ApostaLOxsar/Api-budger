@@ -20,7 +20,7 @@ namespace Api_budger.Services
         private readonly IPasswordHashService _passwordHashService;
         private readonly IJwtProvider _jwtProvider;
         private readonly IHttpContextAccessor _context;
-        private readonly ICurentUserService _curentUserService;
+        private readonly ICurentUserService _currentUserService;
         public ClientService(ILogger<ClientService> logger,
                              IUserRepository userRepository,
                              IBudgerRepository budgerRepository,
@@ -28,7 +28,7 @@ namespace Api_budger.Services
                              IPasswordHashService passwordHashService,
                              IJwtProvider jwtProvider,
                              IHttpContextAccessor httpContext,
-                             ICurentUserService curentUserService)
+                             ICurentUserService currentUserService)
         {
             _jwtProvider = jwtProvider;
             _logger = logger;
@@ -37,7 +37,7 @@ namespace Api_budger.Services
             _mapper = mapper;
             _passwordHashService = passwordHashService;
             _context = httpContext;
-            _curentUserService = curentUserService;
+            _currentUserService = currentUserService;
         }
 
         #region public region
@@ -76,10 +76,16 @@ namespace Api_budger.Services
             return await _userRepository.AddUserAsyns(user);
         }
 
-        public async Task<Family> CorrectFamilyAsyns(long id, InputFamily inputFamily)
+        public async Task<Family> CorrectFamilyAsyns(InputFamily inputFamily)
         {
+            var userId = _currentUserService.GetUserId();
+            if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
+            if (familyId <= 0) throw new KeyNotFoundException("Семья не найдена");
+
             var famili = _mapper.Map<Family>(inputFamily);
-            return await _userRepository.CorrectFamilyByIdAsyns(id, famili);
+            return await _userRepository.CorrectFamilyByIdAsyns(familyId, famili);
         }
 
         public async Task<Role> CorrectRoleAsyns(long id, InputRole inputRole)
@@ -100,6 +106,15 @@ namespace Api_budger.Services
 
         public async Task<bool> DeleteFamilyByIdAsyns(long id)
         {
+            var userId = _currentUserService.GetUserId();
+            var userRole = _currentUserService.GetUserRole();
+            if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
+            if (familyId <= 0) throw new KeyNotFoundException("Семья не найдена");
+            
+            if (!(familyId == id || userRole == Consts.RoleConst.admin)) throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");
+
             return await _userRepository.DeleteFamilyByIdAsyns(id);
         }
 
@@ -110,8 +125,8 @@ namespace Api_budger.Services
 
         public async Task<bool> DeleteUserByIdAsyns(long id)
         {
-            var currentUserId = _curentUserService.GetUserId();
-            var currentRole = _curentUserService.GetUserRole();
+            var currentUserId = _currentUserService.GetUserId();
+            var currentRole = _currentUserService.GetUserRole();
             if (currentRole == Consts.RoleConst.admin) { return await _userRepository.DeleteUserByIdAsync(id); }
             else if (currentUserId == id) { return await _userRepository.DeleteUserByIdAsync(id); }
             throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");

@@ -25,6 +25,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "adminPolicy")]
         [Route("GetFamilies")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputFamily>))]
         [ProducesResponseType(400)]
@@ -39,6 +40,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "adminPolicy")]
         [Route("GetFamily/{id}")]
         [ProducesResponseType(200, Type = typeof(OutputFamily))]
         [ProducesResponseType(400)]
@@ -53,6 +55,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "userPolicy")]
         [Route("GetFamilyByUser/{id}")]
         [ProducesResponseType(200, Type = typeof(OutputFamily))]
         [ProducesResponseType(400)]
@@ -67,6 +70,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "moderationPolicy")]
         [Route("AddFamily")]
         [ProducesResponseType(200, Type = typeof(OutputFamily))]
         [ProducesResponseType(400)]
@@ -81,6 +85,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "userPolicy")]
         [Route("DeleteFamily/{id}")]
         [ProducesResponseType(200, Type = typeof(bool))]
         [ProducesResponseType(400)]
@@ -93,6 +98,7 @@ namespace Api_budger.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "userPolicy")]
         [Route("CorrectFamily/{id}")]
         [ProducesResponseType(200, Type = typeof(OutputFamily))]
         [ProducesResponseType(400)]
@@ -101,7 +107,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<OutputFamily> CorrectFamily(long id, InputFamily inputFamily)
         {
-            var correctFamily = await _clientService.CorrectFamilyAsyns(id, inputFamily);
+            var correctFamily = await _clientService.CorrectFamilyAsyns(inputFamily);
             var result = _mapper.Map<OutputFamily>(correctFamily);
             return result;
         }

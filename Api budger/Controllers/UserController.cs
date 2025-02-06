@@ -67,6 +67,20 @@ namespace Api_budger.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("FingUsers")]
+        [Authorize(Policy = "userPolicy")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OutputUser>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public async Task<IEnumerable<OutputUser>> FingUsers()
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpDelete]
         [Route("DeleteUser/{id}")]
         [Authorize(Policy = "userPolicy")]

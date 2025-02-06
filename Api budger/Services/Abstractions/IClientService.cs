@@ -11,7 +11,7 @@ namespace Api_budger.Services.Abstractions
         public Task<Family> GetFamilyByUserIdAsync(long Id);
         public Task<Family> AddFamilyAsyns(InputFamily inputFamily);
         public Task<bool> DeleteFamilyByIdAsyns(long id);
-        public Task<Family> CorrectFamilyAsyns(long Id, InputFamily inputFamily);
+        public Task<Family> CorrectFamilyAsyns(InputFamily inputFamily);
         #endregion
 
         #region Role
