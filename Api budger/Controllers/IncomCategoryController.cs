@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api_budger.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "userPolicy")]
     [Route("IncomCategory")]
     [ApiController]
     public class IncomCategoryController : ControllerBase
@@ -34,7 +34,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<IEnumerable<OutputIncomCategory>> GetIncomCategoryByFamilyId(long familyId)
         {
-            var incomCategories = await _budgerService.GetIncomCategoryByFamilyIdAsyns(familyId);
+            var incomCategories = await _budgerService.GetIncomCategoryByFamilyIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputIncomCategory>>(incomCategories);
             return resalt;
         }
@@ -60,9 +60,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<bool> DeleteIncomCategoryFromFamilyById(long incomCategoryId, long familyId)
+        public async Task<bool> DeleteIncomCategoryFromFamilyById(long incomCategoryId)
         {
-            return await _budgerService.DeleteIncomCategoryFromFamilyByIdAsyns(incomCategoryId,familyId);
+            return await _budgerService.DeleteIncomCategoryFromFamilyByIdAsyns(incomCategoryId);
         }
 
         [HttpPut]
@@ -72,9 +72,9 @@ namespace Api_budger.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<OutputIncomCategory> CorrectIncomCategoryFromUserById(long id, long userId, InputIncomCategory inputIncomCategory)
+        public async Task<OutputIncomCategory> CorrectIncomCategoryFromUserById(long id, InputIncomCategory inputIncomCategory)
         {
-            var correctIncomCategory = await _budgerService.CorrectIncomCategoryFromUserByIdAsyns(id, userId, inputIncomCategory);
+            var correctIncomCategory = await _budgerService.CorrectIncomCategoryFromUserByIdAsyns(id, inputIncomCategory);
             var resalt = _mapper.Map<OutputIncomCategory>(correctIncomCategory);
             return resalt;
         }

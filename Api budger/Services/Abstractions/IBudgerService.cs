@@ -12,13 +12,13 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="familyId">Id семьи</param>
         /// <returns>Список доходов</returns>
-        public Task<IEnumerable<Incom>> GetIncomByFamilyIdAsyns(long familyId);
+        public Task<IEnumerable<Incom>> GetIncomByFamilyIdAsyns();
         /// <summary>
         /// Получает список доходов по Id пользователя
         /// </summary>
         /// <param name="useryId">Id пользователя</param>
         /// <returns>Список доходов</returns>
-        public Task<IEnumerable<Incom>> GetIncomByUserIdAsyns(long useryId);
+        public Task<IEnumerable<Incom>> GetIncomByUserIdAsyns();
         /// <summary>
         /// Добавляет доход 
         /// </summary>
@@ -47,7 +47,7 @@ namespace Api_budger.Services.Abstractions
         /// </summary>
         /// <param name="familyId">Id семьи</param>
         /// <returns>Список категорий</returns>
-        public Task<IEnumerable<IncomCategory>> GetIncomCategoryByFamilyIdAsyns(long familyId);
+        public Task<IEnumerable<IncomCategory>> GetIncomCategoryByFamilyIdAsyns();
         /// <summary>
         /// Добавляет категорию в семью
         /// </summary>
@@ -58,17 +58,15 @@ namespace Api_budger.Services.Abstractions
         /// Удаляет категорию из семьи по Id
         /// </summary>
         /// <param name="incomCategoryId">Id категории доходов</param>
-        /// <param name="familyId">Id семьи</param>
         /// <returns>Флаг успешности</returns>
-        public Task<bool> DeleteIncomCategoryFromFamilyByIdAsyns(long incomCategoryId, long familyId);
+        public Task<bool> DeleteIncomCategoryFromFamilyByIdAsyns(long incomCategoryId);
         /// <summary>
         /// Изменяет категорию доходов в семье по id пользователя
         /// </summary>
         /// <param name="Id">Id категории доходов</param>
-        /// <param name="UserId">Id пользователя</param>
         /// <param name="inputIncomCategory">Новые данные</param>
         /// <returns>Измененная категория доходов</returns>
-        public Task<IncomCategory> CorrectIncomCategoryFromUserByIdAsyns(long Id, long userId, InputIncomCategory inputIncomCategory);
+        public Task<IncomCategory> CorrectIncomCategoryFromUserByIdAsyns(long Id, InputIncomCategory inputIncomCategory);
         #endregion
 
         #region budger

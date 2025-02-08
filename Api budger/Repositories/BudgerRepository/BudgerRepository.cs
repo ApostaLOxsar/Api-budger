@@ -353,5 +353,44 @@ namespace Api_budger.Repositories.BudgerRepository
 
             return userId;
         }
+
+        public async Task<IEnumerable<long>> GetUserIdByIncomCategoryId(long incomCategoryId)
+        {
+            var category = await _context.IncomCategories
+                .Where(c => c.IncomCategoryId == incomCategoryId)
+                .Join(_context.IncomCategoriesHasFamilies,
+                      bc => bc.IncomCategoryId,
+                      bchf => bchf.IncomCategoryId,
+                      (bc, bchf) => new { bc, bchf })
+                .Join(_context.Families,
+                      bchfbc => bchfbc.bchf.FamilyId,
+                      f => f.FamilyId,
+                      (bchfbc, f) => new { bchfbc, f })
+                .Join(_context.Users,
+                      bchfbcf => bchfbcf.f.FamilyId,
+                      u => u.FamilyId,
+                      (bchfbc, u) => new { bchfbc, u })
+                .Select(u => u.u.UserId)
+                .ToListAsync();
+            return category;
+        }
+
+        public async Task<IEnumerable<long>> GetUserIdsByIncomIdAsyns(long incomId)
+        {
+            var userId = await _context.Incoms
+                .Where(b => b.IncomId == incomId)
+                .Join(_context.Users,
+                b => b.UserId,
+                u => u.UserId,
+                (b, u) => new { b, u })
+                .Join(_context.Families,
+                bu => bu.u.FamilyId,
+                f => f.FamilyId,
+                (bu, f) => new { bu, f })
+                .Select(buf => buf.bu.u.UserId)
+                .ToListAsync();
+
+            return userId;
+        }
     }
 }

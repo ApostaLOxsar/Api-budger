@@ -25,29 +25,31 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("GetIncomByFamily/{familyId}")]
+        [Authorize(Policy = "userPolicy")]
+        [Route("GetIncomByFamily")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncom>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<OutputIncom>> GetIncomByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputIncom>> GetIncomByFamilyId()
         {
-            var listIncoms = await _budgerService.GetIncomByFamilyIdAsyns(familyId);
+            var listIncoms = await _budgerService.GetIncomByFamilyIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputIncom>>(listIncoms);
             return resalt;
         }
 
         [HttpGet]
-        [Route("GetIncomByUser/{useryId}")]
+        [Authorize(Policy = "userPolicy")]
+        [Route("GetIncomByUser")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncom>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<OutputIncom>> GetIncomByUserId(long useryId)
+        public async Task<IEnumerable<OutputIncom>> GetIncomByUserId()
         {
-            var listIncoms = await _budgerService.GetIncomByUserIdAsyns(useryId);
+            var listIncoms = await _budgerService.GetIncomByUserIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputIncom>>(listIncoms);
             return resalt;
         }
@@ -75,6 +77,7 @@ namespace Api_budger.Controllers
         [ProducesResponseType(404)]
         public async Task<bool> DeleteIncomById(long incomId)
         {
+            //проверить работособность выборки из бд
             return await _budgerService.DeleteIncomByIdAsyns(incomId);
         }
 
