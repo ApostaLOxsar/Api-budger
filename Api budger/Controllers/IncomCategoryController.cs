@@ -26,13 +26,13 @@ namespace Api_budger.Controllers
         }
 
         [HttpGet]
-        [Route("GetIncomCategoryByFamily/{familyId}")]
+        [Route("GetIncomCategoryByFamily")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputIncomCategory>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<IEnumerable<OutputIncomCategory>> GetIncomCategoryByFamilyId(long familyId)
+        public async Task<IEnumerable<OutputIncomCategory>> GetIncomCategoryByFamilyId()
         {
             var incomCategories = await _budgerService.GetIncomCategoryByFamilyIdAsyns();
             var resalt = _mapper.Map<IEnumerable<OutputIncomCategory>>(incomCategories);

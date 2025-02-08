@@ -24,7 +24,7 @@ namespace Api_budger.Controllers
 
 
         [HttpGet]
-        [Route("GetBudgerCategoryByFamily/{familyId}")]
+        [Route("GetBudgerCategoryByFamily")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutputBudgerCategory>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
