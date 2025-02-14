@@ -101,7 +101,12 @@ namespace Api_budger.Services
             {
                 user.PasswordHash = _passwordHashService.GenerateHash(inputUser.password);
             }
-            return await _userRepository.CorrectUserByIdAsyns(id, user);
+
+            var currentUserId = _currentUserService.GetUserId();
+            var currentRole = _currentUserService.GetUserRole();
+            if (currentRole == Consts.RoleConst.admin) { return await _userRepository.CorrectUserByIdAsyns(id, user); }
+            else if (currentUserId == id) { return await _userRepository.CorrectUserByIdAsyns(id, user); }
+            throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");
         }
 
         public async Task<bool> DeleteFamilyByIdAsyns(long id)
