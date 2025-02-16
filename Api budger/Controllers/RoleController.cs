@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Api_budger.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "adminPolicy")]
     [Route("Role")]
     [ApiController]
     public class RoleController :ControllerBase
