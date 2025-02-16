@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Api_budger.Consts;
 using Api_budger.Infrastructure;
 using Api_budger.Infrastructure.Interface;
 using Api_budger.Models.budgers;
@@ -96,6 +97,10 @@ namespace Api_budger.Services
 
         public async Task<User> CorrectUserAsyns(long id, InputUser inputUser)
         {
+            var currentUserId = _currentUserService.GetUserId();
+            var currentRole = _currentUserService.GetUserRole();
+            if (!((currentRole == RoleConst.admin) || (currentUserId == id))) throw new UnauthorizedAccessException("У вас нет прав для изменения этого пользователя.");
+
             var user = _mapper.Map<User>(inputUser);
             if (!string.IsNullOrEmpty(inputUser.password))
             {
@@ -113,7 +118,7 @@ namespace Api_budger.Services
             var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
             if (familyId <= 0) throw new KeyNotFoundException("Семья не найдена");
             
-            if (!(familyId == id || userRole == Consts.RoleConst.admin)) throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");
+            if (!(familyId == id || userRole == RoleConst.admin)) throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");
 
             return await _userRepository.DeleteFamilyByIdAsyns(id);
         }
@@ -127,9 +132,8 @@ namespace Api_budger.Services
         {
             var currentUserId = _currentUserService.GetUserId();
             var currentRole = _currentUserService.GetUserRole();
-            if (currentRole == Consts.RoleConst.admin) { return await _userRepository.DeleteUserByIdAsync(id); }
-            else if (currentUserId == id) { return await _userRepository.DeleteUserByIdAsync(id); }
-            throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя.");
+            if (!((currentRole == RoleConst.admin) || (currentUserId == id))) throw new UnauthorizedAccessException("У вас нет прав для удаления этого пользователя."); 
+            return await _userRepository.DeleteUserByIdAsync(id);
         }
 
         public async Task<string> GenerateHash(string password)
@@ -174,8 +178,25 @@ namespace Api_budger.Services
 
         public async Task<User> GetUserByIdAsync(long id)
         {
+            var userId = _currentUserService.GetUserId();
+            var userRole = _currentUserService.GetUserRole();
+            if (userId == 0) throw new KeyNotFoundException("Пользователь не найден");
+
+            var familyId = await _userRepository.GetFamilyIdByUserIdAsync(userId);
+            if (familyId <= 0) throw new KeyNotFoundException("Семья не найдена");
+
+            //список ид в семье пользователя который авторизован
+            var usersByFamily = await _userRepository.GetUsersIdByFamilyAsync(familyId);
+
+            if (!(usersByFamily.Contains(id) || userRole == RoleConst.admin)) throw new UnauthorizedAccessException("У вас нет прав для просмотра этого пользователя.");
+
             var user = await _userRepository.GetUserByIdAsync(id);
             if (user is null) throw new Exception("User not found");
+
+            if (userRole == RoleConst.admin) return user;
+
+            if ((RoleConst)Enum.ToObject(typeof(RoleConst), user.RoleId) == RoleConst.admin) throw new UnauthorizedAccessException("У вас нет прав для просмотра этого пользователя.");
+
             return user;
         }
 

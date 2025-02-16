@@ -127,11 +127,11 @@ namespace Api_budger.Repositories.Abstractions
         /// <returns>юзер</returns>
         Task<User> GetUserByTelegramIdAsync(long telegramId);
         /// <summary>
-        /// Получает юзера по Ид семьи
+        /// Получает юзеров по Ид семьи
         /// </summary>
         /// <param name="familyId">familyId id</param>
         /// <returns>юзер Id</returns>
-        Task<IEnumerable<long>> GetUserIdByFamilyAsync(long familyId);
+        Task<IEnumerable<long>> GetUsersIdByFamilyAsync(long familyId);
 
     }
 }

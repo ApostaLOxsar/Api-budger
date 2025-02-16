@@ -54,7 +54,7 @@ namespace Api_budger.Controllers
 
         [HttpGet]
         [Route("GetUser/{id}")]
-        [Authorize(Policy = "moderationPolicy")]
+        [Authorize(Policy = "userPolicy")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
